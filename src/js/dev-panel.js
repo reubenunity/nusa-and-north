@@ -9,6 +9,7 @@ const BRIDGE = ['snap', 'med', 'slow'];
 const SLATES = ['black', 'cream', 'red'];
 const EDITS = ['ink', 'cream', 'red'];
 const HEROES = ['flood', 'film', 'duotone'];
+const MOTION = ['auto', 'full', 'static'];
 
 export function setPalette(key) {
   document.documentElement.dataset.palette = key;
@@ -60,6 +61,7 @@ export function initDevPanel(rebuild) {
       btnRow('Header [T/Y/U]', HEROES, (k) => document.documentElement.dataset.hero === k, 'hero') +
       btnRow('Slate look [V/B/N]', SLATES, (k) => document.documentElement.dataset.slate === k, 'slate') +
       btnRow('Timeline look [G/H/J]', EDITS, (k) => document.documentElement.dataset.edit === k, 'edit') +
+      btnRow('Motion [K/L/M]', MOTION, (k) => (localStorage.getItem('nn-motion') || 'auto') === k, 'motion') +
       `<div class="dev-panel__hint">\` toggles panel · scroll to compare</div>`;
   }
 
@@ -71,6 +73,7 @@ export function initDevPanel(rebuild) {
     if (action === 'slate') setLook('slate', val);
     if (action === 'edit') setLook('edit', val);
     if (action === 'hero') { setLook('hero', val); rebuild(); }
+    if (action === 'motion') { localStorage.setItem('nn-motion', val); location.reload(); return; }
     render();
   }
 
@@ -87,6 +90,7 @@ export function initDevPanel(rebuild) {
     t: ['hero', 'flood'], y: ['hero', 'film'], u: ['hero', 'duotone'],
     v: ['slate', 'black'], b: ['slate', 'cream'], n: ['slate', 'red'],
     g: ['edit', 'ink'], h: ['edit', 'cream'], j: ['edit', 'red'],
+    k: ['motion', 'auto'], l: ['motion', 'full'], m: ['motion', 'static'],
   };
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;

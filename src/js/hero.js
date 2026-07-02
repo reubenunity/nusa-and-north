@@ -25,6 +25,23 @@ function exitVector(el, mode) {
   return { x: vx / len, y: vy / len };
 }
 
+// Wrap each headline character in a span (once — survives rebuilds).
+function splitHeadline(headline) {
+  if (headline.dataset.split) return;
+  headline.querySelectorAll('.hero__headline-line').forEach((line) => {
+    const text = line.textContent;
+    line.textContent = '';
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'hero__char';
+      if (ch === ' ') span.innerHTML = '&nbsp;';
+      else span.textContent = ch;
+      line.appendChild(span);
+    }
+  });
+  headline.dataset.split = '1';
+}
+
 export function buildHero() {
   const { hero, dismantlePresets } = config;
   const preset = dismantlePresets[hero.dismantlePreset];
@@ -36,6 +53,11 @@ export function buildHero() {
   const focusLabel = document.querySelector('.js-focus-label');
   const media = document.querySelector('.hero__media');
   const mediaActive = media && document.documentElement.dataset.hero !== 'flood';
+
+  const headlineEl = document.querySelector('.hero__headline');
+  const sub = document.querySelector('.hero__sub');
+  splitHeadline(headlineEl);
+  const chars = gsap.utils.toArray('.hero__char');
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
@@ -129,12 +151,37 @@ export function buildHero() {
     );
   });
 
-  // headline eases back slightly as the HUD tears away — you're "through" the lens
-  tl.to(
-    headline,
-    { scale: 0.96, opacity: 0.9, duration: span, ease: 'power1.inOut' },
-    hero.dismantleStart
-  );
+  // ---- the headline explodes with the HUD ----
+  // each character flies out radially from the headline's center,
+  // violence follows the active dismantle preset
+  const headRect = headlineEl.getBoundingClientRect();
+  const headCx = headRect.left + headRect.width / 2;
+  const headCy = headRect.top + headRect.height / 2;
+  const explodeStart = hero.dismantleStart + span * 0.15;
+  const charDur = Math.max(0.1, flightDur * 0.8);
+
+  chars.forEach((ch) => {
+    const r = ch.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - headCx;
+    const dy = r.top + r.height / 2 - headCy;
+    const len = Math.hypot(dx, dy) || 1;
+    const dist = preset.distance * maxDim * (0.45 + Math.random() * (0.35 + preset.jitter));
+
+    tl.to(
+      ch,
+      {
+        x: (dx / len) * dist,
+        y: (dy / len) * dist - maxDim * 0.04,
+        rotation: gsap.utils.random(-preset.rotation * 2.2, preset.rotation * 2.2),
+        opacity: 0,
+        duration: charDur,
+        ease: preset.ease,
+      },
+      explodeStart + Math.random() * span * 0.18
+    );
+  });
+
+  tl.to(sub, { opacity: 0, duration: span * 0.2, ease: 'power1.in' }, explodeStart);
 
   // the footage "powers down" with the HUD, handing off to the slate
   if (mediaActive) {
@@ -148,6 +195,6 @@ export function buildHero() {
   return () => {
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([headline, media, ...hudEls].filter(Boolean), { clearProps: 'all' });
+    gsap.set([headline, media, sub, ...chars, ...hudEls].filter(Boolean), { clearProps: 'all' });
   };
 }

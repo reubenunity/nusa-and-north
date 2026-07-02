@@ -12,7 +12,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
-import { fullExperience, applyMotionClass } from './js/motion.js';
+import { fullExperience, applyMotionClass, watchViewport } from './js/motion.js';
 import { buildHero } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
@@ -20,6 +20,7 @@ import { initDevPanel } from './js/dev-panel.js';
 
 gsap.registerPlugin(ScrollTrigger);
 applyMotionClass();
+watchViewport();
 
 let teardowns = [];
 

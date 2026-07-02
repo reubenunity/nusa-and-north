@@ -57,6 +57,12 @@ html[data-hero='flood'] .hero__media {
   display: block;
 }
 
+/* headline splits into chars so the exit can explode them */
+.hero__char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 .hero__sub {
   margin-top: 1.6em;
   font-family: var(--font-mono);
