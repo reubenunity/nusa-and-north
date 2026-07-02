@@ -45,7 +45,7 @@ html[data-hero='flood'] .hero__media {
 }
 
 .hero__headline {
-  font-size: clamp(2.6rem, 9.5vw, 9rem);
+  font-size: clamp(2.2rem, 8vw, 7.6rem);
   font-weight: 800;
   font-stretch: 115%;
   line-height: 0.94;
@@ -57,7 +57,12 @@ html[data-hero='flood'] .hero__media {
   display: block;
 }
 
-/* headline splits into chars so the exit can explode them */
+/* headline splits into chars so the exit can explode them;
+   word wrappers keep line breaks at spaces only */
+.hero__word {
+  display: inline-block;
+  white-space: nowrap;
+}
 .hero__char {
   display: inline-block;
   will-change: transform, opacity;
@@ -131,9 +136,22 @@ html[data-hero='flood'] .hero__media {
   50% { opacity: 0.15; }
 }
 
-/* timecode */
+/* brand lockup — the camera's owner stamp */
+.hud__brand {
+  top: calc(var(--pad) + 4px);
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+  font-size: clamp(0.8rem, 1.5vw, 1.05rem);
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+/* timecode — stacked under the brand */
 .hud__timecode {
-  top: calc(var(--pad) + 6px);
+  top: calc(var(--pad) + 4px + clamp(1.3rem, 2.4vw, 1.7rem));
   left: 50%;
   translate: -50% 0;
   font-weight: 500;

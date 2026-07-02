@@ -26,18 +26,25 @@ function exitVector(el, mode) {
 }
 
 // Wrap each headline character in a span (once — survives rebuilds).
+// Chars are grouped into word wrappers so lines can only break at
+// spaces — never mid-word.
 function splitHeadline(headline) {
   if (headline.dataset.split) return;
   headline.querySelectorAll('.hero__headline-line').forEach((line) => {
-    const text = line.textContent;
+    const words = line.textContent.trim().split(/\s+/);
     line.textContent = '';
-    for (const ch of text) {
-      const span = document.createElement('span');
-      span.className = 'hero__char';
-      if (ch === ' ') span.innerHTML = '&nbsp;';
-      else span.textContent = ch;
-      line.appendChild(span);
-    }
+    words.forEach((word, w) => {
+      if (w > 0) line.appendChild(document.createTextNode(' '));
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'hero__word';
+      for (const ch of word) {
+        const span = document.createElement('span');
+        span.className = 'hero__char';
+        span.textContent = ch;
+        wordSpan.appendChild(span);
+      }
+      line.appendChild(wordSpan);
+    });
   });
   headline.dataset.split = '1';
 }
