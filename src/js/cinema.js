@@ -1,8 +1,48 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { config } from '../config.js';
+import { splitIntoChars } from './utils.js';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Card titles exit like the hero headline: each character disperses
+// radially from the title's center.
+function disperseTitle(tl, card, exitAt, maxDim, allChars) {
+  const title = card.querySelector('.cinema__card-title');
+  const chars = splitIntoChars(title, 'cinema__char');
+  allChars.push(...chars);
+
+  const tr = title.getBoundingClientRect();
+  const cx = tr.left + tr.width / 2;
+  const cy = tr.top + tr.height / 2;
+
+  chars.forEach((ch) => {
+    const r = ch.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - cx;
+    const dy = r.top + r.height / 2 - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    const dist = maxDim * (0.22 + Math.random() * 0.3);
+
+    tl.to(
+      ch,
+      {
+        x: (dx / len) * dist,
+        y: (dy / len) * dist - maxDim * 0.03,
+        rotation: gsap.utils.random(-42, 42),
+        opacity: 0,
+        duration: 0.03,
+        ease: 'power2.in',
+      },
+      exitAt + Math.random() * 0.012
+    );
+  });
+
+  // the quieter lines just fade
+  const rest = ['.cinema__card-index', '.cinema__card-kicker', '.cinema__card-sub']
+    .map((s) => card.querySelector(s))
+    .filter(Boolean);
+  tl.to(rest, { opacity: 0, duration: 0.02, ease: 'power1.in' }, exitAt);
+}
 
 // Lights down → projector flickers up → academy leader counts down →
 // trailer cards (services) → "feature presentation" → the reel.
@@ -40,18 +80,16 @@ export function buildCinema() {
     },
   });
 
-  // projector stutters awake — immediately, no dead black
-  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.55, duration: 0.008 }, 0.0);
-  tl.to(beam, { opacity: 0.08, duration: 0.007 }, 0.012);
-  tl.to(beam, { opacity: 0.7, duration: 0.008 }, 0.022);
-  tl.to(beam, { opacity: 0.3, duration: 0.01 }, 0.033);
-  tl.to(beam, { opacity: 0.5, duration: 0.015 }, 0.045);
+  // projector warms up — one smooth rise, no flicker
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.5, duration: 0.045, ease: 'power1.out' }, 0.0);
 
   // leader
   tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.025 }, LEADER_IN);
   tl.to(leader, { opacity: 0, duration: 0.02 }, LEADER_OUT);
 
-  // trailer cards, projected one after another
+  // trailer cards, projected one after another; titles disperse on exit
+  const maxDim = Math.max(window.innerWidth, window.innerHeight);
+  const allChars = [];
   trailers.forEach((card, i) => {
     const at = 0.21 + i * 0.095;
     tl.fromTo(
@@ -60,7 +98,7 @@ export function buildCinema() {
       { opacity: 1, scale: 1, y: 0, duration: 0.032, ease: 'power2.out' },
       at
     );
-    tl.to(card, { opacity: 0, y: -20, duration: 0.024, ease: 'power1.in' }, at + 0.068);
+    disperseTitle(tl, card, at + 0.068, maxDim, allChars);
   });
 
   // "the feature presentation"
@@ -70,7 +108,7 @@ export function buildCinema() {
     { opacity: 1, scale: 1, duration: 0.03, ease: 'power2.out' },
     0.61
   );
-  tl.to(featureCard, { opacity: 0, duration: 0.024, ease: 'power1.in' }, 0.675);
+  disperseTitle(tl, featureCard, 0.675, maxDim, allChars);
 
   // the reel fills the screen; beam settles dim behind it
   tl.fromTo(
@@ -82,10 +120,14 @@ export function buildCinema() {
   tl.to(beam, { opacity: 0.16, duration: 0.05 }, 0.71);
   tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.88);
 
+  // pad the timeline to exactly 1 so authored positions map 1:1
+  // onto pin progress (scrub distributes scroll across total duration)
+  tl.set({}, {}, 1);
+
   return () => {
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([beam, leader, featureCard, screen, intermission, ...trailers], {
+    gsap.set([beam, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
       clearProps: 'all',
     });
   };

@@ -165,6 +165,11 @@
   text-transform: uppercase;
 }
 
+.cinema__char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 .cinema__card-sub {
   margin-top: 1.4em;
   font-family: var(--font-mono);

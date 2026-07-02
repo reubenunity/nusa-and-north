@@ -25,6 +25,13 @@
   justify-content: center;
   padding: clamp(16px, 3vh, 40px) var(--pad);
   min-height: 0;
+  /* screen-glow wash behind the monitor so the bay isn't flat */
+  background: radial-gradient(
+    ellipse 72% 88% at 50% 44%,
+    color-mix(in srgb, var(--c-signal) 17%, var(--c-panel)) 0%,
+    color-mix(in srgb, var(--c-signal) 6%, var(--c-panel)) 42%,
+    var(--c-panel) 74%
+  );
 }
 
 .edit__monitor-frame {
