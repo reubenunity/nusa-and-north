@@ -7,7 +7,8 @@
       "Bash(npm uninstall *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -q -m 'Scaffold Shoot→Edit concept: Vite + GSAP ScrollTrigger + Lenis, 3 palettes, dev iteration panel *)"
+      "Bash(git commit -q -m 'Scaffold Shoot→Edit concept: Vite + GSAP ScrollTrigger + Lenis, 3 palettes, dev iteration panel *)",
+      "Bash(git commit -q -m 'Verify full scroll narrative end-to-end at desktop viewport *)"
     ]
   }
 }
