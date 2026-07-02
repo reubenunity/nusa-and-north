@@ -28,7 +28,6 @@
   font-size: clamp(0.8rem, 1.8vw, 1.1rem);
   letter-spacing: 0.5em;
   color: var(--c-slate-fg);
-  opacity: 0;
 }
 
 .bridge__title {
@@ -41,7 +40,6 @@
   line-height: 1;
   letter-spacing: -0.01em;
   color: var(--c-signal);
-  opacity: 0;
 }
 
 /* palette C: red-on-ink slate keeps the red title readable,

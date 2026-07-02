@@ -107,15 +107,18 @@ export function buildHero() {
   }
 
   // ---- phase 2: the dismantle ----
+  // timings normalized so the LAST element lands exactly at pin release —
+  // no dead scroll between the animation ending and the slate wiping in
   const span = hero.dismantleEnd - hero.dismantleStart;
-  const flightDur = Math.max(0.12, span - (hudEls.length - 1) * preset.stagger);
+  const flightDur = Math.max(span * 0.25, span - (hudEls.length - 1) * preset.stagger);
+  const stagger = (span - flightDur) / (hudEls.length - 1);
   const maxDim = Math.max(window.innerWidth, window.innerHeight);
 
   // shuffle order so the teardown doesn't read top-to-bottom in DOM order
   const order = gsap.utils.shuffle([...hudEls]);
 
   order.forEach((el, i) => {
-    const at = hero.dismantleStart + i * preset.stagger;
+    const at = hero.dismantleStart + i * stagger;
     const mode = el.dataset.mode;
 
     if (mode === 'fade') {
@@ -158,7 +161,7 @@ export function buildHero() {
   const headCx = headRect.left + headRect.width / 2;
   const headCy = headRect.top + headRect.height / 2;
   const explodeStart = hero.dismantleStart + span * 0.15;
-  const charDur = Math.max(0.1, flightDur * 0.8);
+  const charDur = Math.max(0.1, span * 0.45);
 
   chars.forEach((ch) => {
     const r = ch.getBoundingClientRect();
@@ -177,7 +180,7 @@ export function buildHero() {
         duration: charDur,
         ease: preset.ease,
       },
-      explodeStart + Math.random() * span * 0.18
+      explodeStart + Math.random() * Math.max(0, 1 - charDur - explodeStart)
     );
   });
 

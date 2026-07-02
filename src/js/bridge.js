@@ -4,6 +4,8 @@ import { config } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// The slate arrives with its text already on the card (like a real
+// title card wiping in) — the pinned phase just holds, then releases.
 export function buildBridge() {
   const { bridge } = config;
 
@@ -21,25 +23,6 @@ export function buildBridge() {
       scrub: true,
     },
   });
-
-  // slate text in
-  tl.fromTo(
-    cutTo,
-    { opacity: 0, letterSpacing: '1.2em' },
-    { opacity: 1, letterSpacing: '0.5em', duration: bridge.cutToIn, ease: 'power2.out' },
-    0.02
-  );
-  tl.fromTo(
-    title,
-    { opacity: 0, scale: 0.96 },
-    {
-      opacity: 1,
-      scale: 1,
-      duration: bridge.titleIn - bridge.cutToIn,
-      ease: 'power2.out',
-    },
-    bridge.cutToIn
-  );
 
   // hold, then release out before unpin
   tl.to(

@@ -96,6 +96,32 @@ export function buildEdit() {
   // scrub travel: last clip's right edge ends at the playhead
   const travel = videoLane.scrollWidth - window.innerWidth / 2;
 
+  // ---- assembly: the NLE builds itself WHILE wiping into view,
+  // so it arrives fully formed the moment it pins ----
+  const assembleTl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top bottom',
+      end: 'top top',
+      scrub: true,
+    },
+  });
+  assembleTl.fromTo(ruler, { yPercent: -110 }, { yPercent: 0, duration: 0.5, ease: 'power2.out' }, 0.1);
+  assembleTl.fromTo(
+    tracks,
+    { yPercent: 130, opacity: 0 },
+    { yPercent: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
+    0.25
+  );
+  assembleTl.fromTo(
+    monitorFrame,
+    { scale: 0.9, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 0.55, ease: 'power2.out' },
+    0.4
+  );
+
+  // ---- pinned phase: pure scrub, clips pass under the fixed playhead ----
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -105,37 +131,17 @@ export function buildEdit() {
       pin: '.edit__stage',
       scrub: true,
       onUpdate(self) {
-        const scrubP = gsap.utils.clamp(
-          0,
-          1,
-          (self.progress - edit.assembleEnd) / (1 - edit.assembleEnd)
-        );
-        tcEl.textContent = timecode(scrubP * edit.sequenceSeconds);
+        tcEl.textContent = timecode(self.progress * edit.sequenceSeconds);
         setActiveClip(monitorTitle, monitorClipname);
       },
     },
   });
 
-  // ---- assembly: the NLE builds itself ----
-  const a = edit.assembleEnd;
-  tl.fromTo(ruler, { yPercent: -110 }, { yPercent: 0, duration: a * 0.5, ease: 'power2.out' }, 0);
-  tl.fromTo(
-    tracks,
-    { yPercent: 130, opacity: 0 },
-    { yPercent: 0, opacity: 1, duration: a * 0.65, ease: 'power2.out' },
-    a * 0.2
-  );
-  tl.fromTo(
-    monitorFrame,
-    { scale: 0.9, opacity: 0 },
-    { scale: 1, opacity: 1, duration: a * 0.6, ease: 'power2.out' },
-    a * 0.35
-  );
-
-  // ---- scrub: clips pass under the fixed playhead ----
-  tl.to([...lanes, rulerInner], { x: -travel, duration: 1 - a }, a);
+  tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
 
   return () => {
+    assembleTl.scrollTrigger?.kill();
+    assembleTl.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
     gsap.set([ruler, tracks, monitorFrame, ...lanes, rulerInner], { clearProps: 'all' });

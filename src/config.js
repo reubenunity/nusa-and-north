@@ -28,23 +28,23 @@ export const config = {
   },
 
   bridge: {
-    // Scroll distance the black slate stays pinned, in viewport-heights.
+    // Scroll distance the slate stays pinned, in viewport-heights.
+    // The slate text is on the card as it wipes in; holdUntil sets
+    // when it starts fading out.
     scrollVh: 140,
-    cutToIn: 0.12,   // "CUT TO:" fully visible at this progress
-    titleIn: 0.30,   // "THE EDIT" fully visible
-    holdUntil: 0.78, // both hold until here, then release
+    holdUntil: 0.78,
     // Named pacing presets for quick comparison from the dev panel.
     presets: {
-      snap: { scrollVh: 90,  cutToIn: 0.08, titleIn: 0.18, holdUntil: 0.85 },
-      med:  { scrollVh: 140, cutToIn: 0.12, titleIn: 0.30, holdUntil: 0.78 },
-      slow: { scrollVh: 220, cutToIn: 0.18, titleIn: 0.42, holdUntil: 0.72 },
+      snap: { scrollVh: 90,  holdUntil: 0.85 },
+      med:  { scrollVh: 140, holdUntil: 0.78 },
+      slow: { scrollVh: 220, holdUntil: 0.72 },
     },
   },
 
   edit: {
     // Scroll distance for the pinned edit section, in viewport-heights.
+    // (The NLE assembles during the wipe-in, before the pin starts.)
     scrollVh: 420,
-    assembleEnd: 0.16,    // UI assembly finishes at this progress
     sequenceSeconds: 84,  // fake sequence length driving the timecode
   },
 };
