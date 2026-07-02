@@ -13,6 +13,24 @@
   overflow: hidden;
 }
 
+/* ---- media slot (photo now, showreel loop later) ---- */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: filter, transform, opacity;
+}
+.hero__media img,
+.hero__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+html[data-hero='flood'] .hero__media {
+  display: none;
+}
+
 /* ---- headline (behind the HUD, starts blurred) ---- */
 .hero__headline-wrap {
   position: absolute;

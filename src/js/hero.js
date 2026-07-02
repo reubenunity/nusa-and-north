@@ -34,6 +34,8 @@ export function buildHero() {
   const hudEls = gsap.utils.toArray('[data-hud]');
   const tcEl = document.querySelector('.js-hero-timecode');
   const focusLabel = document.querySelector('.js-focus-label');
+  const media = document.querySelector('.hero__media');
+  const mediaActive = media && document.documentElement.dataset.hero !== 'flood';
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
@@ -66,6 +68,21 @@ export function buildHero() {
     },
     hero.focusStart
   );
+
+  // the footage racks focus along with the headline
+  if (mediaActive) {
+    tl.fromTo(
+      media,
+      { filter: 'blur(16px)', scale: 1.06 },
+      {
+        filter: 'blur(0px)',
+        scale: 1,
+        ease: 'power2.out',
+        duration: hero.focusEnd - hero.focusStart,
+      },
+      hero.focusStart
+    );
+  }
 
   // ---- phase 2: the dismantle ----
   const span = hero.dismantleEnd - hero.dismantleStart;
@@ -119,9 +136,18 @@ export function buildHero() {
     hero.dismantleStart
   );
 
+  // the footage "powers down" with the HUD, handing off to the slate
+  if (mediaActive) {
+    tl.to(
+      media,
+      { opacity: 0, duration: span * 0.7, ease: 'power1.in' },
+      hero.dismantleStart + span * 0.3
+    );
+  }
+
   return () => {
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([headline, ...hudEls], { clearProps: 'all' });
+    gsap.set([headline, media, ...hudEls].filter(Boolean), { clearProps: 'all' });
   };
 }

@@ -7,6 +7,46 @@
    "black" and "ink" are the palette-driven defaults (no override).
    ============================================================ */
 
+/* ============================================================
+   HEADER TREATMENTS — <html data-hero="flood|film|duotone">
+   "flood": palette color only (no media, the original).
+   "film": graded b/w footage, paper HUD, signal-red camera marks.
+   "duotone": signal-washed image — brand color AS the grade.
+   ============================================================ */
+
+html[data-hero='film'] .hero__stage,
+html[data-hero='duotone'] .hero__stage {
+  background: var(--p-ink);
+  --c-fg: var(--raw-paper);
+  --c-fg-dim: rgba(250, 250, 246, 0.72);
+  --c-line: rgba(250, 250, 246, 0.28);
+  --c-accent: var(--c-signal);
+}
+
+html[data-hero='film'] .hero__media img,
+html[data-hero='film'] .hero__media video {
+  filter: grayscale(1) contrast(1.08) brightness(0.58);
+}
+/* red camera marks need to survive palette C/E accent choices */
+html[data-hero='film'] .hero__stage {
+  --c-accent: var(--raw-red);
+}
+
+html[data-hero='duotone'] .hero__media img,
+html[data-hero='duotone'] .hero__media video {
+  filter: grayscale(1) contrast(1.15) brightness(0.85);
+}
+html[data-hero='duotone'] .hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--c-signal);
+  mix-blend-mode: multiply;
+}
+html[data-hero='duotone'] .hero__stage {
+  --c-accent: var(--raw-paper);
+}
+
 /* ---- SLATE · CREAM: base card, ink direction line, signal title ---- */
 html[data-slate='cream'] .bridge__stage {
   background: var(--p-base);

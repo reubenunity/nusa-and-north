@@ -8,6 +8,7 @@ const PRESETS = ['drift', 'scatter', 'blast'];
 const BRIDGE = ['snap', 'med', 'slow'];
 const SLATES = ['black', 'cream', 'red'];
 const EDITS = ['ink', 'cream', 'red'];
+const HEROES = ['flood', 'film', 'duotone'];
 
 export function setPalette(key) {
   document.documentElement.dataset.palette = key;
@@ -22,7 +23,7 @@ function setLook(attr, key) {
 export function initDevPanel(rebuild) {
   const saved = localStorage.getItem('nn-palette');
   if (saved) setPalette(saved);
-  for (const attr of ['slate', 'edit']) {
+  for (const attr of ['slate', 'edit', 'hero']) {
     const savedLook = localStorage.getItem(`nn-${attr}`);
     if (savedLook) document.documentElement.dataset[attr] = savedLook;
   }
@@ -56,6 +57,7 @@ export function initDevPanel(rebuild) {
       btnRow('Dismantle [Q/W/E]', PRESETS, (k) => config.hero.dismantlePreset === k, 'preset') +
       btnRow('Direction [A/S/D/F]', DIRECTIONS, (k) => config.hero.dismantleDirection === k, 'direction') +
       btnRow('Slate pace [Z/X/C]', BRIDGE, (k) => config.bridge.current === k, 'bridge') +
+      btnRow('Header [T/Y/U]', HEROES, (k) => document.documentElement.dataset.hero === k, 'hero') +
       btnRow('Slate look [V/B/N]', SLATES, (k) => document.documentElement.dataset.slate === k, 'slate') +
       btnRow('Timeline look [G/H/J]', EDITS, (k) => document.documentElement.dataset.edit === k, 'edit') +
       `<div class="dev-panel__hint">\` toggles panel · scroll to compare</div>`;
@@ -68,6 +70,7 @@ export function initDevPanel(rebuild) {
     if (action === 'bridge') { applyBridgePreset(val); rebuild(); }
     if (action === 'slate') setLook('slate', val);
     if (action === 'edit') setLook('edit', val);
+    if (action === 'hero') { setLook('hero', val); rebuild(); }
     render();
   }
 
@@ -81,6 +84,7 @@ export function initDevPanel(rebuild) {
     q: ['preset', 'drift'], w: ['preset', 'scatter'], e: ['preset', 'blast'],
     a: ['direction', 'own'], s: ['direction', 'radial'], d: ['direction', 'up'], f: ['direction', 'down'],
     z: ['bridge', 'snap'], x: ['bridge', 'med'], c: ['bridge', 'slow'],
+    t: ['hero', 'flood'], y: ['hero', 'film'], u: ['hero', 'duotone'],
     v: ['slate', 'black'], b: ['slate', 'cream'], n: ['slate', 'red'],
     g: ['edit', 'ink'], h: ['edit', 'cream'], j: ['edit', 'red'],
   };

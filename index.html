@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-palette="c" data-slate="cream" data-edit="ink">
+<html lang="en" data-palette="c" data-slate="cream" data-edit="ink" data-hero="film">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +18,17 @@
          ============================================================ -->
     <section class="hero" id="hero">
       <div class="hero__stage">
+        <!-- media slot — swap the <img> for a muted <video> showreel loop later.
+             PLACEHOLDER image via picsum (needs network in dev). -->
+        <div class="hero__media" aria-hidden="true">
+          <img
+            class="js-hero-media"
+            src="https://picsum.photos/seed/nusanorth/1920/1080?grayscale"
+            alt=""
+            loading="eager"
+          />
+        </div>
+
         <!-- Headline sits BEHIND the HUD, starts out of focus -->
         <div class="hero__headline-wrap">
           <h1 class="hero__headline">
