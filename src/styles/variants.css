@@ -1,61 +1,63 @@
 /* ============================================================
-   SECTION LOOK VARIANTS — independent of the global palette.
+   SECTION LOOK VARIANTS — independent of the global palette,
+   but derived from its trio (--p-base / --p-ink / --c-signal)
+   so every palette recolors them automatically.
    <html data-slate="black|cream|red"> — the CUT TO bridge
    <html data-edit="ink|cream|red">   — the timeline / NLE
    "black" and "ink" are the palette-driven defaults (no override).
    ============================================================ */
 
-/* ---- SLATE · CREAM: paper card, ink direction line, red title ---- */
+/* ---- SLATE · CREAM: base card, ink direction line, signal title ---- */
 html[data-slate='cream'] .bridge__stage {
-  background: var(--raw-paper);
-  color: var(--raw-ink);
+  background: var(--p-base);
+  color: var(--p-ink);
 }
 html[data-slate='cream'] .bridge__cut-to {
-  color: var(--raw-ink);
+  color: var(--p-ink);
 }
 
-/* ---- SLATE · RED: full red flood, paper type ---- */
+/* ---- SLATE · RED: full signal flood, base type, ink title ---- */
 html[data-slate='red'] .bridge__stage {
-  background: var(--raw-red);
+  background: var(--c-signal);
 }
 html[data-slate='red'] .bridge__cut-to {
-  color: var(--raw-paper);
+  color: var(--p-base);
 }
 html[data-slate='red'] .bridge__title {
-  color: var(--raw-ink);
+  color: var(--p-ink);
 }
 
-/* ---- TIMELINE · CREAM: paper NLE chrome, ink lines, dark monitor ---- */
+/* ---- TIMELINE · CREAM: base NLE chrome, ink lines, dark monitor ---- */
 html[data-edit='cream'] .edit__stage {
-  --c-panel: var(--raw-paper);
-  --c-panel-fg: var(--raw-ink);
-  --c-panel-fg-dim: rgba(19, 17, 16, 0.5);
-  --c-panel-line: rgba(19, 17, 16, 0.18);
+  --c-panel: var(--p-base);
+  --c-panel-fg: var(--p-ink);
+  --c-panel-fg-dim: color-mix(in srgb, var(--p-ink) 50%, transparent);
+  --c-panel-line: color-mix(in srgb, var(--p-ink) 18%, transparent);
   --c-monitor-bg: #0a0908;
-  --c-clip: #eae7dd;
-  --c-clip-fg: rgba(19, 17, 16, 0.85);
+  --c-clip: color-mix(in srgb, var(--p-ink) 9%, var(--p-base));
+  --c-clip-fg: color-mix(in srgb, var(--p-ink) 85%, transparent);
 }
 html[data-edit='cream'] .edit__monitor-title {
-  color: var(--raw-paper); /* title sits on the dark monitor */
+  color: var(--p-base); /* title sits on the dark monitor */
 }
 html[data-edit='cream'] .edit__monitor-bar .js-edit-timecode {
-  color: var(--raw-red);
+  color: var(--c-signal);
 }
 
-/* ---- TIMELINE · RED: red room, ink monitor, ink playhead ---- */
+/* ---- TIMELINE · RED: signal room, ink monitor, ink playhead ---- */
 html[data-edit='red'] .edit__stage {
-  --c-panel: var(--raw-red);
-  --c-panel-fg: var(--raw-paper);
-  --c-panel-fg-dim: rgba(250, 250, 246, 0.6);
-  --c-panel-line: rgba(250, 250, 246, 0.28);
-  --c-monitor-bg: var(--raw-ink);
-  --c-clip: #b7231a;
-  --c-clip-fg: rgba(250, 250, 246, 0.9);
-  --c-playhead: var(--raw-ink);
-  --c-clip-active: var(--raw-ink);
-  --c-clip-active-fg: var(--raw-paper);
-  --c-cta: var(--raw-paper);
+  --c-panel: var(--c-signal);
+  --c-panel-fg: var(--p-base);
+  --c-panel-fg-dim: color-mix(in srgb, var(--p-base) 60%, transparent);
+  --c-panel-line: color-mix(in srgb, var(--p-base) 28%, transparent);
+  --c-monitor-bg: var(--p-ink);
+  --c-clip: color-mix(in srgb, var(--c-signal) 72%, var(--p-ink));
+  --c-clip-fg: color-mix(in srgb, var(--p-base) 90%, transparent);
+  --c-playhead: var(--p-ink);
+  --c-clip-active: var(--p-ink);
+  --c-clip-active-fg: var(--p-base);
+  --c-cta: var(--p-base);
 }
 html[data-edit='red'] .edit__monitor-bar .js-edit-timecode {
-  color: var(--raw-paper);
+  color: var(--p-base);
 }

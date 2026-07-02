@@ -40,7 +40,7 @@
   font-size: clamp(3rem, 11vw, 10rem);
   line-height: 1;
   letter-spacing: -0.01em;
-  color: var(--raw-red);
+  color: var(--c-signal);
   opacity: 0;
 }
 

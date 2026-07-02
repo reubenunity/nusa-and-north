@@ -54,4 +54,5 @@ export const palettes = [
   { key: 'a', label: 'A · PAPER' },
   { key: 'b', label: 'B · EVF DARK' },
   { key: 'c', label: 'C · SIGNAL RED' },
+  { key: 'e', label: 'E · BUTTER & KLEIN' },
 ];

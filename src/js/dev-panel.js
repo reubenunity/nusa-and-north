@@ -77,7 +77,7 @@ export function initDevPanel(rebuild) {
   });
 
   const keymap = {
-    1: ['palette', 'a'], 2: ['palette', 'b'], 3: ['palette', 'c'],
+    1: ['palette', 'a'], 2: ['palette', 'b'], 3: ['palette', 'c'], 4: ['palette', 'e'],
     q: ['preset', 'drift'], w: ['preset', 'scatter'], e: ['preset', 'blast'],
     a: ['direction', 'own'], s: ['direction', 'radial'], d: ['direction', 'up'], f: ['direction', 'down'],
     z: ['bridge', 'snap'], x: ['bridge', 'med'], c: ['bridge', 'slow'],

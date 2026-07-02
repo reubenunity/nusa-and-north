@@ -8,6 +8,12 @@
   --raw-paper: #fafaf6;
   --raw-red: #e8362b;
   --raw-ink: #131110;
+
+  /* palette trio — variants + signal elements (playhead, THE EDIT,
+     active clip) derive from these so new palettes swap everything */
+  --p-base: var(--raw-paper);
+  --p-ink: var(--raw-ink);
+  --c-signal: var(--raw-red);
 }
 
 /* ---- A · PAPER (current: off-white base, red accent, ink type) ---- */
@@ -49,6 +55,28 @@ html[data-palette='b'] {
 }
 
 /* ---- C · SIGNAL RED (wildcard: red flood base, ink HUD, paper type) ---- */
+/* ---- E · BUTTER & KLEIN (wildcard 2: Klein-blue flood, butter type) ---- */
+html[data-palette='e'] {
+  --p-base: #f7f2e4;
+  --p-ink: #16140e;
+  --c-signal: #2438e8;
+  --c-bg: #2438e8;
+  --c-fg: #f7f2e4;
+  --c-fg-dim: rgba(247, 242, 228, 0.6);
+  --c-accent: #f7f2e4;
+  --c-accent-fg: #2438e8;
+  --c-line: rgba(247, 242, 228, 0.28);
+  --c-panel: #16140e;
+  --c-panel-fg: #f7f2e4;
+  --c-panel-fg-dim: rgba(247, 242, 228, 0.5);
+  --c-panel-line: rgba(247, 242, 228, 0.14);
+  --c-monitor-bg: #0a0906;
+  --c-slate-bg: #16140e;
+  --c-slate-fg: #f7f2e4;
+  --c-clip: #2a2618;
+  --c-clip-fg: rgba(247, 242, 228, 0.85);
+}
+
 html[data-palette='c'] {
   --c-bg: var(--raw-red);
   --c-fg: var(--raw-paper);

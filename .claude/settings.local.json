@@ -10,7 +10,8 @@
       "Bash(git commit -q -m 'Scaffold Shoot→Edit concept: Vite + GSAP ScrollTrigger + Lenis, 3 palettes, dev iteration panel *)",
       "Bash(git commit -q -m 'Verify full scroll narrative end-to-end at desktop viewport *)",
       "Bash(git commit -q -m 'Add section look variants: cream slate default, swappable timeline color combos *)",
-      "Bash(git commit -q -m 'Approved variation: red intro/outro \\(palette C\\), cream slate, black timeline *)"
+      "Bash(git commit -q -m 'Approved variation: red intro/outro \\(palette C\\), cream slate, black timeline *)",
+      "mcp__visualize__show_widget"
     ]
   }
 }
