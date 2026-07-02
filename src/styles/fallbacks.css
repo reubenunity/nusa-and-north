@@ -37,6 +37,45 @@ html.no-scrub .about__ghost {
   display: none;
 }
 
+/* cinema flows statically: cards stacked, screen visible */
+html.no-scrub .cinema__stage {
+  height: auto;
+  padding: 12vh 0;
+}
+html.no-scrub .cinema__beam,
+html.no-scrub .cinema__leader,
+html.no-scrub .cinema__grain,
+html.no-scrub .cinema__dust {
+  display: none;
+}
+html.no-scrub .cinema__card {
+  position: static;
+  opacity: 1;
+  padding: 2.2rem var(--pad);
+}
+html.no-scrub .cinema__card--feature {
+  display: none;
+}
+html.no-scrub .cinema__screen {
+  position: static;
+  opacity: 1;
+  margin-top: 2rem;
+}
+
+/* recce board becomes a native horizontal scroller */
+html.no-scrub .recce__stage {
+  height: auto;
+  min-height: 100svh;
+}
+html.no-scrub .recce__viewport {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4vh 0;
+}
+html.no-scrub .recce__track {
+  padding: 0 8vw;
+}
+
 /* timeline becomes a native horizontal scroller */
 html.no-scrub .edit__stage {
   height: auto;

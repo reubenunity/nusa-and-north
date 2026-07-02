@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -183,7 +183,7 @@
                 <div class="clip" data-title="PROJECT 03 — MUSIC VIDEO" data-video-src="" style="--clip-w: 22"><span class="clip__name">project_03_music_video.mov</span></div>
                 <div class="clip" data-title="PROJECT 04 — BRAND FILM" data-video-src="" style="--clip-w: 30"><span class="clip__name">project_04_brand_film.mov</span></div>
                 <div class="clip" data-title="PROJECT 05 — EVENT" data-video-src="" style="--clip-w: 20"><span class="clip__name">project_05_event.mov</span></div>
-                <div class="clip clip--cta" data-title="YOUR PROJECT GOES HERE" data-video-src="" style="--clip-w: 36"><span class="clip__name">your_project_here.mov</span></div>
+                <div class="clip clip--cta" data-title="THE SHOWREEL" data-video-src="" style="--clip-w: 36"><span class="clip__name">showreel_master_v12_FINAL_final.mov</span></div>
               </div>
             </div>
             <div class="edit__track edit__track--audio">
@@ -196,16 +196,158 @@
     </section>
 
     <!-- ============================================================
-         OUTRO — CTA (all placeholder)
+         ACT IV — THE CINEMA
+         Lights down, trailer cards (services), then the feature: the
+         showreel. Reel slot takes a <video>/<iframe> later.
+         ALL COPY IS PLACEHOLDER.
          ============================================================ -->
-    <section class="outro" id="outro">
-      <div class="outro__inner">
-        <p class="outro__kicker"><!-- PLACEHOLDER COPY -->FINAL CLIP · V1</p>
-        <h2 class="outro__headline">YOUR PROJECT<br />GOES HERE</h2>
-        <a class="outro__cta" href="#"><!-- PLACEHOLDER — real contact details TBD -->START A CONVERSATION</a>
-        <footer class="outro__footer">
+    <section class="cinema" id="cinema">
+      <div class="cinema__stage">
+        <div class="cinema__beam" aria-hidden="true"></div>
+        <div class="cinema__dust" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="cinema__grain" aria-hidden="true"></div>
+
+        <!-- academy leader countdown -->
+        <div class="cinema__leader" aria-hidden="true">
+          <div class="cinema__leader-cross cinema__leader-cross--v"></div>
+          <div class="cinema__leader-cross cinema__leader-cross--h"></div>
+          <div class="cinema__leader-circle"><span class="js-cinema-count">5</span></div>
+        </div>
+
+        <!-- services as trailer cards -->
+        <div class="cinema__card js-trailer">
+          <p class="cinema__card-kicker">COMING ATTRACTIONS</p>
+          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->BRAND FILMS</h3>
+          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder line — what this service includes.</p>
+        </div>
+        <div class="cinema__card js-trailer">
+          <p class="cinema__card-kicker">COMING ATTRACTIONS</p>
+          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->COMMERCIALS</h3>
+          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder line — what this service includes.</p>
+        </div>
+        <div class="cinema__card js-trailer">
+          <p class="cinema__card-kicker">NOW SHOWING EVERYWHERE</p>
+          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->SOCIAL CUTS</h3>
+          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder line — what this service includes.</p>
+        </div>
+        <div class="cinema__card js-trailer">
+          <p class="cinema__card-kicker">FILMED ON LOCATION</p>
+          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->TRAVEL &amp; HOSPITALITY</h3>
+          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder line — what this service includes.</p>
+        </div>
+        <div class="cinema__card cinema__card--feature js-feature-card">
+          <p class="cinema__card-kicker">AND NOW</p>
+          <h3 class="cinema__card-title">THE FEATURE PRESENTATION</h3>
+        </div>
+
+        <!-- the feature: showreel, letterboxed 2.39:1 -->
+        <div class="cinema__screen js-screen">
+          <div class="cinema__screen-media js-reel-slot">
+            <span class="cinema__screen-title"><!-- PLACEHOLDER -->SHOWREEL</span>
+            <button class="cinema__play" type="button">&#9654;&#xFE0E; PLAY REEL</button>
+          </div>
+          <p class="cinema__intermission js-intermission">
+            INTERMISSION — <a href="#recce">ENQUIRIES AT THE LOBBY DESK &darr;</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ACT V — THE RECCE (finale)
+         Location scouting board; the last pin is the client's project.
+         ALL COPY IS PLACEHOLDER.
+         ============================================================ -->
+    <section class="recce" id="recce">
+      <div class="recce__stage">
+        <header class="recce__head">
+          <p class="recce__kicker js-recce-in">SCENE 05 · THE RECCE</p>
+          <h2 class="recce__title js-recce-in">LOCATION SCOUTING</h2>
+          <p class="recce__note hand js-recce-in"><!-- PLACEHOLDER -->where to next?</p>
+        </header>
+
+        <div class="recce__viewport">
+          <div class="recce__track js-recce-track">
+            <div class="recce__path" aria-hidden="true"></div>
+
+            <article class="pin">
+              <figure class="pin__photo">
+                <span class="pin__tape" aria-hidden="true"></span>
+                <img src="https://picsum.photos/seed/nnprague/640/440?grayscale" alt="" loading="lazy" />
+                <figcaption class="hand"><!-- PLACEHOLDER -->golden hour on the bridge!</figcaption>
+              </figure>
+              <div class="pin__meta">
+                <h3>PRAGUE</h3>
+                <p class="pin__coords">50.0755° N · 14.4378° E</p>
+                <p class="pin__line"><!-- PLACEHOLDER -->PLACEHOLDER — HOSPITALITY CAMPAIGN</p>
+              </div>
+            </article>
+
+            <article class="pin">
+              <figure class="pin__photo">
+                <span class="pin__tape" aria-hidden="true"></span>
+                <img src="https://picsum.photos/seed/nntallinn/640/440?grayscale" alt="" loading="lazy" />
+                <figcaption class="hand"><!-- PLACEHOLDER -->old town, first light</figcaption>
+              </figure>
+              <div class="pin__meta">
+                <h3>TALLINN</h3>
+                <p class="pin__coords">59.4370° N · 24.7536° E</p>
+                <p class="pin__line"><!-- PLACEHOLDER -->PLACEHOLDER — DESTINATION FILM</p>
+              </div>
+            </article>
+
+            <article class="pin">
+              <figure class="pin__photo">
+                <span class="pin__tape" aria-hidden="true"></span>
+                <img src="https://picsum.photos/seed/nnfrankfurt/640/440?grayscale" alt="" loading="lazy" />
+                <figcaption class="hand"><!-- PLACEHOLDER -->skyline from the 32nd</figcaption>
+              </figure>
+              <div class="pin__meta">
+                <h3>FRANKFURT</h3>
+                <p class="pin__coords">50.1109° N · 8.6821° E</p>
+                <p class="pin__line"><!-- PLACEHOLDER -->PLACEHOLDER — HOTEL BRAND FILM</p>
+              </div>
+            </article>
+
+            <article class="pin">
+              <figure class="pin__photo">
+                <span class="pin__tape" aria-hidden="true"></span>
+                <img src="https://picsum.photos/seed/nnvietnam/640/440?grayscale" alt="" loading="lazy" />
+                <figcaption class="hand"><!-- PLACEHOLDER -->rice fields at dusk</figcaption>
+              </figure>
+              <div class="pin__meta">
+                <h3>VIETNAM</h3>
+                <p class="pin__coords">14.0583° N · 108.2772° E</p>
+                <p class="pin__line"><!-- PLACEHOLDER -->PLACEHOLDER — TRAVEL SERIES</p>
+              </div>
+            </article>
+
+            <!-- the close: their project is the next pin -->
+            <article class="pin pin--next">
+              <figure class="pin__photo pin__photo--empty">
+                <span class="pin__tape" aria-hidden="true"></span>
+                <div class="pin__empty hand">your frame here</div>
+              </figure>
+              <div class="pin__meta">
+                <h3>NEXT LOCATION: YOURS</h3>
+                <p class="pin__coords">LAT — · LONG —</p>
+                <div class="pin__contact">
+                  <!-- PLACEHOLDER links — real Calendly URL + email TBD -->
+                  <a class="pin__cta" href="#">BOOK A CALL &rarr;</a>
+                  <a class="pin__email" href="mailto:placeholder@email.tld">PLACEHOLDER@EMAIL.TLD</a>
+                  <p class="pin__social">
+                    <a href="#">INSTAGRAM &nearr;</a>
+                    <a href="#">VIMEO &nearr;</a>
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <footer class="recce__footer">
           <span>NUSA &amp; NORTH</span>
-          <span><!-- PLACEHOLDER -->PLACEHOLDER@EMAIL.TLD</span>
+          <span>VIDEO PRODUCTION</span>
           <span>IRELAND</span>
         </footer>
       </div>

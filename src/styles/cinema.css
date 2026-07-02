@@ -1,0 +1,247 @@
+/* ============================================================
+   ACT IV — THE CINEMA
+   Always dark, regardless of palette: it's a screening room.
+   ============================================================ */
+
+.cinema {
+  position: relative;
+}
+
+.cinema__stage {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  background: #050404;
+  color: var(--raw-paper);
+  overflow: hidden;
+}
+
+/* projector beam glow */
+.cinema__beam {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 42%,
+    rgba(250, 250, 246, 0.13),
+    transparent 65%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* dust in the beam */
+.cinema__dust i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(250, 250, 246, 0.3);
+}
+.cinema__dust i:nth-child(1) { top: 24%; left: 38%; }
+.cinema__dust i:nth-child(2) { top: 33%; left: 55%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(3) { top: 47%; left: 44%; }
+.cinema__dust i:nth-child(4) { top: 29%; left: 62%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(5) { top: 55%; left: 58%; }
+.cinema__dust i:nth-child(6) { top: 40%; left: 35%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(7) { top: 60%; left: 48%; }
+.cinema__dust i:nth-child(8) { top: 22%; left: 50%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cinema__dust i {
+    animation: dust-drift 7s ease-in-out infinite alternate;
+  }
+  .cinema__dust i:nth-child(2n) { animation-duration: 9s; animation-delay: -3s; }
+  .cinema__dust i:nth-child(3n) { animation-duration: 11s; animation-delay: -5s; }
+}
+@keyframes dust-drift {
+  from { transform: translate(0, 0); opacity: 0.15; }
+  50% { opacity: 0.5; }
+  to { transform: translate(26px, 38px); opacity: 0.1; }
+}
+
+/* film grain */
+.cinema__grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 160px;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 5;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cinema__grain {
+    animation: grain-jump 0.45s steps(3) infinite;
+  }
+}
+@keyframes grain-jump {
+  0% { background-position: 0 0; }
+  33% { background-position: -40px 55px; }
+  66% { background-position: 60px -30px; }
+  100% { background-position: 0 0; }
+}
+
+/* academy leader */
+.cinema__leader {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.cinema__leader-cross {
+  position: absolute;
+  background: rgba(250, 250, 246, 0.25);
+}
+.cinema__leader-cross--v { left: 50%; top: 0; bottom: 0; width: 1px; }
+.cinema__leader-cross--h { top: 50%; left: 0; right: 0; height: 1px; }
+.cinema__leader-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(42vh, 60vw);
+  aspect-ratio: 1;
+  border: 2px solid rgba(250, 250, 246, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cinema__leader-circle::after {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border: 1px solid rgba(250, 250, 246, 0.3);
+  border-radius: 50%;
+}
+.js-cinema-count {
+  font-family: var(--font-mono);
+  font-size: min(16vh, 22vw);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* trailer cards */
+.cinema__card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--pad);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cinema__card-kicker {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.1vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: var(--c-signal);
+}
+
+.cinema__card-title {
+  margin-top: 0.55em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+  font-size: clamp(2.4rem, 7.5vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.cinema__card-sub {
+  margin-top: 1.4em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.66rem, 1.15vw, 0.82rem);
+  letter-spacing: 0.08em;
+  color: rgba(250, 250, 246, 0.6);
+  max-width: 44em;
+}
+
+.cinema__card--feature .cinema__card-title {
+  font-size: clamp(2rem, 6vw, 5.2rem);
+}
+
+/* the feature screen — 2.39:1 */
+.cinema__screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cinema__screen-media {
+  width: min(88vw, 150vh);
+  aspect-ratio: 2.39 / 1;
+  background: #0b0a08;
+  border: 1px solid rgba(250, 250, 246, 0.14);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6em;
+  overflow: hidden;
+}
+.cinema__screen-media > video,
+.cinema__screen-media > iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
+.cinema__screen-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+  font-size: clamp(1.4rem, 3.6vw, 3rem);
+  letter-spacing: 0.04em;
+}
+
+.cinema__play {
+  font-family: var(--font-mono);
+  font-size: clamp(0.66rem, 1.15vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--raw-paper);
+  background: transparent;
+  border: 1px solid rgba(250, 250, 246, 0.5);
+  border-radius: 2px;
+  padding: 1em 2.2em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.cinema__play:hover {
+  background: var(--raw-paper);
+  color: #0b0a08;
+}
+
+.cinema__intermission {
+  margin-top: 1.6em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1.05vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: rgba(250, 250, 246, 0.55);
+  opacity: 0;
+}
+.cinema__intermission a {
+  color: var(--c-signal);
+  text-decoration: none;
+}
+.cinema__intermission a:hover {
+  text-decoration: underline;
+}

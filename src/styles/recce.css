@@ -1,0 +1,230 @@
+/* ============================================================
+   ACT V — THE RECCE (finale)
+   A scout's board on the paper base: taped frames, handwritten
+   notes, coordinates. The last pin is the client's project.
+   ============================================================ */
+
+.hand {
+  font-family: 'Caveat', cursive;
+}
+
+.recce {
+  position: relative;
+}
+
+.recce__stage {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  background: var(--p-base);
+  color: var(--p-ink);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.recce__head {
+  padding: calc(var(--pad) * 1.4) calc(var(--pad) * 1.8) 0;
+  position: relative;
+  z-index: 2;
+}
+
+.recce__kicker {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--c-signal);
+}
+
+.recce__title {
+  margin-top: 0.4em;
+  font-size: clamp(1.9rem, 4.4vw, 4rem);
+  font-weight: 800;
+  font-stretch: 115%;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.recce__note {
+  position: absolute;
+  right: calc(var(--pad) * 2);
+  top: calc(var(--pad) * 1.6);
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  color: var(--c-signal);
+  rotate: -4deg;
+}
+
+/* ---- the board ---- */
+.recce__viewport {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.recce__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(3rem, 7vw, 7rem);
+  padding: 0 14vw;
+  position: relative;
+  will-change: transform;
+}
+
+/* dotted scout path behind the pins */
+.recce__path {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 3px dotted color-mix(in srgb, var(--p-ink) 30%, transparent);
+  z-index: 0;
+}
+
+/* ---- pins ---- */
+.pin {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: clamp(280px, 26vw, 400px);
+}
+.pin:nth-child(odd) { rotate: -1.6deg; }
+.pin:nth-child(even) { rotate: 1.3deg; margin-top: 3vh; }
+.pin--next { rotate: -0.8deg; }
+
+.pin__photo {
+  position: relative;
+  background: color-mix(in srgb, var(--p-ink) 4%, var(--p-base));
+  border: 1px solid color-mix(in srgb, var(--p-ink) 25%, transparent);
+  padding: 8px 8px 4px;
+}
+.pin__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08) brightness(0.9);
+}
+.pin__photo figcaption {
+  padding: 0.35em 0.2em 0.25em;
+  font-size: clamp(1.05rem, 1.9vw, 1.4rem);
+  color: var(--p-ink);
+  rotate: -1.5deg;
+}
+
+/* tape strip */
+.pin__tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  translate: -50% 0;
+  rotate: -3deg;
+  width: 34%;
+  height: 24px;
+  background: color-mix(in srgb, var(--c-signal) 18%, var(--p-base));
+  opacity: 0.85;
+  border-left: 1px dashed color-mix(in srgb, var(--p-ink) 20%, transparent);
+  border-right: 1px dashed color-mix(in srgb, var(--p-ink) 20%, transparent);
+  z-index: 2;
+}
+
+.pin__meta {
+  margin-top: 0.9rem;
+  padding: 0 0.2rem;
+}
+.pin__meta h3 {
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-weight: 800;
+  font-stretch: 115%;
+  letter-spacing: 0.01em;
+}
+.pin__coords {
+  margin-top: 0.3em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1vw, 0.68rem);
+  letter-spacing: 0.14em;
+  opacity: 0.55;
+}
+.pin__line {
+  margin-top: 0.55em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1.05vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* the empty pin — the client's project */
+.pin__photo--empty {
+  border: 1px dashed var(--c-signal);
+  background: transparent;
+}
+.pin__empty {
+  aspect-ratio: 3 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  color: var(--c-signal);
+  rotate: -2deg;
+}
+
+.pin__contact {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+.pin__cta {
+  font-family: var(--font-mono);
+  font-size: clamp(0.66rem, 1.15vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  color: var(--c-accent-fg);
+  background: var(--c-signal);
+  padding: 0.95em 1.8em;
+  border-radius: 2px;
+  transition: transform 0.2s ease;
+}
+.pin__cta:hover {
+  transform: translateY(-2px);
+}
+.pin__email {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.05vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--p-ink);
+}
+.pin__social {
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 0.95vw, 0.66rem);
+  letter-spacing: 0.14em;
+}
+.pin__social a {
+  color: var(--p-ink);
+  opacity: 0.6;
+  text-decoration: none;
+  margin-right: 1.4em;
+}
+.pin__social a:hover {
+  opacity: 1;
+}
+
+/* footer */
+.recce__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  flex-wrap: wrap;
+  padding: 1.1em calc(var(--pad) * 1.8) calc(var(--pad) * 0.9);
+  border-top: 1px solid color-mix(in srgb, var(--p-ink) 20%, transparent);
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 0.95vw, 0.68rem);
+  letter-spacing: 0.14em;
+  opacity: 0.75;
+}

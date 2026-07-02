@@ -47,6 +47,16 @@ export const config = {
     scrollVh: 420,
     sequenceSeconds: 84,  // fake sequence length driving the timecode
   },
+
+  cinema: {
+    // Scroll distance for the pinned screening room.
+    scrollVh: 380,
+  },
+
+  recce: {
+    // Scroll distance for the pinned scout board pan.
+    scrollVh: 300,
+  },
 };
 
 // Palette metadata for the dev panel.

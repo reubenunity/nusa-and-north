@@ -4,7 +4,8 @@ import './styles/base.css';
 import './styles/hero.css';
 import './styles/bridge.css';
 import './styles/edit.css';
-import './styles/outro.css';
+import './styles/cinema.css';
+import './styles/recce.css';
 import './styles/fallbacks.css';
 import './styles/dev-panel.css';
 
@@ -16,6 +17,8 @@ import { fullExperience, applyMotionClass, watchViewport } from './js/motion.js'
 import { buildHero } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
+import { buildCinema } from './js/cinema.js';
+import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,7 +28,7 @@ watchViewport();
 let teardowns = [];
 
 function build() {
-  teardowns = [buildHero(), buildBridge(), buildEdit()];
+  teardowns = [buildHero(), buildBridge(), buildEdit(), buildCinema(), buildRecce()];
   ScrollTrigger.refresh();
 }
 
@@ -37,6 +40,7 @@ function rebuild() {
 if (fullExperience) {
   // Lenis smooth scroll driving GSAP's ticker
   const lenis = new Lenis({ lerp: 0.11 });
+  window.__lenis = lenis; // dev handle for programmatic scrolling
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
