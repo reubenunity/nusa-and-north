@@ -131,7 +131,7 @@ html[data-palette='c'] .edit__playhead-cap {
   bottom: 0;
   left: 50%;
   width: 2px;
-  background: var(--raw-red);
+  background: var(--c-playhead, var(--raw-red));
   z-index: 3;
   pointer-events: none;
 }
@@ -144,7 +144,7 @@ html[data-palette='c'] .edit__playhead-cap {
   height: 0;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 9px solid var(--raw-red);
+  border-top: 9px solid var(--c-playhead, var(--raw-red));
 }
 
 /* tracks */
@@ -230,20 +230,20 @@ html[data-palette='c'] .edit__playhead-cap {
 }
 
 .clip.is-active {
-  background: var(--raw-red);
-  border-color: var(--raw-red);
+  background: var(--c-clip-active, var(--raw-red));
+  border-color: var(--c-clip-active, var(--raw-red));
 }
 .clip.is-active .clip__name {
-  color: var(--raw-paper);
+  color: var(--c-clip-active-fg, var(--raw-paper));
   font-weight: 700;
 }
 
 .clip--cta {
-  border: 1px dashed var(--raw-red);
+  border: 1px dashed var(--c-cta, var(--raw-red));
   background: transparent;
 }
 .clip--cta .clip__name {
-  color: var(--raw-red);
+  color: var(--c-cta, var(--raw-red));
   font-weight: 700;
 }
 
@@ -268,5 +268,5 @@ html[data-palette='c'] .edit__playhead-cap {
   min-height: 2px;
 }
 .audio-block.is-active i {
-  background: var(--raw-red);
+  background: var(--c-clip-active, var(--raw-red));
 }

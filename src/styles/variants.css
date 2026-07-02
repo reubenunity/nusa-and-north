@@ -1,0 +1,61 @@
+/* ============================================================
+   SECTION LOOK VARIANTS — independent of the global palette.
+   <html data-slate="black|cream|red"> — the CUT TO bridge
+   <html data-edit="ink|cream|red">   — the timeline / NLE
+   "black" and "ink" are the palette-driven defaults (no override).
+   ============================================================ */
+
+/* ---- SLATE · CREAM: paper card, ink direction line, red title ---- */
+html[data-slate='cream'] .bridge__stage {
+  background: var(--raw-paper);
+  color: var(--raw-ink);
+}
+html[data-slate='cream'] .bridge__cut-to {
+  color: var(--raw-ink);
+}
+
+/* ---- SLATE · RED: full red flood, paper type ---- */
+html[data-slate='red'] .bridge__stage {
+  background: var(--raw-red);
+}
+html[data-slate='red'] .bridge__cut-to {
+  color: var(--raw-paper);
+}
+html[data-slate='red'] .bridge__title {
+  color: var(--raw-ink);
+}
+
+/* ---- TIMELINE · CREAM: paper NLE chrome, ink lines, dark monitor ---- */
+html[data-edit='cream'] .edit__stage {
+  --c-panel: var(--raw-paper);
+  --c-panel-fg: var(--raw-ink);
+  --c-panel-fg-dim: rgba(19, 17, 16, 0.5);
+  --c-panel-line: rgba(19, 17, 16, 0.18);
+  --c-monitor-bg: #0a0908;
+  --c-clip: #eae7dd;
+  --c-clip-fg: rgba(19, 17, 16, 0.85);
+}
+html[data-edit='cream'] .edit__monitor-title {
+  color: var(--raw-paper); /* title sits on the dark monitor */
+}
+html[data-edit='cream'] .edit__monitor-bar .js-edit-timecode {
+  color: var(--raw-red);
+}
+
+/* ---- TIMELINE · RED: red room, ink monitor, ink playhead ---- */
+html[data-edit='red'] .edit__stage {
+  --c-panel: var(--raw-red);
+  --c-panel-fg: var(--raw-paper);
+  --c-panel-fg-dim: rgba(250, 250, 246, 0.6);
+  --c-panel-line: rgba(250, 250, 246, 0.28);
+  --c-monitor-bg: var(--raw-ink);
+  --c-clip: #b7231a;
+  --c-clip-fg: rgba(250, 250, 246, 0.9);
+  --c-playhead: var(--raw-ink);
+  --c-clip-active: var(--raw-ink);
+  --c-clip-active-fg: var(--raw-paper);
+  --c-cta: var(--raw-paper);
+}
+html[data-edit='red'] .edit__monitor-bar .js-edit-timecode {
+  color: var(--raw-paper);
+}

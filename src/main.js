@@ -1,4 +1,5 @@
 import './styles/palettes.css';
+import './styles/variants.css';
 import './styles/base.css';
 import './styles/hero.css';
 import './styles/bridge.css';

@@ -6,15 +6,26 @@ import { config, palettes } from '../config.js';
 const DIRECTIONS = ['own', 'radial', 'up', 'down'];
 const PRESETS = ['drift', 'scatter', 'blast'];
 const BRIDGE = ['snap', 'med', 'slow'];
+const SLATES = ['black', 'cream', 'red'];
+const EDITS = ['ink', 'cream', 'red'];
 
 export function setPalette(key) {
   document.documentElement.dataset.palette = key;
   localStorage.setItem('nn-palette', key);
 }
 
+function setLook(attr, key) {
+  document.documentElement.dataset[attr] = key;
+  localStorage.setItem(`nn-${attr}`, key);
+}
+
 export function initDevPanel(rebuild) {
   const saved = localStorage.getItem('nn-palette');
   if (saved) setPalette(saved);
+  for (const attr of ['slate', 'edit']) {
+    const savedLook = localStorage.getItem(`nn-${attr}`);
+    if (savedLook) document.documentElement.dataset[attr] = savedLook;
+  }
 
   const panel = document.createElement('div');
   panel.className = 'dev-panel';
@@ -45,6 +56,8 @@ export function initDevPanel(rebuild) {
       btnRow('Dismantle [Q/W/E]', PRESETS, (k) => config.hero.dismantlePreset === k, 'preset') +
       btnRow('Direction [A/S/D/F]', DIRECTIONS, (k) => config.hero.dismantleDirection === k, 'direction') +
       btnRow('Slate pace [Z/X/C]', BRIDGE, (k) => config.bridge.current === k, 'bridge') +
+      btnRow('Slate look [V/B/N]', SLATES, (k) => document.documentElement.dataset.slate === k, 'slate') +
+      btnRow('Timeline look [G/H/J]', EDITS, (k) => document.documentElement.dataset.edit === k, 'edit') +
       `<div class="dev-panel__hint">\` toggles panel · scroll to compare</div>`;
   }
 
@@ -53,6 +66,8 @@ export function initDevPanel(rebuild) {
     if (action === 'preset') { config.hero.dismantlePreset = val; rebuild(); }
     if (action === 'direction') { config.hero.dismantleDirection = val; rebuild(); }
     if (action === 'bridge') { applyBridgePreset(val); rebuild(); }
+    if (action === 'slate') setLook('slate', val);
+    if (action === 'edit') setLook('edit', val);
     render();
   }
 
@@ -66,6 +81,8 @@ export function initDevPanel(rebuild) {
     q: ['preset', 'drift'], w: ['preset', 'scatter'], e: ['preset', 'blast'],
     a: ['direction', 'own'], s: ['direction', 'radial'], d: ['direction', 'up'], f: ['direction', 'down'],
     z: ['bridge', 'snap'], x: ['bridge', 'med'], c: ['bridge', 'slow'],
+    v: ['slate', 'black'], b: ['slate', 'cream'], n: ['slate', 'red'],
+    g: ['edit', 'ink'], h: ['edit', 'cream'], j: ['edit', 'red'],
   };
   window.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
