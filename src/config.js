@@ -50,12 +50,12 @@ export const config = {
 
   cinema: {
     // Scroll distance for the pinned screening room.
-    scrollVh: 380,
+    scrollVh: 330,
   },
 
   recce: {
     // Scroll distance for the pinned scout board pan.
-    scrollVh: 300,
+    scrollVh: 480,
   },
 };
 

@@ -18,8 +18,8 @@ export function buildCinema() {
   const screen = document.querySelector('.js-screen');
   const intermission = document.querySelector('.js-intermission');
 
-  const LEADER_IN = 0.09;
-  const LEADER_OUT = 0.27;
+  const LEADER_IN = 0.045;
+  const LEADER_OUT = 0.185;
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
@@ -40,27 +40,27 @@ export function buildCinema() {
     },
   });
 
-  // projector stutters awake
-  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.55, duration: 0.015 }, 0.02);
-  tl.to(beam, { opacity: 0.08, duration: 0.012 }, 0.04);
-  tl.to(beam, { opacity: 0.7, duration: 0.015 }, 0.055);
-  tl.to(beam, { opacity: 0.3, duration: 0.02 }, 0.075);
-  tl.to(beam, { opacity: 0.5, duration: 0.03 }, 0.1);
+  // projector stutters awake — immediately, no dead black
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.55, duration: 0.008 }, 0.0);
+  tl.to(beam, { opacity: 0.08, duration: 0.007 }, 0.012);
+  tl.to(beam, { opacity: 0.7, duration: 0.008 }, 0.022);
+  tl.to(beam, { opacity: 0.3, duration: 0.01 }, 0.033);
+  tl.to(beam, { opacity: 0.5, duration: 0.015 }, 0.045);
 
   // leader
-  tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.03 }, LEADER_IN);
-  tl.to(leader, { opacity: 0, duration: 0.025 }, LEADER_OUT);
+  tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.025 }, LEADER_IN);
+  tl.to(leader, { opacity: 0, duration: 0.02 }, LEADER_OUT);
 
   // trailer cards, projected one after another
   trailers.forEach((card, i) => {
-    const at = 0.31 + i * 0.085;
+    const at = 0.21 + i * 0.095;
     tl.fromTo(
       card,
       { opacity: 0, scale: 0.965, y: 26 },
       { opacity: 1, scale: 1, y: 0, duration: 0.032, ease: 'power2.out' },
       at
     );
-    tl.to(card, { opacity: 0, y: -20, duration: 0.024, ease: 'power1.in' }, at + 0.058);
+    tl.to(card, { opacity: 0, y: -20, duration: 0.024, ease: 'power1.in' }, at + 0.068);
   });
 
   // "the feature presentation"
@@ -68,19 +68,19 @@ export function buildCinema() {
     featureCard,
     { opacity: 0, scale: 0.965 },
     { opacity: 1, scale: 1, duration: 0.03, ease: 'power2.out' },
-    0.67
+    0.61
   );
-  tl.to(featureCard, { opacity: 0, duration: 0.024, ease: 'power1.in' }, 0.73);
+  tl.to(featureCard, { opacity: 0, duration: 0.024, ease: 'power1.in' }, 0.675);
 
   // the reel fills the screen; beam settles dim behind it
   tl.fromTo(
     screen,
     { opacity: 0, scale: 0.92 },
     { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' },
-    0.77
+    0.71
   );
-  tl.to(beam, { opacity: 0.16, duration: 0.05 }, 0.77);
-  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.92);
+  tl.to(beam, { opacity: 0.16, duration: 0.05 }, 0.71);
+  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.88);
 
   return () => {
     tl.scrollTrigger?.kill();

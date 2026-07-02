@@ -121,7 +121,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* trailer cards */
+/* trailer cards — projected title cards, deliberately NOT interactive:
+   no pointer events, no hover state, text can't be selected */
 .cinema__card {
   position: absolute;
   inset: 0;
@@ -133,6 +134,16 @@
   padding: var(--pad);
   opacity: 0;
   will-change: transform, opacity;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cinema__card-index {
+  margin-bottom: 2.2em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.95vw, 0.68rem);
+  letter-spacing: 0.3em;
+  color: rgba(250, 250, 246, 0.35);
 }
 
 .cinema__card-kicker {
