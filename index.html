@@ -95,12 +95,11 @@
          ============================================================ -->
     <section class="bridge" id="bridge">
       <div class="bridge__stage">
-        <p class="bridge__slate">
-          <span class="bridge__cut-to">CUT TO:</span>
-          <span class="bridge__title">THE EDIT</span>
-        </p>
+        <!-- clapperboard stripe + ghost watermark give the sheet its texture -->
+        <div class="about__stripes" aria-hidden="true"></div>
+        <div class="about__ghost" aria-hidden="true">STUDIO</div>
 
-        <!-- production notes — about + testimonials, revealed after the slate.
+        <!-- production notes — about + testimonials.
              ALL COPY IS PLACEHOLDER. -->
         <div class="bridge__about">
           <div class="about__main">
@@ -123,6 +122,11 @@
           </div>
 
           <div class="about__quotes">
+            <!-- production still — PLACEHOLDER image, swap for a real BTS frame -->
+            <figure class="about__still js-still">
+              <img src="https://picsum.photos/seed/nusastudio/1000/460?grayscale" alt="" loading="lazy" />
+              <figcaption><!-- PLACEHOLDER -->PRODUCTION STILL · BTS_0347.RAW</figcaption>
+            </figure>
             <figure class="quote js-quote">
               <p class="quote__stars" aria-hidden="true">★★★★★</p>
               <blockquote class="quote__text"><!-- PLACEHOLDER -->“Placeholder testimonial — the client's own words will go right here.”</blockquote>

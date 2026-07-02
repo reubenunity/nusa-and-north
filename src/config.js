@@ -28,19 +28,16 @@ export const config = {
   },
 
   bridge: {
-    // Scroll distance the slate + production notes stay pinned, in
-    // viewport-heights. Progress fractions (0–1) within that span:
-    // slateHold = slate starts lifting, notesIn = about column starts,
-    // quotesIn = first testimonial stamps in. Everything holds after.
-    scrollVh: 320,
-    slateHold: 0.14,
-    notesIn: 0.3,
-    quotesIn: 0.48,
+    // Scroll distance the production notes stay pinned, in viewport-
+    // heights. The about column assembles during the wipe-in (before
+    // the pin); quotesIn is when the first testimonial stamps in.
+    scrollVh: 200,
+    quotesIn: 0.1,
     // Named pacing presets for quick comparison from the dev panel.
     presets: {
-      snap: { scrollVh: 230, slateHold: 0.1,  notesIn: 0.22, quotesIn: 0.38 },
-      med:  { scrollVh: 320, slateHold: 0.14, notesIn: 0.3,  quotesIn: 0.48 },
-      slow: { scrollVh: 460, slateHold: 0.2,  notesIn: 0.38, quotesIn: 0.56 },
+      snap: { scrollVh: 140, quotesIn: 0.06 },
+      med:  { scrollVh: 200, quotesIn: 0.1 },
+      slow: { scrollVh: 300, quotesIn: 0.16 },
     },
   },
 

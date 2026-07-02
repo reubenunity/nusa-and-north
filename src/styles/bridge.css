@@ -1,6 +1,7 @@
 /* ============================================================
-   THE BRIDGE — "CUT TO: THE EDIT" slate, then production notes
-   (about + testimonials) on the same card.
+   THE BRIDGE — production notes (about + testimonials),
+   art-directed as a printed production sheet: clapper stripe,
+   hairline frame, ghost watermark, graded production still.
    ============================================================ */
 
 .bridge {
@@ -16,46 +17,60 @@
   overflow: hidden;
 }
 
-/* ---- the slate (full-screen overlay, phase 1) ---- */
-.bridge__slate {
+/* printed-sheet hairline frame */
+.bridge__stage::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
+  inset: clamp(10px, 1.6vw, 18px);
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   pointer-events: none;
+  z-index: 3;
 }
 
-.bridge__cut-to {
-  display: block;
-  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
-  letter-spacing: 0.5em;
+/* clapperboard stripe along the top */
+.about__stripes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(12px, 1.8vh, 18px);
+  background: repeating-linear-gradient(
+    -45deg,
+    currentColor 0 22px,
+    transparent 22px 44px
+  );
+  opacity: 0.9;
+  transform-origin: left center;
+  will-change: transform;
+  z-index: 2;
 }
 
-.bridge__title {
-  display: block;
-  margin-top: 0.9em;
+/* huge outlined watermark, parallaxes behind the content */
+.about__ghost {
+  position: absolute;
+  bottom: -0.18em;
+  right: -0.03em;
+  z-index: 0;
   font-family: var(--font-display);
   font-weight: 800;
   font-stretch: 115%;
-  font-size: clamp(3rem, 11vw, 10rem);
+  font-size: clamp(9rem, 24vw, 22rem);
   line-height: 1;
-  letter-spacing: -0.01em;
-  color: var(--c-signal);
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, currentColor 16%, transparent);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
 }
 
-/* ---- production notes (phase 2) ---- */
+/* ---- the notes grid ---- */
 .bridge__about {
   position: absolute;
   inset: 0;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
   padding: calc(var(--pad) * 1.8);
@@ -119,36 +134,58 @@
   font-weight: 700;
 }
 
-/* ---- testimonials as film-poster critic quotes ---- */
+/* ---- right column: production still + critic quotes ---- */
 .about__quotes {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.9rem, 2vh, 1.4rem);
+  gap: clamp(0.7rem, 1.6vh, 1.1rem);
+}
+
+.about__still {
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  padding: 6px;
+  will-change: clip-path, transform;
+}
+.about__still img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: 24vh;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.1) brightness(0.85);
+}
+.about__still figcaption {
+  padding: 0.6em 0.2em 0.2em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 0.9vw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  opacity: 0.55;
 }
 
 .quote {
   border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
   border-radius: 3px;
-  padding: clamp(0.9rem, 2vw, 1.4rem) clamp(1rem, 2.2vw, 1.6rem);
+  padding: clamp(0.8rem, 1.6vw, 1.1rem) clamp(0.9rem, 2vw, 1.4rem);
   will-change: transform, opacity;
 }
 
 .quote__stars {
   color: var(--c-signal);
-  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-size: clamp(0.66rem, 1.1vw, 0.8rem);
   letter-spacing: 0.35em;
 }
 
 .quote__text {
-  margin-top: 0.7em;
-  font-size: clamp(0.86rem, 1.55vw, 1.12rem);
+  margin-top: 0.6em;
+  font-size: clamp(0.8rem, 1.35vw, 1rem);
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: 0.005em;
 }
 
 .quote__source {
-  margin-top: 0.9em;
+  margin-top: 0.7em;
   font-family: var(--font-mono);
   font-size: clamp(0.55rem, 0.95vw, 0.68rem);
   font-weight: 700;
@@ -166,8 +203,13 @@
   .about__quotes {
     flex-direction: row;
     overflow-x: auto;
+    align-items: stretch;
   }
+  .about__still,
   .quote {
     flex: 0 0 min(78vw, 320px);
+  }
+  .about__ghost {
+    font-size: 30vw;
   }
 }

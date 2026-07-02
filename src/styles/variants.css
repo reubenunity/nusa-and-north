@@ -47,24 +47,20 @@ html[data-hero='duotone'] .hero__stage {
   --c-accent: var(--raw-paper);
 }
 
-/* ---- SLATE · CREAM: base card, ink direction line, signal title ---- */
+/* ---- SLATE · CREAM: base sheet, ink type (production notes page) ---- */
 html[data-slate='cream'] .bridge__stage {
   background: var(--p-base);
   color: var(--p-ink);
 }
-html[data-slate='cream'] .bridge__cut-to {
-  color: var(--p-ink);
-}
 
-/* ---- SLATE · RED: full signal flood, base type, ink title ---- */
+/* ---- SLATE · RED: full signal flood, base type ---- */
 html[data-slate='red'] .bridge__stage {
   background: var(--c-signal);
-}
-html[data-slate='red'] .bridge__cut-to {
   color: var(--p-base);
 }
-html[data-slate='red'] .bridge__title {
-  color: var(--p-ink);
+html[data-slate='red'] .about__kicker,
+html[data-slate='red'] .quote__stars {
+  color: var(--p-base);
 }
 
 /* ---- TIMELINE · CREAM: base NLE chrome, ink lines, dark monitor ---- */

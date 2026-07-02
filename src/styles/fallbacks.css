@@ -23,23 +23,18 @@ html.no-scrub .hud__scroll-hint span::after {
   content: '';
 }
 
-html.no-scrub .bridge__cut-to,
-html.no-scrub .bridge__title {
-  opacity: 1;
-}
-
-/* slate and production notes stack as normal flow */
+/* production notes flow statically */
 html.no-scrub .bridge__stage {
   height: auto;
   min-height: 100svh;
 }
-html.no-scrub .bridge__slate {
-  position: static;
-  padding: 18vh var(--pad) 8vh;
-}
 html.no-scrub .bridge__about {
   position: static;
-  padding-top: 0;
+  padding-top: calc(var(--pad) * 2.4);
+  padding-bottom: calc(var(--pad) * 2.4);
+}
+html.no-scrub .about__ghost {
+  display: none;
 }
 
 /* timeline becomes a native horizontal scroller */
