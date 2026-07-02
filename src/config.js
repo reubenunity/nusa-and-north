@@ -28,16 +28,19 @@ export const config = {
   },
 
   bridge: {
-    // Scroll distance the slate stays pinned, in viewport-heights.
-    // The slate text is on the card as it wipes in; holdUntil sets
-    // when it starts fading out.
-    scrollVh: 140,
-    holdUntil: 0.78,
+    // Scroll distance the slate + production notes stay pinned, in
+    // viewport-heights. Progress fractions (0–1) within that span:
+    // slateHold = slate starts lifting, notesIn = about column starts,
+    // quotesIn = first testimonial stamps in. Everything holds after.
+    scrollVh: 320,
+    slateHold: 0.14,
+    notesIn: 0.3,
+    quotesIn: 0.48,
     // Named pacing presets for quick comparison from the dev panel.
     presets: {
-      snap: { scrollVh: 90,  holdUntil: 0.85 },
-      med:  { scrollVh: 140, holdUntil: 0.78 },
-      slow: { scrollVh: 220, holdUntil: 0.72 },
+      snap: { scrollVh: 230, slateHold: 0.1,  notesIn: 0.22, quotesIn: 0.38 },
+      med:  { scrollVh: 320, slateHold: 0.14, notesIn: 0.3,  quotesIn: 0.48 },
+      slow: { scrollVh: 460, slateHold: 0.2,  notesIn: 0.38, quotesIn: 0.56 },
     },
   },
 

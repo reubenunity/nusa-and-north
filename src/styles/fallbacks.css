@@ -28,6 +28,20 @@ html.no-scrub .bridge__title {
   opacity: 1;
 }
 
+/* slate and production notes stack as normal flow */
+html.no-scrub .bridge__stage {
+  height: auto;
+  min-height: 100svh;
+}
+html.no-scrub .bridge__slate {
+  position: static;
+  padding: 18vh var(--pad) 8vh;
+}
+html.no-scrub .bridge__about {
+  position: static;
+  padding-top: 0;
+}
+
 /* timeline becomes a native horizontal scroller */
 html.no-scrub .edit__stage {
   height: auto;

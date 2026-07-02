@@ -1,5 +1,6 @@
 /* ============================================================
-   THE BRIDGE — "CUT TO: THE EDIT"
+   THE BRIDGE — "CUT TO: THE EDIT" slate, then production notes
+   (about + testimonials) on the same card.
    ============================================================ */
 
 .bridge {
@@ -7,27 +8,33 @@
 }
 
 .bridge__stage {
+  position: relative;
   height: 100vh;
   height: 100svh;
   background: var(--c-slate-bg);
   color: var(--c-slate-fg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
 }
 
+/* ---- the slate (full-screen overlay, phase 1) ---- */
 .bridge__slate {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-family: var(--font-mono);
   text-transform: uppercase;
+  pointer-events: none;
 }
 
 .bridge__cut-to {
   display: block;
   font-size: clamp(0.8rem, 1.8vw, 1.1rem);
   letter-spacing: 0.5em;
-  color: var(--c-slate-fg);
 }
 
 .bridge__title {
@@ -42,9 +49,125 @@
   color: var(--c-signal);
 }
 
-/* palette C: red-on-ink slate keeps the red title readable,
-   but give it a paper outline treatment for punch */
-html[data-palette='c'] .bridge__title {
-  color: var(--raw-red);
-  text-shadow: 0 0 0 transparent;
+/* ---- production notes (phase 2) ---- */
+.bridge__about {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  padding: calc(var(--pad) * 1.8);
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.about__kicker {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--c-signal);
+}
+
+.about__headline {
+  margin-top: 0.9em;
+  font-size: clamp(1.9rem, 4.6vw, 4.2rem);
+  font-weight: 800;
+  font-stretch: 115%;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+.about__headline-line {
+  display: block;
+}
+
+.about__body {
+  margin-top: 1.6em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.25vw, 0.88rem);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  max-width: 36em;
+  opacity: 0.85;
+}
+
+/* crew-style credits */
+.about__credits {
+  list-style: none;
+  margin-top: clamp(1.6rem, 3.5vh, 2.6rem);
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1.05vw, 0.74rem);
+  letter-spacing: 0.1em;
+}
+.about__credits li {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+  padding: 0.75em 0;
+  border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+.about__credits li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+.about__credits li span:first-child {
+  opacity: 0.55;
+}
+.about__credits li span:last-child {
+  font-weight: 700;
+}
+
+/* ---- testimonials as film-poster critic quotes ---- */
+.about__quotes {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2vh, 1.4rem);
+}
+
+.quote {
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 3px;
+  padding: clamp(0.9rem, 2vw, 1.4rem) clamp(1rem, 2.2vw, 1.6rem);
+  will-change: transform, opacity;
+}
+
+.quote__stars {
+  color: var(--c-signal);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  letter-spacing: 0.35em;
+}
+
+.quote__text {
+  margin-top: 0.7em;
+  font-size: clamp(0.86rem, 1.55vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+}
+
+.quote__source {
+  margin-top: 0.9em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.95vw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .bridge__about {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    align-content: center;
+    padding: var(--pad);
+  }
+  .about__quotes {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .quote {
+    flex: 0 0 min(78vw, 320px);
+  }
 }
