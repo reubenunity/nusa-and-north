@@ -1,0 +1,272 @@
+/* ============================================================
+   ACT II — THE EDIT TIMELINE (NLE interface)
+   ============================================================ */
+
+.edit {
+  position: relative;
+}
+
+.edit__stage {
+  height: 100vh;
+  height: 100svh;
+  background: var(--c-panel);
+  color: var(--c-panel-fg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+/* ---- program monitor ---- */
+.edit__monitor {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vh, 40px) var(--pad);
+  min-height: 0;
+}
+
+.edit__monitor-frame {
+  width: min(72vh, 88vw);
+  max-width: 880px;
+  will-change: transform, opacity;
+}
+
+.edit__monitor-media {
+  aspect-ratio: 16 / 9;
+  background: var(--c-monitor-bg);
+  border: 1px solid var(--c-panel-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* future <video>/<iframe> drop-in fills the slot */
+.edit__monitor-media > video,
+.edit__monitor-media > iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
+.edit__monitor-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+  font-size: clamp(1.1rem, 3.2vw, 2.4rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-align: center;
+  padding: 0 1em;
+  color: var(--c-panel-fg);
+}
+
+.edit__monitor-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.7em 0.2em 0;
+  font-size: clamp(0.6rem, 1.1vw, 0.75rem);
+  letter-spacing: 0.1em;
+  color: var(--c-panel-fg-dim);
+  font-variant-numeric: tabular-nums;
+}
+.edit__monitor-bar .js-edit-timecode {
+  color: var(--c-accent);
+  font-weight: 700;
+}
+/* on ink-accent palette C the accent is invisible on the dark panel — use red raw */
+html[data-palette='c'] .edit__monitor-bar .js-edit-timecode,
+html[data-palette='c'] .edit__playhead,
+html[data-palette='c'] .edit__playhead-cap {
+  color: var(--raw-red);
+}
+
+/* ---- timeline area ---- */
+.edit__timeline {
+  position: relative;
+  border-top: 1px solid var(--c-panel-line);
+  padding-bottom: clamp(14px, 2.5vh, 28px);
+}
+
+/* ruler */
+.edit__ruler {
+  position: relative;
+  height: 30px;
+  border-bottom: 1px solid var(--c-panel-line);
+  overflow: hidden;
+  will-change: transform;
+  font-size: 0.58rem;
+  color: var(--c-panel-fg-dim);
+}
+.edit__ruler-tick {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 7px;
+  background: var(--c-panel-fg-dim);
+}
+.edit__ruler-tick--major {
+  height: 12px;
+  background: var(--c-panel-fg);
+}
+.edit__ruler-label {
+  position: absolute;
+  bottom: 12px;
+  transform: translateX(4px);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* playhead — fixed at center while clips scrub underneath */
+.edit__playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--raw-red);
+  z-index: 3;
+  pointer-events: none;
+}
+.edit__playhead-cap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid var(--raw-red);
+}
+
+/* tracks */
+.edit__tracks {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  will-change: transform;
+}
+
+.edit__track {
+  display: flex;
+  align-items: stretch;
+  height: clamp(52px, 9vh, 76px);
+}
+.edit__track--audio {
+  height: clamp(30px, 5vh, 44px);
+}
+
+.edit__track-label {
+  position: absolute;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--c-panel-fg-dim);
+  background: var(--c-panel);
+  border-right: 1px solid var(--c-panel-line);
+}
+
+/* lanes translate horizontally under the playhead */
+.edit__track-lane {
+  display: flex;
+  gap: 4px;
+  padding-left: 50vw; /* first clip starts at the playhead */
+  will-change: transform;
+}
+
+/* ---- clips ---- */
+.clip {
+  flex: 0 0 auto;
+  width: calc(var(--clip-w) * 1vw);
+  min-width: 120px;
+  background: var(--c-clip);
+  border: 1px solid var(--c-panel-line);
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px 10px;
+  overflow: hidden;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.clip::before {
+  /* film-strip texture */
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  height: 5px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--c-panel-line) 0 8px,
+    transparent 8px 16px
+  );
+  opacity: 0.7;
+}
+.clip__name {
+  font-size: clamp(0.55rem, 1vw, 0.7rem);
+  letter-spacing: 0.04em;
+  color: var(--c-clip-fg);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.clip.is-active {
+  background: var(--raw-red);
+  border-color: var(--raw-red);
+}
+.clip.is-active .clip__name {
+  color: var(--raw-paper);
+  font-weight: 700;
+}
+
+.clip--cta {
+  border: 1px dashed var(--raw-red);
+  background: transparent;
+}
+.clip--cta .clip__name {
+  color: var(--raw-red);
+  font-weight: 700;
+}
+
+/* audio blocks + waveform */
+.audio-block {
+  flex: 0 0 auto;
+  width: calc(var(--clip-w) * 1vw);
+  min-width: 120px;
+  background: var(--c-clip);
+  border: 1px solid var(--c-panel-line);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  overflow: hidden;
+}
+.audio-block i {
+  flex: 0 0 2px;
+  background: var(--c-panel-fg-dim);
+  height: calc(var(--h) * 100%);
+  min-height: 2px;
+}
+.audio-block.is-active i {
+  background: var(--raw-red);
+}

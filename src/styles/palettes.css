@@ -1,0 +1,68 @@
+/* ============================================================
+   PALETTES — everything color is driven by these variables.
+   Switch with data-palette="a|b|c" on <html> (keys 1/2/3).
+   ============================================================ */
+
+:root {
+  /* shared raw colors */
+  --raw-paper: #fafaf6;
+  --raw-red: #e8362b;
+  --raw-ink: #131110;
+}
+
+/* ---- A · PAPER (current: off-white base, red accent, ink type) ---- */
+html[data-palette='a'] {
+  --c-bg: var(--raw-paper);
+  --c-fg: var(--raw-ink);
+  --c-fg-dim: rgba(19, 17, 16, 0.55);
+  --c-accent: var(--raw-red);
+  --c-accent-fg: var(--raw-paper); /* type sitting on accent */
+  --c-line: rgba(19, 17, 16, 0.16);
+  --c-panel: var(--raw-ink);          /* NLE chrome */
+  --c-panel-fg: var(--raw-paper);
+  --c-panel-fg-dim: rgba(250, 250, 246, 0.5);
+  --c-panel-line: rgba(250, 250, 246, 0.14);
+  --c-monitor-bg: #0a0908;
+  --c-slate-bg: #0a0908;              /* bridge black */
+  --c-slate-fg: var(--raw-paper);
+  --c-clip: #262220;
+  --c-clip-fg: rgba(250, 250, 246, 0.85);
+}
+
+/* ---- B · EVF DARK (near-black base, red accent, paper type) ---- */
+html[data-palette='b'] {
+  --c-bg: var(--raw-ink);
+  --c-fg: var(--raw-paper);
+  --c-fg-dim: rgba(250, 250, 246, 0.55);
+  --c-accent: var(--raw-red);
+  --c-accent-fg: var(--raw-paper);
+  --c-line: rgba(250, 250, 246, 0.18);
+  --c-panel: #1c1918;
+  --c-panel-fg: var(--raw-paper);
+  --c-panel-fg-dim: rgba(250, 250, 246, 0.5);
+  --c-panel-line: rgba(250, 250, 246, 0.12);
+  --c-monitor-bg: #050404;
+  --c-slate-bg: #050404;
+  --c-slate-fg: var(--raw-paper);
+  --c-clip: #2a2624;
+  --c-clip-fg: rgba(250, 250, 246, 0.85);
+}
+
+/* ---- C · SIGNAL RED (wildcard: red flood base, ink HUD, paper type) ---- */
+html[data-palette='c'] {
+  --c-bg: var(--raw-red);
+  --c-fg: var(--raw-paper);
+  --c-fg-dim: rgba(250, 250, 246, 0.6);
+  --c-accent: var(--raw-ink);
+  --c-accent-fg: var(--raw-paper);
+  --c-line: rgba(250, 250, 246, 0.28);
+  --c-panel: var(--raw-ink);
+  --c-panel-fg: var(--raw-paper);
+  --c-panel-fg-dim: rgba(250, 250, 246, 0.5);
+  --c-panel-line: rgba(250, 250, 246, 0.14);
+  --c-monitor-bg: #0a0908;
+  --c-slate-bg: var(--raw-ink);
+  --c-slate-fg: var(--raw-paper);
+  --c-clip: #2b1310;
+  --c-clip-fg: rgba(250, 250, 246, 0.85);
+}

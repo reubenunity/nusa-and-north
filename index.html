@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-palette="a">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nusa &amp; North — Video Production</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ============================================================
+         ACT I — THE VIEWFINDER
+         All copy is PLACEHOLDER — to be replaced by client.
+         ============================================================ -->
+    <section class="hero" id="hero">
+      <div class="hero__stage">
+        <!-- Headline sits BEHIND the HUD, starts out of focus -->
+        <div class="hero__headline-wrap">
+          <h1 class="hero__headline">
+            <!-- PLACEHOLDER COPY -->
+            <span class="hero__headline-line">EVERY FRAME</span>
+            <span class="hero__headline-line">EARNS ITS PLACE</span>
+          </h1>
+          <p class="hero__sub"><!-- PLACEHOLDER COPY -->A video production house. Placeholder subline goes here.</p>
+        </div>
+
+        <!-- HUD overlay — each element carries its own dismantle vector -->
+        <div class="hud" aria-hidden="true">
+          <!-- corner brackets -->
+          <div class="hud__corner hud__corner--tl" data-hud data-vx="-1" data-vy="-1"></div>
+          <div class="hud__corner hud__corner--tr" data-hud data-vx="1" data-vy="-1"></div>
+          <div class="hud__corner hud__corner--bl" data-hud data-vx="-1" data-vy="1"></div>
+          <div class="hud__corner hud__corner--br" data-hud data-vx="1" data-vy="1"></div>
+
+          <!-- rule of thirds grid -->
+          <div class="hud__grid" data-hud data-vx="0" data-vy="0" data-mode="fade">
+            <div class="hud__grid-line hud__grid-line--v" style="left: 33.333%"></div>
+            <div class="hud__grid-line hud__grid-line--v" style="left: 66.666%"></div>
+            <div class="hud__grid-line hud__grid-line--h" style="top: 33.333%"></div>
+            <div class="hud__grid-line hud__grid-line--h" style="top: 66.666%"></div>
+          </div>
+
+          <!-- top row -->
+          <div class="hud__rec" data-hud data-vx="-0.7" data-vy="-1">
+            <span class="hud__rec-dot"></span><span class="hud__rec-label">REC</span>
+          </div>
+          <div class="hud__timecode" data-hud data-vx="0" data-vy="-1">
+            <span class="js-hero-timecode">00:00:00:00</span>
+          </div>
+          <div class="hud__battery" data-hud data-vx="1" data-vy="-0.6">
+            <span class="hud__battery-body"><span class="hud__battery-fill"></span></span>
+            <span>87%</span>
+          </div>
+
+          <!-- focus box -->
+          <div class="hud__focus-box" data-hud data-vx="0.4" data-vy="-0.3" data-mode="scale">
+            <span class="hud__focus-label js-focus-label">AF · SEARCHING</span>
+          </div>
+
+          <!-- audio meters -->
+          <div class="hud__audio" data-hud data-vx="-1" data-vy="0.3">
+            <div class="hud__audio-ch"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="hud__audio-ch"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+
+          <!-- bottom readouts -->
+          <div class="hud__readouts" data-hud data-vx="0" data-vy="1">
+            <span>ISO 800</span><span>ƒ/2.8</span><span>1/50</span><span>5600K</span><span>4K · 25P</span>
+          </div>
+          <div class="hud__scroll-hint" data-hud data-vx="0.8" data-vy="1">
+            <span>SCROLL TO PULL FOCUS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE BRIDGE — CUT TO: THE EDIT
+         ============================================================ -->
+    <section class="bridge" id="bridge">
+      <div class="bridge__stage">
+        <p class="bridge__slate">
+          <span class="bridge__cut-to">CUT TO:</span>
+          <span class="bridge__title">THE EDIT</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ACT II — THE EDIT TIMELINE
+         Clip titles are PLACEHOLDERS. Each clip has a data-video-src
+         slot for a future Vimeo/YouTube/local video source.
+         ============================================================ -->
+    <section class="edit" id="edit">
+      <div class="edit__stage">
+        <!-- program monitor -->
+        <div class="edit__monitor">
+          <div class="edit__monitor-frame">
+            <!-- .edit__monitor-media is the drop-in slot for video embeds -->
+            <div class="edit__monitor-media js-monitor-media">
+              <span class="edit__monitor-title js-monitor-title">—</span>
+            </div>
+            <div class="edit__monitor-bar">
+              <span class="js-edit-timecode">00:00:00:00</span>
+              <span class="js-monitor-clipname">—</span>
+              <span>PROGRAM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- timeline -->
+        <div class="edit__timeline">
+          <div class="edit__ruler js-ruler"></div>
+          <div class="edit__playhead"><span class="edit__playhead-cap"></span></div>
+          <div class="edit__tracks js-tracks">
+            <div class="edit__track edit__track--video">
+              <span class="edit__track-label">V1</span>
+              <div class="edit__track-lane js-video-lane">
+                <!-- PLACEHOLDER CLIPS — titles/durations are dummies -->
+                <div class="clip" data-title="PROJECT 01 — COMMERCIAL" data-video-src="" style="--clip-w: 26"><span class="clip__name">project_01_commercial.mov</span></div>
+                <div class="clip" data-title="PROJECT 02 — DOCUMENTARY" data-video-src="" style="--clip-w: 34"><span class="clip__name">project_02_documentary.mov</span></div>
+                <div class="clip" data-title="PROJECT 03 — MUSIC VIDEO" data-video-src="" style="--clip-w: 22"><span class="clip__name">project_03_music_video.mov</span></div>
+                <div class="clip" data-title="PROJECT 04 — BRAND FILM" data-video-src="" style="--clip-w: 30"><span class="clip__name">project_04_brand_film.mov</span></div>
+                <div class="clip" data-title="PROJECT 05 — EVENT" data-video-src="" style="--clip-w: 20"><span class="clip__name">project_05_event.mov</span></div>
+                <div class="clip clip--cta" data-title="YOUR PROJECT GOES HERE" data-video-src="" style="--clip-w: 36"><span class="clip__name">your_project_here.mov</span></div>
+              </div>
+            </div>
+            <div class="edit__track edit__track--audio">
+              <span class="edit__track-label">A1</span>
+              <div class="edit__track-lane js-audio-lane"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         OUTRO — CTA (all placeholder)
+         ============================================================ -->
+    <section class="outro" id="outro">
+      <div class="outro__inner">
+        <p class="outro__kicker"><!-- PLACEHOLDER COPY -->FINAL CLIP · V1</p>
+        <h2 class="outro__headline">YOUR PROJECT<br />GOES HERE</h2>
+        <a class="outro__cta" href="#"><!-- PLACEHOLDER — real contact details TBD -->START A CONVERSATION</a>
+        <footer class="outro__footer">
+          <span>NUSA &amp; NORTH</span>
+          <span><!-- PLACEHOLDER -->PLACEHOLDER@EMAIL.TLD</span>
+          <span>IRELAND</span>
+        </footer>
+      </div>
+    </section>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { config } from '../config.js';
+import { timecode } from './utils.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Compute the exit vector for a HUD element under the current direction mode.
+function exitVector(el, mode) {
+  if (mode === 'up') return { x: 0, y: -1 };
+  if (mode === 'down') return { x: 0, y: 1 };
+
+  if (mode === 'radial') {
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2 - window.innerWidth / 2;
+    const cy = r.top + r.height / 2 - window.innerHeight / 2;
+    const len = Math.hypot(cx, cy) || 1;
+    return { x: cx / len, y: cy / len };
+  }
+
+  // 'own' — each element's authored vector (data-vx / data-vy)
+  const vx = parseFloat(el.dataset.vx ?? '0');
+  const vy = parseFloat(el.dataset.vy ?? '-1');
+  const len = Math.hypot(vx, vy) || 1;
+  return { x: vx / len, y: vy / len };
+}
+
+export function buildHero() {
+  const { hero, dismantlePresets } = config;
+  const preset = dismantlePresets[hero.dismantlePreset];
+
+  const section = document.querySelector('.hero');
+  const headline = document.querySelector('.hero__headline-wrap');
+  const hudEls = gsap.utils.toArray('[data-hud]');
+  const tcEl = document.querySelector('.js-hero-timecode');
+  const focusLabel = document.querySelector('.js-focus-label');
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: `+=${hero.scrollVh}%`,
+      pin: '.hero__stage',
+      pinSpacing: true,
+      scrub: true,
+      onUpdate(self) {
+        // running timecode + AF label flips with the focus pull
+        tcEl.textContent = timecode(self.progress * 42);
+        focusLabel.textContent =
+          self.progress > hero.focusEnd ? 'AF · LOCKED' : 'AF · SEARCHING';
+      },
+    },
+  });
+
+  // ---- phase 1: focus pull ----
+  tl.fromTo(
+    headline,
+    { filter: `blur(${hero.startBlur}px)`, scale: 1.045, opacity: 0.85 },
+    {
+      filter: 'blur(0px)',
+      scale: 1,
+      opacity: 1,
+      ease: 'power2.out',
+      duration: hero.focusEnd - hero.focusStart,
+    },
+    hero.focusStart
+  );
+
+  // ---- phase 2: the dismantle ----
+  const span = hero.dismantleEnd - hero.dismantleStart;
+  const flightDur = Math.max(0.12, span - (hudEls.length - 1) * preset.stagger);
+  const maxDim = Math.max(window.innerWidth, window.innerHeight);
+
+  // shuffle order so the teardown doesn't read top-to-bottom in DOM order
+  const order = gsap.utils.shuffle([...hudEls]);
+
+  order.forEach((el, i) => {
+    const at = hero.dismantleStart + i * preset.stagger;
+    const mode = el.dataset.mode;
+
+    if (mode === 'fade') {
+      tl.to(el, { opacity: 0, duration: flightDur * 0.6, ease: 'power1.in' }, at);
+      return;
+    }
+    if (mode === 'scale') {
+      tl.to(
+        el,
+        { scale: 1.6, opacity: 0, duration: flightDur * 0.8, ease: preset.ease },
+        at
+      );
+      return;
+    }
+
+    const v = exitVector(el, hero.dismantleDirection);
+    const jitter = 1 + gsap.utils.random(-preset.jitter, preset.jitter);
+    const dist = preset.distance * maxDim * jitter;
+
+    tl.to(
+      el,
+      {
+        x: v.x * dist,
+        y: v.y * dist,
+        rotation: gsap.utils.random(-preset.rotation, preset.rotation),
+        scale: preset.scale,
+        opacity: 0,
+        filter: preset.blur ? `blur(${preset.blur}px)` : 'none',
+        duration: flightDur,
+        ease: preset.ease,
+      },
+      at
+    );
+  });
+
+  // headline eases back slightly as the HUD tears away — you're "through" the lens
+  tl.to(
+    headline,
+    { scale: 0.96, opacity: 0.9, duration: span, ease: 'power1.inOut' },
+    hero.dismantleStart
+  );
+
+  return () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+    gsap.set([headline, ...hudEls], { clearProps: 'all' });
+  };
+}

@@ -1,0 +1,50 @@
+/* ============================================================
+   FALLBACKS — reduced motion + mobile (no pinned scrub)
+   The `.no-scrub` class is set by motion.js when the full
+   scroll-driven experience is disabled.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* static / native-scroll version */
+html.no-scrub .hero__headline-wrap {
+  filter: none !important;
+}
+
+html.no-scrub .hud__scroll-hint span::after {
+  content: '';
+}
+
+html.no-scrub .bridge__cut-to,
+html.no-scrub .bridge__title {
+  opacity: 1;
+}
+
+/* timeline becomes a native horizontal scroller */
+html.no-scrub .edit__stage {
+  height: auto;
+  min-height: 100svh;
+  padding-bottom: 24px;
+}
+html.no-scrub .edit__timeline {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+html.no-scrub .edit__track-lane {
+  padding-left: 12vw;
+  padding-right: 12vw;
+}
+html.no-scrub .edit__playhead {
+  display: none;
+}
+html.no-scrub .clip {
+  min-width: 180px;
+}

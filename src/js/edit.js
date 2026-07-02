@@ -1,0 +1,158 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { config } from '../config.js';
+import { timecode } from './utils.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Build the A1 waveform blocks to mirror the V1 clips, and the ruler ticks.
+// Idempotent — clears previous generated content first.
+export function populateEditChrome() {
+  const videoLane = document.querySelector('.js-video-lane');
+  const audioLane = document.querySelector('.js-audio-lane');
+  const ruler = document.querySelector('.js-ruler');
+
+  audioLane.innerHTML = '';
+  gsap.utils.toArray('.js-video-lane .clip').forEach((clip) => {
+    const block = document.createElement('div');
+    block.className = 'audio-block';
+    block.style.setProperty('--clip-w', clip.style.getPropertyValue('--clip-w'));
+    const bars = Math.round(parseFloat(clip.style.getPropertyValue('--clip-w')) * 3);
+    for (let i = 0; i < bars; i++) {
+      const bar = document.createElement('i');
+      // pseudo-waveform: smooth-ish random heights
+      const h = 0.15 + Math.abs(Math.sin(i * 0.7)) * 0.55 + Math.random() * 0.3;
+      bar.style.setProperty('--h', Math.min(1, h).toFixed(2));
+      block.appendChild(bar);
+    }
+    audioLane.appendChild(block);
+  });
+
+  // ruler ticks across the full lane width
+  ruler.innerHTML = '';
+  const inner = document.createElement('div');
+  inner.className = 'edit__ruler-inner';
+  inner.style.cssText = 'position:absolute;inset:0;will-change:transform;';
+  const width = videoLane.scrollWidth;
+  const step = 60;
+  for (let x = 0; x <= width; x += step) {
+    const major = (x / step) % 5 === 0;
+    const tick = document.createElement('span');
+    tick.className = `edit__ruler-tick${major ? ' edit__ruler-tick--major' : ''}`;
+    tick.style.left = `${x}px`;
+    inner.appendChild(tick);
+    if (major) {
+      const label = document.createElement('span');
+      label.className = 'edit__ruler-label';
+      label.style.left = `${x}px`;
+      label.textContent = timecode(((x / width) * config.edit.sequenceSeconds) || 0).slice(3);
+      inner.appendChild(label);
+    }
+  }
+  ruler.appendChild(inner);
+  return inner;
+}
+
+function setActiveClip(monitorTitle, monitorClipname) {
+  const playheadX = window.innerWidth / 2;
+  const clips = gsap.utils.toArray('.js-video-lane .clip');
+  const audioBlocks = gsap.utils.toArray('.js-audio-lane .audio-block');
+  let activeIdx = -1;
+
+  clips.forEach((clip, i) => {
+    const r = clip.getBoundingClientRect();
+    const on = r.left <= playheadX && r.right >= playheadX;
+    clip.classList.toggle('is-active', on);
+    audioBlocks[i]?.classList.toggle('is-active', on);
+    if (on) activeIdx = i;
+  });
+
+  if (activeIdx >= 0) {
+    const title = clips[activeIdx].dataset.title;
+    const name = clips[activeIdx].querySelector('.clip__name').textContent;
+    if (monitorTitle.textContent !== title) {
+      monitorTitle.textContent = title;
+      monitorClipname.textContent = name;
+      gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
+    }
+  }
+}
+
+export function buildEdit() {
+  const { edit } = config;
+
+  const section = document.querySelector('.edit');
+  const monitorFrame = document.querySelector('.edit__monitor-frame');
+  const ruler = document.querySelector('.edit__ruler');
+  const tracks = document.querySelector('.js-tracks');
+  const lanes = gsap.utils.toArray('.edit__track-lane');
+  const monitorTitle = document.querySelector('.js-monitor-title');
+  const monitorClipname = document.querySelector('.js-monitor-clipname');
+  const tcEl = document.querySelector('.js-edit-timecode');
+
+  const rulerInner = populateEditChrome();
+
+  const videoLane = document.querySelector('.js-video-lane');
+  // scrub travel: last clip's right edge ends at the playhead
+  const travel = videoLane.scrollWidth - window.innerWidth / 2;
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: `+=${edit.scrollVh}%`,
+      pin: '.edit__stage',
+      scrub: true,
+      onUpdate(self) {
+        const scrubP = gsap.utils.clamp(
+          0,
+          1,
+          (self.progress - edit.assembleEnd) / (1 - edit.assembleEnd)
+        );
+        tcEl.textContent = timecode(scrubP * edit.sequenceSeconds);
+        setActiveClip(monitorTitle, monitorClipname);
+      },
+    },
+  });
+
+  // ---- assembly: the NLE builds itself ----
+  const a = edit.assembleEnd;
+  tl.fromTo(ruler, { yPercent: -110 }, { yPercent: 0, duration: a * 0.5, ease: 'power2.out' }, 0);
+  tl.fromTo(
+    tracks,
+    { yPercent: 130, opacity: 0 },
+    { yPercent: 0, opacity: 1, duration: a * 0.65, ease: 'power2.out' },
+    a * 0.2
+  );
+  tl.fromTo(
+    monitorFrame,
+    { scale: 0.9, opacity: 0 },
+    { scale: 1, opacity: 1, duration: a * 0.6, ease: 'power2.out' },
+    a * 0.35
+  );
+
+  // ---- scrub: clips pass under the fixed playhead ----
+  tl.to([...lanes, rulerInner], { x: -travel, duration: 1 - a }, a);
+
+  return () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+    gsap.set([ruler, tracks, monitorFrame, ...lanes, rulerInner], { clearProps: 'all' });
+  };
+}
+
+// Fallback for no-scrub mode: native horizontal scroll drives the monitor.
+export function buildEditFallback() {
+  populateEditChrome();
+  const timelineEl = document.querySelector('.edit__timeline');
+  const monitorTitle = document.querySelector('.js-monitor-title');
+  const monitorClipname = document.querySelector('.js-monitor-clipname');
+  monitorTitle.textContent = 'PROJECT 01 — COMMERCIAL';
+  monitorClipname.textContent = 'project_01_commercial.mov';
+  timelineEl.addEventListener(
+    'scroll',
+    () => setActiveClip(monitorTitle, monitorClipname),
+    { passive: true }
+  );
+}

@@ -1,0 +1,70 @@
+/* ============================================================
+   DEV PANEL — iteration controls (press ` to toggle)
+   Not part of the final site.
+   ============================================================ */
+
+.dev-panel {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 999;
+  background: rgba(10, 9, 8, 0.92);
+  color: #fafaf6;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(250, 250, 246, 0.15);
+  backdrop-filter: blur(6px);
+  max-width: 240px;
+}
+
+.dev-panel.is-hidden {
+  display: none;
+}
+
+.dev-panel__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.dev-panel__row:last-child {
+  margin-bottom: 0;
+}
+
+.dev-panel__label {
+  flex: 0 0 100%;
+  color: rgba(250, 250, 246, 0.45);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.dev-panel button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(250, 250, 246, 0.25);
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.dev-panel button:hover {
+  border-color: rgba(250, 250, 246, 0.7);
+}
+.dev-panel button.is-on {
+  background: #e8362b;
+  border-color: #e8362b;
+  color: #fafaf6;
+  font-weight: 700;
+}
+
+.dev-panel__hint {
+  margin-top: 8px;
+  color: rgba(250, 250, 246, 0.35);
+  font-size: 0.52rem;
+}

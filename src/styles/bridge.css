@@ -1,0 +1,52 @@
+/* ============================================================
+   THE BRIDGE — "CUT TO: THE EDIT"
+   ============================================================ */
+
+.bridge {
+  position: relative;
+}
+
+.bridge__stage {
+  height: 100vh;
+  height: 100svh;
+  background: var(--c-slate-bg);
+  color: var(--c-slate-fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bridge__slate {
+  text-align: center;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.bridge__cut-to {
+  display: block;
+  font-size: clamp(0.8rem, 1.8vw, 1.1rem);
+  letter-spacing: 0.5em;
+  color: var(--c-slate-fg);
+  opacity: 0;
+}
+
+.bridge__title {
+  display: block;
+  margin-top: 0.9em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 115%;
+  font-size: clamp(3rem, 11vw, 10rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--raw-red);
+  opacity: 0;
+}
+
+/* palette C: red-on-ink slate keeps the red title readable,
+   but give it a paper outline treatment for punch */
+html[data-palette='c'] .bridge__title {
+  color: var(--raw-red);
+  text-shadow: 0 0 0 transparent;
+}
