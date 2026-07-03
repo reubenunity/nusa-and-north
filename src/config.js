@@ -49,8 +49,9 @@ export const config = {
   },
 
   cinema: {
-    // Scroll distance for the pinned screening room.
-    scrollVh: 330,
+    // Scroll distance for the pinned screening room — generous, so
+    // the countdown and card transitions play at human pace.
+    scrollVh: 500,
   },
 
   recce: {

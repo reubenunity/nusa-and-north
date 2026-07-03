@@ -6,6 +6,17 @@ import { setScrollGate, clearScrollGate } from './scroll-gate.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Beat map (fractions of the pinned span) — spread wide so nothing
+// flashes past: the countdown alone owns the first fifth.
+const COUNT_END = 0.2;      // leader counts 5→1 across 0–0.2, then lifts
+const CARD_AT = [0.26, 0.375, 0.49, 0.605]; // trailer card entrances
+const CARD_IN_DUR = 0.045;
+const CARD_EXIT = 0.085;    // disperse starts this far after entrance
+const FEATURE_AT = 0.73;
+const SCREEN_AT = 0.84;
+// walls: where the scroll physically stops (card centers + feature)
+const WALLS = [0.32, 0.435, 0.55, 0.665, 0.77];
+
 // Card titles exit like the hero headline: each character disperses
 // radially from the title's center.
 function disperseTitle(tl, card, exitAt, maxDim, allChars) {
@@ -31,10 +42,10 @@ function disperseTitle(tl, card, exitAt, maxDim, allChars) {
         y: (dy / len) * dist - maxDim * 0.03,
         rotation: gsap.utils.random(-42, 42),
         opacity: 0,
-        duration: 0.03,
+        duration: 0.04,
         ease: 'power2.in',
       },
-      exitAt + Math.random() * 0.012
+      exitAt + Math.random() * 0.015
     );
   });
 
@@ -42,11 +53,9 @@ function disperseTitle(tl, card, exitAt, maxDim, allChars) {
   const rest = ['.cinema__card-index', '.cinema__card-kicker', '.cinema__card-sub', '.cinema__card-deliv', '.cinema__card-media']
     .map((s) => card.querySelector(s))
     .filter(Boolean);
-  tl.to(rest, { opacity: 0, duration: 0.02, ease: 'power1.in' }, exitAt);
+  tl.to(rest, { opacity: 0, duration: 0.03, ease: 'power1.in' }, exitAt);
 }
 
-// Lights down → projector flickers up → academy leader counts down →
-// trailer cards (services) → "feature presentation" → the reel.
 export function buildCinema() {
   const { cinema } = config;
 
@@ -61,9 +70,22 @@ export function buildCinema() {
   const screen = document.querySelector('.js-screen');
   const intermission = document.querySelector('.js-intermission');
 
-  const LEADER_IN = 0.045;
-  const LEADER_OUT = 0.185;
+  // ---- entrance: the leader is already on screen as the act wipes
+  // in — no dead black between the edit bay and the countdown ----
+  const entranceTl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top bottom',
+      end: 'top top',
+      scrub: true,
+    },
+  });
+  entranceTl.fromTo(bars, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power1.out' }, 0.2);
+  entranceTl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 0.3);
+  entranceTl.fromTo(dust, { opacity: 0 }, { opacity: 0.6, duration: 0.5, ease: 'power1.out' }, 0.4);
 
+  // ---- the pinned act ----
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -72,67 +94,55 @@ export function buildCinema() {
       end: `+=${cinema.scrollVh}%`,
       pin: '.cinema__stage',
       scrub: true,
-      // settle on the nearest beat (countdown, each trailer card,
-      // feature card, the reel) whenever scrolling stops
-      snap: {
-        snapTo: [0, 0.115, 0.26, 0.355, 0.45, 0.545, 0.655, 0.9, 1],
-        duration: { min: 0.25, max: 0.7 },
-        delay: 0.08,
-        ease: 'power1.inOut',
-      },
+      // (no ScrollTrigger snap — it writes scroll programmatically and
+      // bypasses the wall gate; the walls below own the card pacing)
       onUpdate(self) {
-        // leader countdown 5 → 1
+        // leader countdown 5 → 1 across the first fifth
         const p = self.progress;
-        if (p > LEADER_IN && p < LEADER_OUT) {
-          const n = 5 - Math.floor(((p - LEADER_IN) / (LEADER_OUT - LEADER_IN)) * 5);
+        if (p < COUNT_END) {
+          const n = 5 - Math.floor((p / COUNT_END) * 5);
           countEl.textContent = String(Math.max(1, n));
         }
       },
     },
   });
 
-  // letterbox bars close in, dust drifts up; the beam waits for the feature
-  tl.fromTo(bars, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'power1.out' }, 0.0);
-  tl.fromTo(dust, { opacity: 0 }, { opacity: 0.6, duration: 0.06, ease: 'power1.out' }, 0.01);
-
-  // leader
-  tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.025 }, LEADER_IN);
-  tl.to(leader, { opacity: 0, duration: 0.02 }, LEADER_OUT);
+  // countdown lifts away once it hits 1
+  tl.to(leader, { opacity: 0, duration: 0.035, ease: 'power1.in' }, COUNT_END);
 
   // trailer cards, projected one after another; titles disperse on exit
   const maxDim = Math.max(window.innerWidth, window.innerHeight);
   const allChars = [];
   trailers.forEach((card, i) => {
-    const at = 0.21 + i * 0.095;
+    const at = CARD_AT[i];
     tl.fromTo(
       card,
       { opacity: 0, scale: 0.965, y: 26 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.032, ease: 'power2.out' },
+      { opacity: 1, scale: 1, y: 0, duration: CARD_IN_DUR, ease: 'power2.out' },
       at
     );
-    disperseTitle(tl, card, at + 0.068, maxDim, allChars);
+    disperseTitle(tl, card, at + CARD_EXIT, maxDim, allChars);
   });
 
   // "the feature presentation"
   tl.fromTo(
     featureCard,
     { opacity: 0, scale: 0.965 },
-    { opacity: 1, scale: 1, duration: 0.03, ease: 'power2.out' },
-    0.61
+    { opacity: 1, scale: 1, duration: 0.035, ease: 'power2.out' },
+    FEATURE_AT
   );
-  disperseTitle(tl, featureCard, 0.675, maxDim, allChars);
+  disperseTitle(tl, featureCard, FEATURE_AT + 0.07, maxDim, allChars);
 
-  // the reel fills the screen; beam settles dim behind it
+  // the reel fills the screen; the projector beam ignites behind it
   tl.fromTo(
     screen,
     { opacity: 0, scale: 0.92 },
-    { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' },
-    0.71
+    { opacity: 1, scale: 1, duration: 0.06, ease: 'power2.out' },
+    SCREEN_AT
   );
-  // the projector beam switches on with the reel, behind the screen
-  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.8, duration: 0.06, ease: 'power1.out' }, 0.71);
-  tl.to(dust, { opacity: 1, duration: 0.05 }, 0.71);
-  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.88);
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.8, duration: 0.05, ease: 'power1.out' }, SCREEN_AT);
+  tl.to(dust, { opacity: 1, duration: 0.04 }, SCREEN_AT);
+  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.03 }, 0.94);
 
   // pad the timeline to exactly 1 so authored positions map 1:1
   // onto pin progress (scrub distributes scroll across total duration)
@@ -142,7 +152,6 @@ export function buildCinema() {
   // A gate on Lenis's virtual-scroll caps each downward delta so the
   // scroll target lands exactly on the next card and stays there; the
   // wall unlocks after a short dwell, so one gesture = one beat.
-  const WALLS = [0.26, 0.355, 0.45, 0.545, 0.655]; // card + feature centers
   const DWELL_MS = 350;
   let unlocked = 0;
   let dwellTimer = null;
@@ -181,6 +190,8 @@ export function buildCinema() {
   return () => {
     clearScrollGate(gate);
     if (dwellTimer) clearTimeout(dwellTimer);
+    entranceTl.scrollTrigger?.kill();
+    entranceTl.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
     gsap.set([beam, dust, bars, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
