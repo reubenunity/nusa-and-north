@@ -37,16 +37,16 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 46% 24% at 50% 88%, rgba(255, 205, 150, 0.13), transparent 70%),
-    radial-gradient(ellipse 16% 32% at 50% 4%, rgba(255, 255, 250, 0.24), transparent 75%),
+    radial-gradient(ellipse 46% 24% at 50% 88%, rgba(255, 205, 150, 0.20), transparent 70%),
+    radial-gradient(ellipse 16% 32% at 50% 4%, rgba(255, 255, 250, 0.38), transparent 75%),
     conic-gradient(
       from 180deg at 50% -6%,
       transparent 40.5%,
-      rgba(150, 190, 255, 0.05) 44%,
-      rgba(190, 215, 255, 0.14) 47.5%,
-      rgba(245, 248, 255, 0.24) 50%,
-      rgba(190, 215, 255, 0.14) 52.5%,
-      rgba(150, 190, 255, 0.05) 56%,
+      rgba(150, 190, 255, 0.08) 44%,
+      rgba(190, 215, 255, 0.22) 47.5%,
+      rgba(245, 248, 255, 0.38) 50%,
+      rgba(190, 215, 255, 0.22) 52.5%,
+      rgba(150, 190, 255, 0.08) 56%,
       transparent 59.5%
     );
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.9) 50%, rgba(0, 0, 0, 0.45) 100%);
