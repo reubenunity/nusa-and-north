@@ -25,13 +25,79 @@
   justify-content: center;
   padding: clamp(16px, 3vh, 40px) var(--pad);
   min-height: 0;
-  /* screen-glow wash behind the monitor so the bay isn't flat */
-  background: radial-gradient(
-    ellipse 72% 88% at 50% 44%,
-    color-mix(in srgb, var(--c-signal) 17%, var(--c-panel)) 0%,
-    color-mix(in srgb, var(--c-signal) 6%, var(--c-panel)) 42%,
-    var(--c-panel) 74%
-  );
+  position: relative;
+}
+
+/* projector beam falling onto the monitor from the booth above:
+   cool blue falloff, white core, warm spill where it lands */
+.edit__monitor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: min(84vw, 140vh);
+  height: 100%;
+  clip-path: polygon(46.5% 0, 53.5% 0, 94% 100%, 6% 100%);
+  background:
+    radial-gradient(ellipse 55% 30% at 50% 100%, rgba(255, 205, 150, 0.10), transparent 72%),
+    radial-gradient(ellipse 18% 55% at 50% 10%, rgba(255, 255, 250, 0.15), transparent 75%),
+    linear-gradient(
+      180deg,
+      rgba(160, 195, 255, 0.15) 0%,
+      rgba(165, 195, 250, 0.06) 45%,
+      rgba(255, 220, 180, 0.04) 100%
+    );
+  filter: blur(12px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* the beam only reads on the dark chrome */
+html[data-edit='cream'] .edit__monitor::before,
+html[data-edit='red'] .edit__monitor::before {
+  display: none;
+}
+
+/* dust hanging in the beam above the monitor */
+.edit__dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.edit__dust i {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255, 252, 240, 0.4);
+  box-shadow: 0 0 4px rgba(255, 250, 235, 0.3);
+}
+.edit__dust i:nth-child(1) { top: 12%; left: 48%; }
+.edit__dust i:nth-child(2) { top: 24%; left: 53%; }
+.edit__dust i:nth-child(3) { top: 9%; left: 51%; width: 3px; height: 3px; }
+.edit__dust i:nth-child(4) { top: 30%; left: 45%; }
+.edit__dust i:nth-child(5) { top: 18%; left: 56%; }
+.edit__dust i:nth-child(6) { top: 27%; left: 49%; width: 3px; height: 3px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .edit__dust i {
+    animation: edit-dust-drift 9s ease-in-out infinite alternate;
+  }
+  .edit__dust i:nth-child(2n) { animation-duration: 12s; animation-delay: -5s; }
+}
+@keyframes edit-dust-drift {
+  from { transform: translate(0, 0); opacity: 0.12; }
+  50% { opacity: 0.45; }
+  to { transform: translate(14px, 30px); opacity: 0.08; }
+}
+html[data-edit='cream'] .edit__dust,
+html[data-edit='red'] .edit__dust {
+  display: none;
+}
+
+.edit__monitor-frame {
+  position: relative; /* sits above the beam */
 }
 
 .edit__monitor-frame {

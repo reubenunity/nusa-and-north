@@ -90,9 +90,8 @@ export function buildCinema() {
     },
   });
 
-  // projector warms up — one smooth rise, no flicker; dust rides along
-  tl.fromTo(beam, { opacity: 0 }, { opacity: 1, duration: 0.045, ease: 'power1.out' }, 0.0);
-  tl.fromTo(dust, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'power1.out' }, 0.01);
+  // dust drifts up in the dark; the beam itself waits for the feature
+  tl.fromTo(dust, { opacity: 0 }, { opacity: 0.6, duration: 0.06, ease: 'power1.out' }, 0.01);
 
   // leader
   tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.025 }, LEADER_IN);
@@ -128,7 +127,9 @@ export function buildCinema() {
     { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' },
     0.71
   );
-  tl.to(beam, { opacity: 0.55, duration: 0.05 }, 0.71);
+  // the projector beam switches on with the reel, behind the screen
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.8, duration: 0.06, ease: 'power1.out' }, 0.71);
+  tl.to(dust, { opacity: 1, duration: 0.05 }, 0.71);
   tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.88);
 
   // pad the timeline to exactly 1 so authored positions map 1:1
