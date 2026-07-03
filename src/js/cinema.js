@@ -7,15 +7,15 @@ import { setScrollGate, clearScrollGate } from './scroll-gate.js';
 gsap.registerPlugin(ScrollTrigger);
 
 // Beat map (fractions of the pinned span) — spread wide so nothing
-// flashes past: the countdown alone owns the first fifth.
-const COUNT_END = 0.2;      // leader counts 5→1 across 0–0.2, then lifts
-const CARD_AT = [0.26, 0.375, 0.49, 0.605]; // trailer card entrances
+// flashes past: curtains part first, then the trailer reel plays.
+const CURTAIN_END = 0.16;   // curtains fully open here
+const CARD_AT = [0.14, 0.27, 0.4, 0.53]; // card 1 forms AS the curtains part
 const CARD_IN_DUR = 0.045;
-const CARD_EXIT = 0.085;    // disperse starts this far after entrance
-const FEATURE_AT = 0.73;
-const SCREEN_AT = 0.84;
+const CARD_EXIT = 0.09;     // disperse starts this far after entrance
+const FEATURE_AT = 0.66;
+const SCREEN_AT = 0.78;
 // walls: where the scroll physically stops (card centers + feature)
-const WALLS = [0.32, 0.435, 0.55, 0.665, 0.77];
+const WALLS = [0.21, 0.34, 0.47, 0.6, 0.71];
 
 // Card titles exit like the hero headline: each character disperses
 // radially from the title's center.
@@ -63,15 +63,15 @@ export function buildCinema() {
   const beam = document.querySelector('.cinema__beam');
   const dust = document.querySelector('.cinema__dust');
   const bars = document.querySelector('.cinema__bars');
-  const leader = document.querySelector('.cinema__leader');
-  const countEl = document.querySelector('.js-cinema-count');
+  const curtainL = document.querySelector('.js-curtain-l');
+  const curtainR = document.querySelector('.js-curtain-r');
   const trailers = gsap.utils.toArray('.js-trailer');
   const featureCard = document.querySelector('.js-feature-card');
   const screen = document.querySelector('.js-screen');
   const intermission = document.querySelector('.js-intermission');
 
-  // ---- entrance: the leader is already on screen as the act wipes
-  // in — no dead black between the edit bay and the countdown ----
+  // ---- entrance: the closed curtain wall rises over the countdown;
+  // bars and dust settle in behind it ----
   const entranceTl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -82,7 +82,6 @@ export function buildCinema() {
     },
   });
   entranceTl.fromTo(bars, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power1.out' }, 0.2);
-  entranceTl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 0.3);
   entranceTl.fromTo(dust, { opacity: 0 }, { opacity: 0.6, duration: 0.5, ease: 'power1.out' }, 0.4);
 
   // ---- the pinned act ----
@@ -96,19 +95,12 @@ export function buildCinema() {
       scrub: true,
       // (no ScrollTrigger snap — it writes scroll programmatically and
       // bypasses the wall gate; the walls below own the card pacing)
-      onUpdate(self) {
-        // leader countdown 5 → 1 across the first fifth
-        const p = self.progress;
-        if (p < COUNT_END) {
-          const n = 5 - Math.floor((p / COUNT_END) * 5);
-          countEl.textContent = String(Math.max(1, n));
-        }
-      },
     },
   });
 
-  // countdown lifts away once it hits 1
-  tl.to(leader, { opacity: 0, duration: 0.035, ease: 'power1.in' }, COUNT_END);
+  // the curtains part
+  tl.to(curtainL, { xPercent: -102, duration: CURTAIN_END, ease: 'power2.inOut' }, 0.005);
+  tl.to(curtainR, { xPercent: 102, duration: CURTAIN_END, ease: 'power2.inOut' }, 0.005);
 
   // trailer cards, projected one after another; titles disperse on exit
   const maxDim = Math.max(window.innerWidth, window.innerHeight);
@@ -142,7 +134,7 @@ export function buildCinema() {
   );
   tl.fromTo(beam, { opacity: 0 }, { opacity: 0.8, duration: 0.05, ease: 'power1.out' }, SCREEN_AT);
   tl.to(dust, { opacity: 1, duration: 0.04 }, SCREEN_AT);
-  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.03 }, 0.94);
+  tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.03 }, 0.92);
 
   // pad the timeline to exactly 1 so authored positions map 1:1
   // onto pin progress (scrub distributes scroll across total duration)
@@ -194,7 +186,7 @@ export function buildCinema() {
     entranceTl.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([beam, dust, bars, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
+    gsap.set([beam, dust, bars, curtainL, curtainR, featureCard, screen, intermission, ...trailers, ...allChars], {
       clearProps: 'all',
     });
   };

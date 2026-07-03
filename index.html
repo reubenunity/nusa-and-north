@@ -193,6 +193,12 @@
             </div>
           </div>
         </div>
+
+        <!-- countdown projected over the frozen timeline at act end -->
+        <div class="edit__count" aria-hidden="true">
+          <div class="edit__count-veil"></div>
+          <div class="edit__count-circle"><span class="js-edit-count">5</span></div>
+        </div>
       </div>
     </section>
 
@@ -210,16 +216,6 @@
 
         <!-- widescreen letterbox bars -->
         <div class="cinema__bars" aria-hidden="true"></div>
-
-        <!-- academy leader countdown, over dim test footage -->
-        <div class="cinema__leader" aria-hidden="true">
-          <div class="cinema__leader-media">
-            <img src="https://picsum.photos/seed/nnleader/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <div class="cinema__leader-cross cinema__leader-cross--v"></div>
-          <div class="cinema__leader-cross cinema__leader-cross--h"></div>
-          <div class="cinema__leader-circle"><span class="js-cinema-count">5</span></div>
-        </div>
 
         <!-- services as trailer cards: footage behind, title over.
              Images are PLACEHOLDERS — swap for real graded stills. -->
@@ -280,6 +276,12 @@
           <p class="cinema__intermission js-intermission">
             INTERMISSION — <a href="#recce">ENQUIRIES AT THE LOBBY DESK &darr;</a>
           </p>
+        </div>
+
+        <!-- theatre curtains — cover the stage, part when the act opens -->
+        <div class="cinema__curtains" aria-hidden="true">
+          <div class="cinema__curtain cinema__curtain--l js-curtain-l"></div>
+          <div class="cinema__curtain cinema__curtain--r js-curtain-r"></div>
         </div>
       </div>
     </section>

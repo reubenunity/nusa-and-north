@@ -121,7 +121,14 @@ export function buildEdit() {
     0.4
   );
 
-  // ---- pinned phase: pure scrub, clips pass under the fixed playhead ----
+  // ---- pinned phase: scrub the clips, then FREEZE the bay and
+  // project the countdown over it (the handoff to the cinema) ----
+  const SCRUB_END = 0.76;   // lanes stop here; the bay holds still
+  const COUNT_START = 0.8;  // countdown 5→1 across the rest
+  const countVeil = document.querySelector('.edit__count-veil');
+  const countCircle = document.querySelector('.edit__count-circle');
+  const countEl = document.querySelector('.js-edit-count');
+
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -131,20 +138,38 @@ export function buildEdit() {
       pin: '.edit__stage',
       scrub: true,
       onUpdate(self) {
-        tcEl.textContent = timecode(self.progress * edit.sequenceSeconds);
+        const p = self.progress;
+        tcEl.textContent = timecode(
+          Math.min(1, p / SCRUB_END) * edit.sequenceSeconds
+        );
         setActiveClip(monitorTitle, monitorClipname);
+        if (p > COUNT_START) {
+          const n = 5 - Math.floor(((p - COUNT_START) / (1 - COUNT_START)) * 5);
+          countEl.textContent = String(Math.max(1, n));
+        }
       },
     },
   });
 
-  tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
+  tl.to([...lanes, rulerInner], { x: -travel, duration: SCRUB_END }, 0);
+  tl.fromTo(countVeil, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'power1.out' }, SCRUB_END);
+  tl.fromTo(
+    countCircle,
+    { opacity: 0, scale: 0.9 },
+    { opacity: 1, scale: 1, duration: 0.05, ease: 'power2.out' },
+    SCRUB_END + 0.02
+  );
+  // pad so authored positions map 1:1 onto pin progress
+  tl.set({}, {}, 1);
 
   return () => {
     assembleTl.scrollTrigger?.kill();
     assembleTl.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([ruler, tracks, monitorFrame, ...lanes, rulerInner], { clearProps: 'all' });
+    gsap.set([ruler, tracks, monitorFrame, countVeil, countCircle, ...lanes, rulerInner], {
+      clearProps: 'all',
+    });
   };
 }
 
