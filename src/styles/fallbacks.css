@@ -49,9 +49,13 @@ html.no-scrub .cinema__dust {
   display: none;
 }
 html.no-scrub .cinema__card {
-  position: static;
+  position: relative;
+  inset: auto;
   opacity: 1;
-  padding: 2.2rem var(--pad);
+  padding: 3.5rem var(--pad);
+}
+html.no-scrub .cinema__bars {
+  display: none;
 }
 html.no-scrub .cinema__card--feature {
   display: none;

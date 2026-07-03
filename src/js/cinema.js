@@ -38,8 +38,8 @@ function disperseTitle(tl, card, exitAt, maxDim, allChars) {
     );
   });
 
-  // the quieter lines just fade
-  const rest = ['.cinema__card-index', '.cinema__card-kicker', '.cinema__card-sub']
+  // the quieter layers (and the footage) just fade
+  const rest = ['.cinema__card-index', '.cinema__card-kicker', '.cinema__card-sub', '.cinema__card-deliv', '.cinema__card-media']
     .map((s) => card.querySelector(s))
     .filter(Boolean);
   tl.to(rest, { opacity: 0, duration: 0.02, ease: 'power1.in' }, exitAt);
@@ -53,6 +53,7 @@ export function buildCinema() {
   const section = document.querySelector('.cinema');
   const beam = document.querySelector('.cinema__beam');
   const dust = document.querySelector('.cinema__dust');
+  const bars = document.querySelector('.cinema__bars');
   const leader = document.querySelector('.cinema__leader');
   const countEl = document.querySelector('.js-cinema-count');
   const trailers = gsap.utils.toArray('.js-trailer');
@@ -90,7 +91,8 @@ export function buildCinema() {
     },
   });
 
-  // dust drifts up in the dark; the beam itself waits for the feature
+  // letterbox bars close in, dust drifts up; the beam waits for the feature
+  tl.fromTo(bars, { opacity: 0 }, { opacity: 1, duration: 0.05, ease: 'power1.out' }, 0.0);
   tl.fromTo(dust, { opacity: 0 }, { opacity: 0.6, duration: 0.06, ease: 'power1.out' }, 0.01);
 
   // leader
@@ -181,7 +183,7 @@ export function buildCinema() {
     if (dwellTimer) clearTimeout(dwellTimer);
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([beam, dust, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
+    gsap.set([beam, dust, bars, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
       clearProps: 'all',
     });
   };
