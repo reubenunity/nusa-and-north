@@ -14,6 +14,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
 import { fullExperience, applyMotionClass, watchViewport } from './js/motion.js';
+import { applyGate } from './js/scroll-gate.js';
 import { buildHero } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
@@ -39,7 +40,7 @@ function rebuild() {
 
 if (fullExperience) {
   // Lenis smooth scroll driving GSAP's ticker
-  const lenis = new Lenis({ lerp: 0.11 });
+  const lenis = new Lenis({ lerp: 0.11, virtualScroll: applyGate });
   window.__lenis = lenis; // dev handle for programmatic scrolling
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));

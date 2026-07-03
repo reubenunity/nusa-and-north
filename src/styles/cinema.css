@@ -16,47 +16,67 @@
   overflow: hidden;
 }
 
-/* projector beam glow */
+/* projector beam — a light cone from the booth above, layered
+   cool blue falloff + white core + warm spill where it lands */
 .cinema__beam {
   position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: min(120vw, 220vh);
+  height: 76%;
+  clip-path: polygon(46.5% 0, 53.5% 0, 92% 100%, 8% 100%);
+  background:
+    radial-gradient(ellipse 55% 32% at 50% 100%, rgba(255, 205, 150, 0.20), transparent 72%),
+    radial-gradient(ellipse 20% 65% at 50% 18%, rgba(255, 255, 250, 0.26), transparent 75%),
+    linear-gradient(
+      180deg,
+      rgba(160, 195, 255, 0.26) 0%,
+      rgba(165, 195, 250, 0.11) 45%,
+      rgba(255, 220, 180, 0.06) 100%
+    );
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* dust hanging in the cone */
+.cinema__dust {
+  position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 42%,
-    rgba(250, 250, 246, 0.13),
-    transparent 65%
-  );
   opacity: 0;
   pointer-events: none;
 }
-
-/* dust in the beam */
 .cinema__dust i {
   position: absolute;
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: rgba(250, 250, 246, 0.3);
+  background: rgba(255, 252, 240, 0.5);
+  box-shadow: 0 0 5px rgba(255, 250, 235, 0.35);
 }
-.cinema__dust i:nth-child(1) { top: 24%; left: 38%; }
-.cinema__dust i:nth-child(2) { top: 33%; left: 55%; width: 2px; height: 2px; }
-.cinema__dust i:nth-child(3) { top: 47%; left: 44%; }
-.cinema__dust i:nth-child(4) { top: 29%; left: 62%; width: 2px; height: 2px; }
-.cinema__dust i:nth-child(5) { top: 55%; left: 58%; }
-.cinema__dust i:nth-child(6) { top: 40%; left: 35%; width: 2px; height: 2px; }
-.cinema__dust i:nth-child(7) { top: 60%; left: 48%; }
-.cinema__dust i:nth-child(8) { top: 22%; left: 50%; }
+.cinema__dust i:nth-child(1) { top: 14%; left: 49%; }
+.cinema__dust i:nth-child(2) { top: 26%; left: 45%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(3) { top: 33%; left: 55%; }
+.cinema__dust i:nth-child(4) { top: 42%; left: 41%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(5) { top: 49%; left: 58%; }
+.cinema__dust i:nth-child(6) { top: 57%; left: 38%; width: 2px; height: 2px; }
+.cinema__dust i:nth-child(7) { top: 63%; left: 52%; }
+.cinema__dust i:nth-child(8) { top: 21%; left: 52%; width: 2px; height: 2px; }
 
 @media (prefers-reduced-motion: no-preference) {
   .cinema__dust i {
-    animation: dust-drift 7s ease-in-out infinite alternate;
+    animation: dust-drift 8s ease-in-out infinite alternate;
   }
-  .cinema__dust i:nth-child(2n) { animation-duration: 9s; animation-delay: -3s; }
-  .cinema__dust i:nth-child(3n) { animation-duration: 11s; animation-delay: -5s; }
+  .cinema__dust i:nth-child(2n) { animation-duration: 11s; animation-delay: -4s; }
+  .cinema__dust i:nth-child(3n) { animation-duration: 14s; animation-delay: -7s; }
 }
 @keyframes dust-drift {
   from { transform: translate(0, 0); opacity: 0.15; }
-  50% { opacity: 0.5; }
-  to { transform: translate(26px, 38px); opacity: 0.1; }
+  50% { opacity: 0.55; }
+  to { transform: translate(20px, 46px); opacity: 0.1; }
 }
 
 /* film grain */

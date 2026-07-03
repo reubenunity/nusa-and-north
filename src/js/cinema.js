@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { config } from '../config.js';
 import { splitIntoChars } from './utils.js';
+import { setScrollGate, clearScrollGate } from './scroll-gate.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,6 +52,7 @@ export function buildCinema() {
 
   const section = document.querySelector('.cinema');
   const beam = document.querySelector('.cinema__beam');
+  const dust = document.querySelector('.cinema__dust');
   const leader = document.querySelector('.cinema__leader');
   const countEl = document.querySelector('.js-cinema-count');
   const trailers = gsap.utils.toArray('.js-trailer');
@@ -69,6 +71,14 @@ export function buildCinema() {
       end: `+=${cinema.scrollVh}%`,
       pin: '.cinema__stage',
       scrub: true,
+      // settle on the nearest beat (countdown, each trailer card,
+      // feature card, the reel) whenever scrolling stops
+      snap: {
+        snapTo: [0, 0.115, 0.26, 0.355, 0.45, 0.545, 0.655, 0.9, 1],
+        duration: { min: 0.25, max: 0.7 },
+        delay: 0.08,
+        ease: 'power1.inOut',
+      },
       onUpdate(self) {
         // leader countdown 5 → 1
         const p = self.progress;
@@ -80,8 +90,9 @@ export function buildCinema() {
     },
   });
 
-  // projector warms up — one smooth rise, no flicker
-  tl.fromTo(beam, { opacity: 0 }, { opacity: 0.5, duration: 0.045, ease: 'power1.out' }, 0.0);
+  // projector warms up — one smooth rise, no flicker; dust rides along
+  tl.fromTo(beam, { opacity: 0 }, { opacity: 1, duration: 0.045, ease: 'power1.out' }, 0.0);
+  tl.fromTo(dust, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: 'power1.out' }, 0.01);
 
   // leader
   tl.fromTo(leader, { opacity: 0 }, { opacity: 1, duration: 0.025 }, LEADER_IN);
@@ -117,17 +128,59 @@ export function buildCinema() {
     { opacity: 1, scale: 1, duration: 0.07, ease: 'power2.out' },
     0.71
   );
-  tl.to(beam, { opacity: 0.16, duration: 0.05 }, 0.71);
+  tl.to(beam, { opacity: 0.55, duration: 0.05 }, 0.71);
   tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.04 }, 0.88);
 
   // pad the timeline to exactly 1 so authored positions map 1:1
   // onto pin progress (scrub distributes scroll across total duration)
   tl.set({}, {}, 1);
 
+  // ---- hard stops: the scroll cannot blow past a card ----
+  // A gate on Lenis's virtual-scroll caps each downward delta so the
+  // scroll target lands exactly on the next card and stays there; the
+  // wall unlocks after a short dwell, so one gesture = one beat.
+  const WALLS = [0.26, 0.355, 0.45, 0.545, 0.655]; // card + feature centers
+  const DWELL_MS = 350;
+  let unlocked = 0;
+  let dwellTimer = null;
+
+  const gate = (data) => {
+    const st = tl.scrollTrigger;
+    const lenis = window.__lenis;
+    if (!st || !lenis || data.deltaY <= 0) return true; // upward is free
+    const dist = st.end - st.start;
+    if (dist <= 0) return true;
+
+    const target = lenis.targetScroll;
+    if (target <= st.start) unlocked = 0;
+    // scrolled back up past a wall: re-arm it
+    while (unlocked > 0 && target < st.start + WALLS[unlocked - 1] * dist - 4) unlocked--;
+    if (unlocked >= WALLS.length) return true;
+
+    const wallY = st.start + WALLS[unlocked] * dist;
+    if (target >= wallY - 1) {
+      // sitting at the wall — swallow deltas until the dwell unlocks
+      if (!dwellTimer) {
+        dwellTimer = setTimeout(() => {
+          unlocked++;
+          dwellTimer = null;
+        }, DWELL_MS);
+      }
+      data.deltaY = 0;
+    } else if (target + data.deltaY > wallY) {
+      // this gesture would overshoot — land exactly on the card
+      data.deltaY = wallY - target;
+    }
+    return true;
+  };
+  setScrollGate(gate);
+
   return () => {
+    clearScrollGate(gate);
+    if (dwellTimer) clearTimeout(dwellTimer);
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([beam, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
+    gsap.set([beam, dust, leader, featureCard, screen, intermission, ...trailers, ...allChars], {
       clearProps: 'all',
     });
   };
