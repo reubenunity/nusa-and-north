@@ -103,49 +103,6 @@ html[data-edit='red'] .edit__dust {
   position: relative; /* sits above the beam */
 }
 
-/* ---- countdown projected onto the closed curtains ---- */
-.edit__count {
-  position: absolute;
-  inset: 0;
-  z-index: 7; /* above the curtains (z 6) */
-  pointer-events: none;
-}
-.edit__count-veil {
-  position: absolute;
-  inset: 0;
-  background: rgba(5, 4, 4, 0.74);
-  opacity: 0;
-}
-.edit__count-circle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  width: min(42vh, 60vw);
-  aspect-ratio: 1;
-  border: 2px solid rgba(250, 250, 246, 0.7);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.edit__count-circle::after {
-  content: '';
-  position: absolute;
-  inset: 8%;
-  border: 1px solid rgba(250, 250, 246, 0.3);
-  border-radius: 50%;
-}
-.js-edit-count {
-  font-family: var(--font-mono);
-  font-size: min(16vh, 22vw);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--raw-paper);
-}
-
 .edit__monitor-frame {
   width: min(72vh, 88vw);
   max-width: 880px;

@@ -117,6 +117,7 @@
               <li class="js-about-in"><span>DIRECTION</span><span><!-- PLACEHOLDER -->PLACEHOLDER NAME</span></li>
               <li class="js-about-in"><span>CINEMATOGRAPHY</span><span><!-- PLACEHOLDER -->PLACEHOLDER NAME</span></li>
               <li class="js-about-in"><span>EDIT &amp; COLOUR</span><span><!-- PLACEHOLDER -->PLACEHOLDER NAME</span></li>
+              <li class="js-about-in"><span>SERVICES</span><span><!-- PLACEHOLDER -->FILM &middot; COMMERCIAL &middot; SOCIAL &middot; TRAVEL</span></li>
               <li class="js-about-in"><span>BASED IN</span><span>IRELAND</span></li>
             </ul>
           </div>
@@ -194,24 +195,13 @@
           </div>
         </div>
 
-        <!-- act finale: curtains sweep closed over the frozen bay,
-             then the countdown projects onto them -->
-        <div class="curtains" aria-hidden="true">
-          <div class="curtain curtain--l js-edit-curtain-l"></div>
-          <div class="curtain curtain--r js-edit-curtain-r"></div>
-        </div>
-        <div class="edit__count" aria-hidden="true">
-          <div class="edit__count-veil"></div>
-          <div class="edit__count-circle"><span class="js-edit-count">5</span></div>
-        </div>
       </div>
     </section>
 
     <!-- ============================================================
-         ACT IV — THE CINEMA
-         Lights down, trailer cards (services), then the feature: the
-         showreel. Reel slot takes a <video>/<iframe> later.
-         ALL COPY IS PLACEHOLDER.
+         ACT IV — THE SCREENING ROOM
+         One confident moment: the showreel in the dark. Reel slot
+         takes a <video>/<iframe> later. ALL COPY IS PLACEHOLDER.
          ============================================================ -->
     <section class="cinema" id="cinema">
       <div class="cinema__stage">
@@ -222,71 +212,17 @@
         <!-- widescreen letterbox bars -->
         <div class="cinema__bars" aria-hidden="true"></div>
 
-        <!-- services as trailer cards: footage behind, title over.
-             Images are PLACEHOLDERS — swap for real graded stills. -->
-        <div class="cinema__card js-trailer">
-          <div class="cinema__card-media" aria-hidden="true">
-            <img src="https://picsum.photos/seed/nnbrand/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <p class="cinema__card-index">TRAILER 01 / 04</p>
-          <p class="cinema__card-kicker">COMING ATTRACTIONS</p>
-          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->BRAND FILMS</h3>
-          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder copy — two or three sentences on what this service covers, who it's for and how it gets made.</p>
-          <p class="cinema__card-deliv"><!-- PLACEHOLDER -->PLACEHOLDER — 4K MASTER · CUTDOWNS · STILLS</p>
-        </div>
-        <div class="cinema__card js-trailer">
-          <div class="cinema__card-media" aria-hidden="true">
-            <img src="https://picsum.photos/seed/nncommercial/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <p class="cinema__card-index">TRAILER 02 / 04</p>
-          <p class="cinema__card-kicker">COMING ATTRACTIONS</p>
-          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->COMMERCIALS</h3>
-          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder copy — two or three sentences on what this service covers, who it's for and how it gets made.</p>
-          <p class="cinema__card-deliv"><!-- PLACEHOLDER -->PLACEHOLDER — 30s / 15s SPOTS · BROADCAST &amp; WEB</p>
-        </div>
-        <div class="cinema__card js-trailer">
-          <div class="cinema__card-media" aria-hidden="true">
-            <img src="https://picsum.photos/seed/nnsocial/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <p class="cinema__card-index">TRAILER 03 / 04</p>
-          <p class="cinema__card-kicker">NOW SHOWING EVERYWHERE</p>
-          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->SOCIAL CUTS</h3>
-          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder copy — two or three sentences on what this service covers, who it's for and how it gets made.</p>
-          <p class="cinema__card-deliv"><!-- PLACEHOLDER -->PLACEHOLDER — 9:16 / 1:1 / 4:5 · SUBTITLED</p>
-        </div>
-        <div class="cinema__card js-trailer">
-          <div class="cinema__card-media" aria-hidden="true">
-            <img src="https://picsum.photos/seed/nntravel/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <p class="cinema__card-index">TRAILER 04 / 04</p>
-          <p class="cinema__card-kicker">FILMED ON LOCATION</p>
-          <h3 class="cinema__card-title"><!-- PLACEHOLDER -->TRAVEL &amp; HOSPITALITY</h3>
-          <p class="cinema__card-sub"><!-- PLACEHOLDER -->Placeholder copy — two or three sentences on what this service covers, who it's for and how it gets made.</p>
-          <p class="cinema__card-deliv"><!-- PLACEHOLDER -->PLACEHOLDER — DESTINATION FILMS · HOTELS &amp; RESORTS</p>
-        </div>
-        <div class="cinema__card cinema__card--feature js-feature-card">
-          <div class="cinema__card-media" aria-hidden="true">
-            <img src="https://picsum.photos/seed/nnfeature/1600/900?grayscale" alt="" loading="lazy" />
-          </div>
-          <p class="cinema__card-kicker">AND NOW</p>
-          <h3 class="cinema__card-title">THE FEATURE PRESENTATION</h3>
-        </div>
-
-        <!-- the feature: showreel, letterboxed 2.39:1 -->
+        <!-- the showreel, letterboxed 2.39:1 -->
         <div class="cinema__screen js-screen">
           <div class="cinema__screen-media js-reel-slot">
             <span class="cinema__screen-title"><!-- PLACEHOLDER -->SHOWREEL</span>
             <button class="cinema__play" type="button">&#9654;&#xFE0E; PLAY REEL</button>
           </div>
+          <!-- services, said once, quietly -->
+          <p class="cinema__services js-services"><!-- PLACEHOLDER -->BRAND FILMS &middot; COMMERCIALS &middot; SOCIAL CUTS &middot; TRAVEL &amp; HOSPITALITY</p>
           <p class="cinema__intermission js-intermission">
             INTERMISSION — <a href="#recce">ENQUIRIES AT THE LOBBY DESK &darr;</a>
           </p>
-        </div>
-
-        <!-- theatre curtains — cover the stage, part when the act opens -->
-        <div class="curtains" aria-hidden="true">
-          <div class="curtain curtain--l js-curtain-l"></div>
-          <div class="curtain curtain--r js-curtain-r"></div>
         </div>
       </div>
     </section>

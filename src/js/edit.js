@@ -121,18 +121,7 @@ export function buildEdit() {
     0.4
   );
 
-  // ---- pinned phase: scrub the clips, freeze the bay, sweep the
-  // curtains closed over it, then count down on the closed house ----
-  const SCRUB_END = 0.6;     // lanes stop here; the bay holds still
-  const CURTAIN_AT = 0.63;   // curtains start closing
-  const CURTAIN_DUR = 0.15;
-  const COUNT_START = 0.82;  // countdown 5→1 across the rest
-  const countVeil = document.querySelector('.edit__count-veil');
-  const countCircle = document.querySelector('.edit__count-circle');
-  const countEl = document.querySelector('.js-edit-count');
-  const curtainL = document.querySelector('.js-edit-curtain-l');
-  const curtainR = document.querySelector('.js-edit-curtain-r');
-
+  // ---- pinned phase: pure scrub, clips pass under the fixed playhead ----
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -142,44 +131,20 @@ export function buildEdit() {
       pin: '.edit__stage',
       scrub: true,
       onUpdate(self) {
-        const p = self.progress;
-        tcEl.textContent = timecode(
-          Math.min(1, p / SCRUB_END) * edit.sequenceSeconds
-        );
+        tcEl.textContent = timecode(self.progress * edit.sequenceSeconds);
         setActiveClip(monitorTitle, monitorClipname);
-        if (p > COUNT_START) {
-          const n = 5 - Math.floor(((p - COUNT_START) / (1 - COUNT_START)) * 5);
-          countEl.textContent = String(Math.max(1, n));
-        }
       },
     },
   });
 
-  tl.to([...lanes, rulerInner], { x: -travel, duration: SCRUB_END }, 0);
-
-  // curtains sweep closed over the frozen bay
-  tl.fromTo(curtainL, { xPercent: -102 }, { xPercent: 0, duration: CURTAIN_DUR, ease: 'power2.inOut' }, CURTAIN_AT);
-  tl.fromTo(curtainR, { xPercent: 102 }, { xPercent: 0, duration: CURTAIN_DUR, ease: 'power2.inOut' }, CURTAIN_AT);
-
-  // the house dims and the leader counts down on the curtain
-  tl.fromTo(countVeil, { opacity: 0 }, { opacity: 0.45, duration: 0.04, ease: 'power1.out' }, 0.8);
-  tl.fromTo(
-    countCircle,
-    { opacity: 0, scale: 0.9 },
-    { opacity: 1, scale: 1, duration: 0.04, ease: 'power2.out' },
-    0.8
-  );
-  // pad so authored positions map 1:1 onto pin progress
-  tl.set({}, {}, 1);
+  tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
 
   return () => {
     assembleTl.scrollTrigger?.kill();
     assembleTl.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([ruler, tracks, monitorFrame, countVeil, countCircle, curtainL, curtainR, ...lanes, rulerInner], {
-      clearProps: 'all',
-    });
+    gsap.set([ruler, tracks, monitorFrame, ...lanes, rulerInner], { clearProps: 'all' });
   };
 }
 

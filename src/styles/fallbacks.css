@@ -48,24 +48,17 @@ html.no-scrub .cinema__grain,
 html.no-scrub .cinema__dust {
   display: none;
 }
-html.no-scrub .cinema__card {
-  position: relative;
-  inset: auto;
-  opacity: 1;
-  padding: 3.5rem var(--pad);
-}
-html.no-scrub .cinema__bars,
-html.no-scrub .curtains,
-html.no-scrub .edit__count {
-  display: none;
-}
-html.no-scrub .cinema__card--feature {
+html.no-scrub .cinema__bars {
   display: none;
 }
 html.no-scrub .cinema__screen {
   position: static;
   opacity: 1;
   margin-top: 2rem;
+}
+html.no-scrub .cinema__services,
+html.no-scrub .cinema__intermission {
+  opacity: 1;
 }
 
 /* recce board becomes a native horizontal scroller */

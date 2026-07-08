@@ -43,16 +43,15 @@ export const config = {
 
   edit: {
     // Scroll distance for the pinned edit section, in viewport-heights.
-    // The NLE assembles during the wipe-in; the last stretch freezes
-    // the bay, closes the curtains, and counts down 5→1 on them.
-    scrollVh: 560,
+    // (The NLE assembles during the wipe-in, before the pin starts.)
+    scrollVh: 420,
     sequenceSeconds: 84,  // fake sequence length driving the timecode
   },
 
   cinema: {
-    // Scroll distance for the pinned screening room (curtains → cards
-    // → feature). The countdown lives at the end of the edit act now.
-    scrollVh: 440,
+    // Scroll distance for the pinned screening room — a short,
+    // confident hold on the reel.
+    scrollVh: 160,
   },
 
   recce: {
