@@ -154,8 +154,8 @@ export function buildEditFallback() {
   const timelineEl = document.querySelector('.edit__timeline');
   const monitorTitle = document.querySelector('.js-monitor-title');
   const monitorClipname = document.querySelector('.js-monitor-clipname');
-  monitorTitle.textContent = 'PROJECT 01 — COMMERCIAL';
-  monitorClipname.textContent = 'project_01_commercial.mov';
+  monitorTitle.textContent = 'PROJECT 01';
+  monitorClipname.textContent = 'project_01.mov';
   timelineEl.addEventListener(
     'scroll',
     () => setActiveClip(monitorTitle, monitorClipname),

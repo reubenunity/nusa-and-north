@@ -314,15 +314,6 @@ html[data-palette='c'] .edit__playhead-cap {
   font-weight: 700;
 }
 
-.clip--cta {
-  border: 1px dashed var(--c-cta, var(--c-signal));
-  background: transparent;
-}
-.clip--cta .clip__name {
-  color: var(--c-cta, var(--c-signal));
-  font-weight: 700;
-}
-
 /* audio blocks + waveform */
 .audio-block {
   flex: 0 0 auto;

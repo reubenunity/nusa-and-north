@@ -44,8 +44,9 @@ export const config = {
   edit: {
     // Scroll distance for the pinned edit section, in viewport-heights.
     // (The NLE assembles during the wipe-in, before the pin starts.)
-    scrollVh: 420,
-    sequenceSeconds: 84,  // fake sequence length driving the timecode
+    // Sized for 15 project clips at a comfortable scrub speed.
+    scrollVh: 780,
+    sequenceSeconds: 150, // fake sequence length driving the timecode
   },
 
   cinema: {
