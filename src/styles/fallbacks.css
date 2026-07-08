@@ -55,7 +55,7 @@ html.no-scrub .cinema__card {
   padding: 3.5rem var(--pad);
 }
 html.no-scrub .cinema__bars,
-html.no-scrub .cinema__curtains,
+html.no-scrub .curtains,
 html.no-scrub .edit__count {
   display: none;
 }

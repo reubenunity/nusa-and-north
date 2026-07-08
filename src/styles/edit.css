@@ -103,11 +103,11 @@ html[data-edit='red'] .edit__dust {
   position: relative; /* sits above the beam */
 }
 
-/* ---- countdown projected over the frozen timeline ---- */
+/* ---- countdown projected onto the closed curtains ---- */
 .edit__count {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 7; /* above the curtains (z 6) */
   pointer-events: none;
 }
 .edit__count-veil {

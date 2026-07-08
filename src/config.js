@@ -43,9 +43,9 @@ export const config = {
 
   edit: {
     // Scroll distance for the pinned edit section, in viewport-heights.
-    // The NLE assembles during the wipe-in; the last fifth of the pin
-    // freezes the bay and projects the 5→1 countdown over it.
-    scrollVh: 520,
+    // The NLE assembles during the wipe-in; the last stretch freezes
+    // the bay, closes the curtains, and counts down 5→1 on them.
+    scrollVh: 560,
     sequenceSeconds: 84,  // fake sequence length driving the timecode
   },
 

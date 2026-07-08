@@ -122,15 +122,16 @@
 .cinema__bars::before { top: 0; }
 .cinema__bars::after { bottom: 0; }
 
-/* theatre curtains — cover the stage until the act opens */
-.cinema__curtains {
+/* theatre curtains — shared by the edit bay (close) and the
+   cinema (open) */
+.curtains {
   position: absolute;
   inset: 0;
   z-index: 6;
   pointer-events: none;
   overflow: hidden;
 }
-.cinema__curtain {
+.curtain {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -144,11 +145,11 @@
       color-mix(in srgb, var(--c-signal) 30%, #150302) 30px 60px
     );
 }
-.cinema__curtain--l {
+.curtain--l {
   left: 0;
   box-shadow: inset -24px 0 32px -18px rgba(0, 0, 0, 0.7);
 }
-.cinema__curtain--r {
+.curtain--r {
   right: 0;
   box-shadow: inset 24px 0 32px -18px rgba(0, 0, 0, 0.7);
 }
