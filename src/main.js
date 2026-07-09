@@ -47,10 +47,11 @@ if (fullExperience) {
   gsap.ticker.lagSmoothing(0);
 
   build();
-  initDevPanel(rebuild);
+  // dev-only iteration panel — never ships in the production build
+  if (import.meta.env.DEV) initDevPanel(rebuild);
 } else {
   // reduced-motion / small-screen: static layout, native scrolling,
   // timeline becomes a horizontal scroller
   buildEditFallback();
-  initDevPanel(() => {});
+  if (import.meta.env.DEV) initDevPanel(() => {});
 }
