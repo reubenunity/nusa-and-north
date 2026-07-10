@@ -6,6 +6,7 @@ import './styles/bridge.css';
 import './styles/edit.css';
 import './styles/cinema.css';
 import './styles/recce.css';
+import './styles/lightbox.css';
 import './styles/fallbacks.css';
 import './styles/dev-panel.css';
 

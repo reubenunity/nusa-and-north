@@ -110,6 +110,7 @@ html[data-edit='red'] .edit__dust {
 }
 
 .edit__monitor-media {
+  cursor: pointer;
   aspect-ratio: 16 / 9;
   background: var(--c-monitor-bg);
   border: 1px solid var(--c-panel-line);
@@ -163,6 +164,10 @@ html[data-edit='red'] .edit__dust {
   padding: 0.55em 0.9em;
   border-left: 2px solid var(--c-signal);
   max-width: 70%;
+}
+.edit__monitor-title::before {
+  content: '\25B6\FE0E  ';
+  color: var(--c-signal);
 }
 
 .edit__monitor-bar {
@@ -289,6 +294,7 @@ html[data-palette='c'] .edit__playhead-cap {
 
 /* ---- clips ---- */
 .clip {
+  cursor: pointer;
   flex: 0 0 auto;
   width: calc(var(--clip-w) * 1vw);
   min-width: 120px;

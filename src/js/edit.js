@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { config } from '../config.js';
 import { timecode } from './utils.js';
+import { openLightbox } from './lightbox.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,6 +52,27 @@ export function populateEditChrome() {
   }
   ruler.appendChild(inner);
   return inner;
+}
+
+// Click a clip (or the monitor) to play that film in the lightbox.
+function wirePlayback() {
+  const clips = gsap.utils.toArray('.js-video-lane .clip');
+  clips.forEach((clip) => {
+    if (clip.dataset.playWired) return;
+    clip.dataset.playWired = '1';
+    clip.addEventListener('click', () => {
+      if (clip.dataset.videoSrc) openLightbox(clip.dataset.videoSrc);
+    });
+  });
+
+  const monitor = document.querySelector('.js-monitor-media');
+  if (monitor && !monitor.dataset.playWired) {
+    monitor.dataset.playWired = '1';
+    monitor.addEventListener('click', () => {
+      const active = document.querySelector('.clip.is-active');
+      if (active?.dataset.videoSrc) openLightbox(active.dataset.videoSrc);
+    });
+  }
 }
 
 function setActiveClip(monitorTitle, monitorClipname) {
@@ -103,6 +125,7 @@ export function buildEdit() {
   const tcEl = document.querySelector('.js-edit-timecode');
 
   const rulerInner = populateEditChrome();
+  wirePlayback();
 
   const videoLane = document.querySelector('.js-video-lane');
   // scrub travel: last clip's right edge ends at the playhead
@@ -163,6 +186,7 @@ export function buildEdit() {
 // Fallback for no-scrub mode: native horizontal scroll drives the monitor.
 export function buildEditFallback() {
   populateEditChrome();
+  wirePlayback();
   const timelineEl = document.querySelector('.edit__timeline');
   const monitorTitle = document.querySelector('.js-monitor-title');
   const monitorClipname = document.querySelector('.js-monitor-clipname');
