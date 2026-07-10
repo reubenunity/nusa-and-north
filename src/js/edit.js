@@ -74,6 +74,18 @@ function setActiveClip(monitorTitle, monitorClipname) {
       monitorTitle.textContent = title;
       monitorClipname.textContent = name;
       gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
+
+      // swap the program-feed poster frame
+      const posterEl = document.querySelector('.js-monitor-poster');
+      const poster = clips[activeIdx].dataset.poster;
+      if (posterEl) {
+        if (poster) {
+          posterEl.src = poster;
+          posterEl.classList.add('is-on');
+        } else {
+          posterEl.classList.remove('is-on');
+        }
+      }
     }
   }
 }
