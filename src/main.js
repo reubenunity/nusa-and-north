@@ -13,7 +13,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
-import { fullExperience, applyMotionClass, watchViewport } from './js/motion.js';
+import { fullExperience, applyMotionClass, watchViewport, prefersReducedMotion } from './js/motion.js';
 import { applyGate } from './js/scroll-gate.js';
 import { buildHero } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
@@ -25,6 +25,16 @@ import { initDevPanel } from './js/dev-panel.js';
 gsap.registerPlugin(ScrollTrigger);
 applyMotionClass();
 watchViewport();
+
+// respect reduced motion: hold the hero on its poster frame
+if (prefersReducedMotion) {
+  const heroVideo = document.querySelector('.hero__media video');
+  if (heroVideo) {
+    heroVideo.autoplay = false;
+    heroVideo.pause();
+    heroVideo.addEventListener('loadeddata', () => heroVideo.pause(), { once: true });
+  }
+}
 
 let teardowns = [];
 

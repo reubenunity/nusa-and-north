@@ -21,7 +21,15 @@
         <!-- media slot — swap the <img> for a muted <video> showreel loop later.
              PLACEHOLDER image via picsum (needs network in dev). -->
         <div class="hero__media" aria-hidden="true">
-          <img class="js-hero-media" src="stills/hero.jpg" alt="" loading="eager" />
+          <video
+            class="js-hero-media"
+            src="video/hero-loop.mp4"
+            poster="stills/hero-poster.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+          ></video>
         </div>
 
         <!-- Headline sits BEHIND the HUD, starts out of focus -->
