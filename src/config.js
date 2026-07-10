@@ -46,7 +46,7 @@ export const config = {
     // (The NLE assembles during the wipe-in, before the pin starts.)
     // Sized for 15 project clips at a comfortable scrub speed.
     scrollVh: 780,
-    sequenceSeconds: 150, // fake sequence length driving the timecode
+    sequenceSeconds: 1053, // real total runtime of the 15 films
   },
 
   cinema: {

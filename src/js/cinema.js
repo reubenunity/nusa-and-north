@@ -56,7 +56,23 @@ export function buildCinema() {
   // pad so authored positions map 1:1 onto pin progress
   tl.set({}, {}, 1);
 
+  // PLAY REEL — swap the poster for the Vimeo player
+  const reelSlot = document.querySelector('.js-reel-slot');
+  const playBtn = document.querySelector('.js-play-reel');
+  const onPlay = () => {
+    const { vimeoId, vimeoHash } = reelSlot.dataset;
+    if (!vimeoId) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://player.vimeo.com/video/${vimeoId}?h=${vimeoHash}&autoplay=1&title=0&byline=0&portrait=0`;
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+    iframe.allowFullscreen = true;
+    reelSlot.innerHTML = '';
+    reelSlot.appendChild(iframe);
+  };
+  playBtn?.addEventListener('click', onPlay);
+
   return () => {
+    playBtn?.removeEventListener('click', onPlay);
     entranceTl.scrollTrigger?.kill();
     entranceTl.kill();
     tl.scrollTrigger?.kill();
