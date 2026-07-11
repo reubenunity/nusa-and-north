@@ -97,17 +97,19 @@ function setActiveClip(monitorTitle, monitorClipname) {
       monitorClipname.textContent = name;
       gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
 
-      // swap the program-feed poster frame
+      // swap the program-feed poster frame + the room's ambient glow
       const posterEl = document.querySelector('.js-monitor-poster');
+      const ambientEl = document.querySelector('.js-monitor-ambient');
       const poster = clips[activeIdx].dataset.poster;
-      if (posterEl) {
+      [posterEl, ambientEl].forEach((el) => {
+        if (!el) return;
         if (poster) {
-          posterEl.src = poster;
-          posterEl.classList.add('is-on');
+          el.src = poster;
+          el.classList.add('is-on');
         } else {
-          posterEl.classList.remove('is-on');
+          el.classList.remove('is-on');
         }
-      }
+      });
     }
   }
 }
