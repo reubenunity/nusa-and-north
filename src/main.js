@@ -58,6 +58,24 @@ if (fullExperience) {
   gsap.ticker.lagSmoothing(0);
 
   build();
+
+  // all scrub distances (timeline travel, explosion vectors, pin spans)
+  // are measured at build time — remeasure when the window size settles
+  // after a resize, or the timeline runs out of travel mid-scrub
+  let lastW = window.innerWidth;
+  let lastH = window.innerHeight;
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (Math.abs(window.innerWidth - lastW) > 2 || Math.abs(window.innerHeight - lastH) > 2) {
+        lastW = window.innerWidth;
+        lastH = window.innerHeight;
+        rebuild();
+      }
+    }, 300);
+  });
+
   // dev-only iteration panel — never ships in the production build
   if (import.meta.env.DEV) initDevPanel(rebuild);
 } else {

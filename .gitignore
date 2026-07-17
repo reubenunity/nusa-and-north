@@ -5,3 +5,6 @@ dist
 .claude/settings.local.json
 stills-originals/
 video-originals/
+models/
+output/
+assemble_breakfast.py
