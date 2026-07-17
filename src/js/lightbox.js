@@ -3,6 +3,7 @@
 // while open, closes on X / backdrop / Escape.
 
 let overlay = null;
+let lastTrigger = null;
 
 function embedUrl(watchUrl) {
   // https://vimeo.com/ID/HASH -> player.vimeo.com embed
@@ -39,10 +40,11 @@ function ensureOverlay() {
   return overlay;
 }
 
-export function openLightbox(watchUrl) {
+export function openLightbox(watchUrl, triggerEl = null) {
   const src = embedUrl(watchUrl);
   if (!src) return;
 
+  lastTrigger = triggerEl;
   const el = ensureOverlay();
   const player = el.querySelector('.lightbox__player');
   player.innerHTML = '';
@@ -54,6 +56,7 @@ export function openLightbox(watchUrl) {
 
   el.classList.add('is-open');
   window.__lenis?.stop();
+  el.querySelector('.lightbox__close').focus();
 }
 
 export function closeLightbox() {
@@ -61,4 +64,6 @@ export function closeLightbox() {
   overlay.classList.remove('is-open');
   overlay.querySelector('.lightbox__player').innerHTML = ''; // stops playback
   window.__lenis?.start();
+  lastTrigger?.focus?.();
+  lastTrigger = null;
 }

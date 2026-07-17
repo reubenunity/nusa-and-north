@@ -40,7 +40,7 @@ html.no-scrub .about__ghost {
 /* cinema flows statically: cards stacked, screen visible */
 html.no-scrub .cinema__stage {
   height: auto;
-  padding: 12vh 0;
+  padding: 7vh 0;
 }
 html.no-scrub .cinema__beam,
 html.no-scrub .cinema__leader,
@@ -64,12 +64,15 @@ html.no-scrub .cinema__intermission {
 /* recce board becomes a native horizontal scroller */
 html.no-scrub .recce__stage {
   height: auto;
-  min-height: 100svh;
+  min-height: 0;
 }
 html.no-scrub .recce__viewport {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 4vh 0;
+  padding: 5vh 0;
+}
+html.no-scrub .pin:nth-child(even) {
+  margin-top: 0;
 }
 html.no-scrub .recce__track {
   padding: 0 8vw;
@@ -78,8 +81,12 @@ html.no-scrub .recce__track {
 /* timeline becomes a native horizontal scroller */
 html.no-scrub .edit__stage {
   height: auto;
-  min-height: 100svh;
-  padding-bottom: 24px;
+  min-height: 0;
+  padding: 6vh 0 24px;
+}
+html.no-scrub .edit__monitor {
+  flex: 0 0 auto;
+  padding: 2vh var(--pad) 4vh;
 }
 html.no-scrub .edit__timeline {
   overflow-x: auto;

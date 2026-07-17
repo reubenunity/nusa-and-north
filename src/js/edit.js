@@ -55,23 +55,38 @@ export function populateEditChrome() {
 }
 
 // Click a clip (or the monitor) to play that film in the lightbox.
+// Everything is keyboard-operable: Tab to focus, Enter/Space to play.
 function wirePlayback() {
-  const clips = gsap.utils.toArray('.js-video-lane .clip');
-  clips.forEach((clip) => {
-    if (clip.dataset.playWired) return;
-    clip.dataset.playWired = '1';
-    clip.addEventListener('click', () => {
-      if (clip.dataset.videoSrc) openLightbox(clip.dataset.videoSrc);
+  const activate = (el, getSrc, label) => {
+    if (el.dataset.playWired) return;
+    el.dataset.playWired = '1';
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-label', label);
+    const play = () => {
+      const src = getSrc();
+      if (src) openLightbox(src, el);
+    };
+    el.addEventListener('click', play);
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        play();
+      }
     });
+  };
+
+  gsap.utils.toArray('.js-video-lane .clip').forEach((clip) => {
+    activate(clip, () => clip.dataset.videoSrc, `Play ${clip.dataset.title}`);
   });
 
   const monitor = document.querySelector('.js-monitor-media');
-  if (monitor && !monitor.dataset.playWired) {
-    monitor.dataset.playWired = '1';
-    monitor.addEventListener('click', () => {
-      const active = document.querySelector('.clip.is-active');
-      if (active?.dataset.videoSrc) openLightbox(active.dataset.videoSrc);
-    });
+  if (monitor) {
+    activate(
+      monitor,
+      () => document.querySelector('.clip.is-active')?.dataset.videoSrc,
+      'Play the film currently under the playhead'
+    );
   }
 }
 
