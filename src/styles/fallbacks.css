@@ -131,6 +131,20 @@ html.no-scrub .edit__track-lane {
 html.no-scrub .edit__playhead {
   display: none;
 }
-html.no-scrub .clip {
+html.no-scrub .clip,
+html.no-scrub .audio-block {
   min-width: 180px;
+}
+
+/* visible thin scrollbar — another "this scrolls" signal */
+html.no-scrub .edit__timeline {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-signal) transparent;
+}
+html.no-scrub .edit__timeline::-webkit-scrollbar {
+  height: 4px;
+}
+html.no-scrub .edit__timeline::-webkit-scrollbar-thumb {
+  background: var(--c-signal);
+  border-radius: 2px;
 }

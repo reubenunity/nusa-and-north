@@ -95,8 +95,8 @@ if (fullExperience) {
             if (!entry.isIntersecting) return;
             io.disconnect();
             setTimeout(() => {
-              el.scrollTo({ left: 90, behavior: 'smooth' });
-              setTimeout(() => el.scrollTo({ left: 0, behavior: 'smooth' }), 650);
+              el.scrollTo({ left: 140, behavior: 'smooth' });
+              setTimeout(() => el.scrollTo({ left: 0, behavior: 'smooth' }), 750);
             }, 500);
           });
         },
