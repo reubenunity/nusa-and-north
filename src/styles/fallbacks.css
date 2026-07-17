@@ -78,6 +78,38 @@ html.no-scrub .recce__track {
   padding: 0 8vw;
 }
 
+/* swipe hints — only exist in the static/native-scroll experience */
+.swipe-hint {
+  display: none;
+}
+html.no-scrub .swipe-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--c-signal);
+  padding: 0 var(--pad) 12px;
+}
+html.no-scrub .swipe-hint::after {
+  content: '\27F6';
+  font-size: 1rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.no-scrub .swipe-hint::after {
+    animation: swipe-nudge 1.6s ease-in-out infinite;
+  }
+}
+@keyframes swipe-nudge {
+  50% { transform: translateX(9px); }
+}
+html.no-scrub .swipe-hint--recce {
+  padding-left: calc(var(--pad) * 1.8);
+  padding-top: 2vh;
+}
+
 /* timeline becomes a native horizontal scroller */
 html.no-scrub .edit__stage {
   height: auto;

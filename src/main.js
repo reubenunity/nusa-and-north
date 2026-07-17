@@ -82,5 +82,29 @@ if (fullExperience) {
   // reduced-motion / small-screen: static layout, native scrolling,
   // timeline becomes a horizontal scroller
   buildEditFallback();
+
+  // nudge the horizontal strips when they first appear, so nobody
+  // misses that they swipe sideways
+  if (!prefersReducedMotion) {
+    ['.edit__timeline', '.recce__viewport'].forEach((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            io.disconnect();
+            setTimeout(() => {
+              el.scrollTo({ left: 90, behavior: 'smooth' });
+              setTimeout(() => el.scrollTo({ left: 0, behavior: 'smooth' }), 650);
+            }, 500);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      io.observe(el);
+    });
+  }
+
   if (import.meta.env.DEV) initDevPanel(() => {});
 }
