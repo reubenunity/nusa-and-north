@@ -6,11 +6,11 @@
 export const config = {
   hero: {
     // Total scroll distance for the pinned hero, in viewport-heights.
-    scrollVh: 260,
+    // (The focus pull plays automatically on load; scroll drives
+    // only the dismantle now.)
+    scrollVh: 190,
     // Progress fractions (0–1) within that scroll span.
-    focusStart: 0.0,   // headline blurred until here
-    focusEnd: 0.35,    // headline fully sharp here
-    dismantleStart: 0.48,
+    dismantleStart: 0.12,
     dismantleEnd: 1.0,
     // Which dismantle preset + direction mode to use (see below).
     dismantlePreset: 'scatter',

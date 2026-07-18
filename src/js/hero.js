@@ -66,6 +66,25 @@ export function buildHero() {
   splitHeadline(headlineEl);
   const chars = gsap.utils.toArray('.hero__char');
 
+  // ---- the focus pull plays by itself on load, so nobody mistakes
+  // the defocused frame for a loading state ----
+  const focusTargets = mediaActive ? [media, headline] : [headline];
+  const intro = gsap.timeline({ delay: 0.3 });
+  intro.fromTo(
+    focusTargets,
+    { filter: `blur(${hero.startBlur}px)`, scale: 1.045 },
+    {
+      filter: 'blur(0px)',
+      scale: 1,
+      duration: 1.6,
+      ease: 'power2.out',
+      stagger: 0.1,
+      onComplete() {
+        focusLabel.textContent = 'AF · LOCKED';
+      },
+    }
+  );
+
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -76,42 +95,10 @@ export function buildHero() {
       pinSpacing: true,
       scrub: true,
       onUpdate(self) {
-        // running timecode + AF label flips with the focus pull
         tcEl.textContent = timecode(self.progress * 42);
-        focusLabel.textContent =
-          self.progress > hero.focusEnd ? 'AF · LOCKED' : 'AF · SEARCHING';
       },
     },
   });
-
-  // ---- phase 1: focus pull ----
-  tl.fromTo(
-    headline,
-    { filter: `blur(${hero.startBlur}px)`, scale: 1.045, opacity: 0.85 },
-    {
-      filter: 'blur(0px)',
-      scale: 1,
-      opacity: 1,
-      ease: 'power2.out',
-      duration: hero.focusEnd - hero.focusStart,
-    },
-    hero.focusStart
-  );
-
-  // the footage racks focus along with the headline
-  if (mediaActive) {
-    tl.fromTo(
-      media,
-      { filter: 'blur(16px)', scale: 1.06 },
-      {
-        filter: 'blur(0px)',
-        scale: 1,
-        ease: 'power2.out',
-        duration: hero.focusEnd - hero.focusStart,
-      },
-      hero.focusStart
-    );
-  }
 
   // ---- phase 2: the dismantle ----
   // timings normalized so the LAST element lands exactly at pin release —
@@ -203,6 +190,7 @@ export function buildHero() {
   }
 
   return () => {
+    intro.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
     gsap.set([headline, media, sub, ...chars, ...hudEls].filter(Boolean), { clearProps: 'all' });
