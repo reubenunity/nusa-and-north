@@ -45,10 +45,12 @@ function build() {
   // statically with fade-up entrances instead
   const smallScreen = window.innerWidth < 768;
   document.documentElement.classList.toggle('bridge-static', smallScreen);
+  // the timeline is a swipe strip on phones — browse it or scroll past
+  document.documentElement.classList.toggle('edit-static', smallScreen);
   teardowns = [
     buildHero(),
     ...(smallScreen ? [] : [buildBridge()]),
-    buildEdit(),
+    smallScreen ? buildEditFallback() : buildEdit(),
     buildCinema(),
     buildRecce(),
   ];
@@ -107,6 +109,25 @@ if (fullExperience) {
       el.classList.add('fade-up');
       reveal.observe(el);
     });
+
+    // nudge the timeline strip when it first appears
+    const strip = document.querySelector('.edit__timeline');
+    if (strip) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            io.disconnect();
+            setTimeout(() => {
+              strip.scrollTo({ left: 140, behavior: 'smooth' });
+              setTimeout(() => strip.scrollTo({ left: 0, behavior: 'smooth' }), 750);
+            }, 500);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      io.observe(strip);
+    }
   }
 
   // dev-only iteration panel — never ships in the production build

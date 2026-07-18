@@ -200,18 +200,20 @@ export function buildEdit() {
   };
 }
 
-// Fallback for no-scrub mode: native horizontal scroll drives the monitor.
+// Static timeline: native horizontal swipe drives the monitor.
+// Used for reduced-motion AND as the mobile timeline (swipe to browse,
+// scroll on to skip — no forced 15-clip toll).
 export function buildEditFallback() {
   populateEditChrome();
   wirePlayback();
   const timelineEl = document.querySelector('.edit__timeline');
   const monitorTitle = document.querySelector('.js-monitor-title');
   const monitorClipname = document.querySelector('.js-monitor-clipname');
-  monitorTitle.textContent = 'PROJECT 01';
-  monitorClipname.textContent = 'project_01.mov';
-  timelineEl.addEventListener(
-    'scroll',
-    () => setActiveClip(monitorTitle, monitorClipname),
-    { passive: true }
-  );
+  const onScroll = () => setActiveClip(monitorTitle, monitorClipname);
+  timelineEl.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // light up the first clip immediately
+
+  return () => {
+    timelineEl.removeEventListener('scroll', onScroll);
+  };
 }

@@ -119,7 +119,8 @@ html.bridge-static .fade-up.in-view {
 .swipe-hint {
   display: none;
 }
-html.no-scrub .swipe-hint {
+html.no-scrub .swipe-hint,
+html.edit-static .edit__stage .swipe-hint {
   display: flex;
   align-items: center;
   gap: 0.8em;
@@ -130,12 +131,14 @@ html.no-scrub .swipe-hint {
   color: var(--c-signal);
   padding: 0 var(--pad) 12px;
 }
-html.no-scrub .swipe-hint::after {
+html.no-scrub .swipe-hint::after,
+html.edit-static .edit__stage .swipe-hint::after {
   content: '\27F6';
   font-size: 1rem;
 }
 @media (prefers-reduced-motion: no-preference) {
-  html.no-scrub .swipe-hint::after {
+  html.no-scrub .swipe-hint::after,
+html.edit-static .edit__stage .swipe-hint::after {
     animation: swipe-nudge 1.6s ease-in-out infinite;
   }
 }
@@ -148,40 +151,50 @@ html.no-scrub .swipe-hint--recce {
 }
 
 /* timeline becomes a native horizontal scroller */
-html.no-scrub .edit__stage {
+html.no-scrub .edit__stage,
+html.edit-static .edit__stage {
   height: auto;
   min-height: 0;
   padding: 6vh 0 24px;
 }
-html.no-scrub .edit__monitor {
+html.no-scrub .edit__monitor,
+html.edit-static .edit__monitor {
   flex: 0 0 auto;
   padding: 2vh var(--pad) 4vh;
 }
-html.no-scrub .edit__timeline {
+html.no-scrub .edit__timeline,
+html.edit-static .edit__timeline {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-html.no-scrub .edit__track-lane {
+html.no-scrub .edit__track-lane,
+html.edit-static .edit__track-lane {
   padding-left: 12vw;
   padding-right: 12vw;
 }
-html.no-scrub .edit__playhead {
+html.no-scrub .edit__playhead,
+html.edit-static .edit__playhead {
   display: none;
 }
 html.no-scrub .clip,
-html.no-scrub .audio-block {
+html.no-scrub .audio-block,
+html.edit-static .clip,
+html.edit-static .audio-block {
   min-width: 180px;
 }
 
 /* visible thin scrollbar — another "this scrolls" signal */
-html.no-scrub .edit__timeline {
+html.no-scrub .edit__timeline,
+html.edit-static .edit__timeline {
   scrollbar-width: thin;
   scrollbar-color: var(--c-signal) transparent;
 }
-html.no-scrub .edit__timeline::-webkit-scrollbar {
+html.no-scrub .edit__timeline::-webkit-scrollbar,
+html.edit-static .edit__timeline::-webkit-scrollbar {
   height: 4px;
 }
-html.no-scrub .edit__timeline::-webkit-scrollbar-thumb {
+html.no-scrub .edit__timeline::-webkit-scrollbar-thumb,
+html.edit-static .edit__timeline::-webkit-scrollbar-thumb {
   background: var(--c-signal);
   border-radius: 2px;
 }
