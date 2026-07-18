@@ -20,6 +20,12 @@ export const fullExperience =
 
 export function applyMotionClass() {
   document.documentElement.classList.toggle('no-scrub', !fullExperience);
+  // "motion lite": the static experience still gets entrance life —
+  // unless the visitor asked for reduced motion
+  document.documentElement.classList.toggle(
+    'lite-motion',
+    !fullExperience && !prefersReducedMotion
+  );
 }
 
 // The mode is baked in at load (Lenis, pins, split text) — the cheapest

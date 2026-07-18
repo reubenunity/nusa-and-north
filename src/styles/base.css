@@ -45,3 +45,17 @@ body {
 .mono {
   font-family: var(--font-mono);
 }
+
+/* scene kickers on the dark acts — every act announces itself */
+.stage-kicker {
+  position: absolute;
+  top: clamp(18px, 3vh, 32px);
+  left: clamp(18px, 3vw, 40px);
+  z-index: 5;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--c-signal);
+  pointer-events: none;
+}

@@ -78,6 +78,38 @@ html.no-scrub .recce__track {
   padding: 0 8vw;
 }
 
+/* ---- motion lite: entrance life for the static experience ---- */
+
+/* the hero plays its focus pull once, on load */
+html.lite-motion .hero__media {
+  animation: lite-focus 1.8s ease-out both;
+}
+html.lite-motion .hero__headline-wrap {
+  animation: lite-focus 1.8s ease-out 0.15s both;
+}
+html.lite-motion .hud {
+  animation: lite-hud 1.2s ease-out 0.9s both;
+}
+@keyframes lite-focus {
+  from { filter: blur(16px); transform: scale(1.03); }
+  to { filter: blur(0); transform: scale(1); }
+}
+@keyframes lite-hud {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* sections fade up as they enter the viewport */
+html.lite-motion .fade-up {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+html.lite-motion .fade-up.in-view {
+  opacity: 1;
+  transform: none;
+}
+
 /* swipe hints — only exist in the static/native-scroll experience */
 .swipe-hint {
   display: none;

@@ -83,6 +83,28 @@ if (fullExperience) {
   // timeline becomes a horizontal scroller
   buildEditFallback();
 
+  // motion lite: fade sections up as they enter the viewport
+  if (!prefersReducedMotion) {
+    const targets = document.querySelectorAll(
+      '.about__main, .about__still, .quote, .edit__monitor, .edit__timeline, .cinema__screen, .recce__head, .pin, .recce__footer'
+    );
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            reveal.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    targets.forEach((el) => {
+      el.classList.add('fade-up');
+      reveal.observe(el);
+    });
+  }
+
   // nudge the horizontal strips when they first appear, so nobody
   // misses that they swipe sideways
   if (!prefersReducedMotion) {
