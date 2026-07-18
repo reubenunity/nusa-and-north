@@ -40,7 +40,18 @@ if (prefersReducedMotion) {
 let teardowns = [];
 
 function build() {
-  teardowns = [buildHero(), buildBridge(), buildEdit(), buildCinema(), buildRecce()];
+  // phones get the full scroll film too — except the production sheet,
+  // whose two-column layout can't fit a pinned phone screen; it flows
+  // statically with fade-up entrances instead
+  const smallScreen = window.innerWidth < 768;
+  document.documentElement.classList.toggle('bridge-static', smallScreen);
+  teardowns = [
+    buildHero(),
+    ...(smallScreen ? [] : [buildBridge()]),
+    buildEdit(),
+    buildCinema(),
+    buildRecce(),
+  ];
   ScrollTrigger.refresh();
 }
 
@@ -68,13 +79,35 @@ if (fullExperience) {
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      if (Math.abs(window.innerWidth - lastW) > 2 || Math.abs(window.innerHeight - lastH) > 2) {
+      // ignore small height-only changes (mobile URL bar show/hide)
+      // or the rebuild would fire constantly mid-scroll on phones
+      if (Math.abs(window.innerWidth - lastW) > 2 || Math.abs(window.innerHeight - lastH) > 150) {
         lastW = window.innerWidth;
         lastH = window.innerHeight;
         rebuild();
       }
     }, 300);
   });
+
+  // the production sheet fades up as it enters view on phones
+  if (window.innerWidth < 768) {
+    const targets = document.querySelectorAll('.about__main, .about__still, .quote');
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            reveal.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    targets.forEach((el) => {
+      el.classList.add('fade-up');
+      reveal.observe(el);
+    });
+  }
 
   // dev-only iteration panel — never ships in the production build
   if (import.meta.env.DEV) initDevPanel(rebuild);

@@ -24,16 +24,19 @@ html.no-scrub .hud__scroll-hint span::after {
 }
 
 /* production notes flow statically */
-html.no-scrub .bridge__stage {
+html.no-scrub .bridge__stage,
+html.bridge-static .bridge__stage {
   height: auto;
   min-height: 100svh;
 }
-html.no-scrub .bridge__about {
+html.no-scrub .bridge__about,
+html.bridge-static .bridge__about {
   position: static;
   padding-top: calc(var(--pad) * 2.4);
   padding-bottom: calc(var(--pad) * 2.4);
 }
-html.no-scrub .about__ghost {
+html.no-scrub .about__ghost,
+html.bridge-static .about__ghost {
   display: none;
 }
 
@@ -100,12 +103,14 @@ html.lite-motion .hud {
 }
 
 /* sections fade up as they enter the viewport */
-html.lite-motion .fade-up {
+html.lite-motion .fade-up,
+html.bridge-static .fade-up {
   opacity: 0;
   transform: translateY(26px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-html.lite-motion .fade-up.in-view {
+html.lite-motion .fade-up.in-view,
+html.bridge-static .fade-up.in-view {
   opacity: 1;
   transform: none;
 }
