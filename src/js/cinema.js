@@ -158,15 +158,15 @@ export function buildVillage() {
 // THE SOCIAL SCREEN — the vertical work, real reels in phone frames.
 const SOCIAL_REELS = [
   {
-    src: 'https://vimeo.com/1123943736/b2bba13bf5',
-    poster: 'https://i.vimeocdn.com/video/2065676516-b4300baa189d4888a3ba1eed8ca0c14de7e8d89aee4b1f75301e070776b2ebd2-d_405x720',
-    tag: 'FOUR SEASONS \u00b7 NAM HAI',
-  },
-  {
     src: 'https://vimeo.com/1139332827/877cff4ed9',
     poster: 'https://i.vimeocdn.com/video/2085946390-f20a6bd4e0d2f12c3030b970bd21c209a699fd58b7c67429f1769f566cd8bbfb-d_480x600',
     tag: 'HELLOBODY \u00b7 COCOS KISS',
     wide: true,
+  },
+  {
+    src: 'https://vimeo.com/1123943736/b2bba13bf5',
+    poster: 'https://i.vimeocdn.com/video/2065676516-b4300baa189d4888a3ba1eed8ca0c14de7e8d89aee4b1f75301e070776b2ebd2-d_405x720',
+    tag: 'FOUR SEASONS \u00b7 NAM HAI',
   },
   {
     src: 'https://vimeo.com/1139331392/5ee587949f',
@@ -175,15 +175,15 @@ const SOCIAL_REELS = [
     wide: true,
   },
   {
+    src: 'https://vimeo.com/1143266792/307333a803',
+    poster: 'https://i.vimeocdn.com/video/2091389488-43bb49248177a293722a51f71d828fd1c7e8716c06f99974aed11ba03e7fe366-d_405x720',
+    tag: 'PECKS ROAD \u00b7 MELBOURNE',
+  },
+  {
     src: 'https://vimeo.com/1139331912/8e83f64171',
     poster: 'https://i.vimeocdn.com/video/2085945379-09da3793430e6c41ea71300e0992959b466a7eea75b02ab79ffeff251461011d-d_480x600',
     tag: 'HELLOBODY \u00b7 COCOS WOW',
     wide: true,
-  },
-  {
-    src: 'https://vimeo.com/1143266792/307333a803',
-    poster: 'https://i.vimeocdn.com/video/2091389488-43bb49248177a293722a51f71d828fd1c7e8716c06f99974aed11ba03e7fe366-d_405x720',
-    tag: 'PECKS ROAD \u00b7 MELBOURNE',
   },
 ];
 
