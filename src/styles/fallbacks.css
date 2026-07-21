@@ -44,6 +44,8 @@ html.bridge-static .about__ghost {
 html.no-scrub .cinema__stage,
 html.cinema-static .cinema__stage {
   height: auto;
+  /* a full page of its own — the slimmed phones center in it */
+  min-height: 100svh;
   padding: 7vh 0;
 }
 html.no-scrub .cinema__beam,
