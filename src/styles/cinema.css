@@ -612,6 +612,9 @@ html.cinema-social .cinema__bars {
   font-size: clamp(0.52rem, 0.9vw, 0.64rem);
   letter-spacing: 0.2em;
   color: color-mix(in srgb, var(--p-ink) 45%, transparent);
+  text-align: center;
+  padding: 0 8vw;
+  max-width: 100%;
 }
 
 /* touch tier: the row becomes a swipe strip of full phones */
