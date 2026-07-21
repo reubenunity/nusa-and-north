@@ -37,12 +37,29 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   // &proof=blue|butter|dark — flip the act's palette for review
   const pv = new URLSearchParams(location.search).get('proof');
   if (/^[a-z]+$/.test(pv || '')) document.documentElement.classList.add(`proof-${pv}`);
-  // with the Delivery on screen the recce shifts to scene 06
+  // scene numbering with the Delivery in and the screening room cut
+  const cinCut = !new URLSearchParams(location.search).get('cinema');
+  const proofKicker = document.querySelector('.proof .stage-kicker');
   const recceKicker = document.querySelector('.recce__kicker');
-  if (recceKicker) recceKicker.textContent = 'SCENE 06 · THE RECCE';
-  // &cinema=village|social|cut — audition screening-room concepts
-  const cin = new URLSearchParams(location.search).get('cinema');
-  if (/^[a-z]+$/.test(cin || '')) {
+  if (cinCut && proofKicker) proofKicker.innerHTML = 'SCENE 04 &middot; THE DELIVERY';
+  if (recceKicker) recceKicker.textContent = cinCut ? 'SCENE 05 · THE RECCE' : 'SCENE 06 · THE RECCE';
+  // the showreel closes the timeline — final clip on V1
+  const lane = document.querySelector('.js-video-lane');
+  if (lane && !lane.querySelector('[data-title="Showreel"]')) {
+    const reel = document.createElement('div');
+    reel.className = 'clip';
+    reel.dataset.title = 'Showreel';
+    reel.dataset.videoSrc = 'https://vimeo.com/1161420054/949ddb9393';
+    reel.dataset.poster =
+      'https://i.vimeocdn.com/video/2116792164-e2a3a54c64ac92b7abea89746e8c0a7c484fd62f334632b0d54e0105dc1ebe96-d_1280x720';
+    reel.style.setProperty('--clip-w', '26');
+    reel.innerHTML = '<span class="clip__name">showreel.mov</span>';
+    lane.appendChild(reel);
+  }
+  // screening room is CUT by default (showreel now lives on the
+  // timeline); ?cinema=screen|village|social auditions alternatives
+  const cin = new URLSearchParams(location.search).get('cinema') || 'cut';
+  if (/^[a-z]+$/.test(cin)) {
     document.documentElement.classList.add(`cinema-${cin}`);
     if (cin === 'village') buildVillage();
     if (cin === 'social') buildSocial();

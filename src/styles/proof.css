@@ -224,6 +224,9 @@ html.proof-dark .proof__stage {
    DESIGN MOCKUPS (?proof=board | passport | contact)
    Each hides the flight chart and builds its own furniture.
    ================================================================ */
+html.show-proof:not(.proof-map):not(.proof-passport):not(.proof-contact) .proof__map-wrap,
+html.show-proof:not(.proof-map):not(.proof-passport):not(.proof-contact) .proof__route,
+html.show-proof:not(.proof-map):not(.proof-passport):not(.proof-contact) .proof__note,
 html.proof-board .proof__map-wrap,
 html.proof-board .proof__route,
 html.proof-board .proof__note,

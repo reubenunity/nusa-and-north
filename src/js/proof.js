@@ -110,7 +110,7 @@ function arcSegment(a, b) {
   return { d: `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}` };
 }
 
-const DESIGN_VARIANTS = ['board', 'passport', 'contact'];
+const DESIGN_VARIANTS = ['map', 'board', 'passport', 'contact'];
 
 export function buildProof() {
   const section = document.querySelector('.proof');
@@ -140,7 +140,9 @@ export function buildProof() {
   const variant = [...document.documentElement.classList]
     .map((c) => c.replace(/^proof-/, ''))
     .find((c) => DESIGN_VARIANTS.includes(c));
-  if (variant === 'board') return withPin(buildBoard(section));
+  // the departures board is the chosen design — DEFAULT, no param;
+  // ?proof=map|passport|contact keep the alternatives auditionable
+  if (!variant || variant === 'board') return withPin(buildBoard(section));
   if (variant === 'passport') return withPin(buildPassport(section));
   if (variant === 'contact') return withPin(buildContact(section));
   svg.innerHTML = '';
