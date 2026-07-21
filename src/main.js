@@ -38,6 +38,12 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   // the delivery report act is also part of the demo until real
   // figures are confirmed — then show-proof becomes unconditional
   document.documentElement.classList.add('show-proof');
+  // &proof=blue|butter|dark — flip the act's palette for review
+  const pv = new URLSearchParams(location.search).get('proof');
+  if (/^[a-z]+$/.test(pv || '')) document.documentElement.classList.add(`proof-${pv}`);
+  // with the Delivery on screen the recce shifts to scene 06
+  const recceKicker = document.querySelector('.recce__kicker');
+  if (recceKicker) recceKicker.textContent = 'SCENE 06 · THE RECCE';
 }
 buildProof();
 applyMotionClass();

@@ -14,6 +14,9 @@ html.show-proof .proof {
 }
 
 .proof__stage {
+  /* act-local palette — ?proof=blue|butter|dark swaps these */
+  --pf-bg: var(--p-base);
+  --pf-ink: var(--p-ink);
   position: relative;
   min-height: 88vh;
   min-height: 88svh;
@@ -23,9 +26,9 @@ html.show-proof .proof {
   align-items: center;
   gap: clamp(2.4rem, 5vh, 4rem);
   padding: clamp(70px, 12vh, 120px) var(--pad);
-  background: var(--p-base);
-  color: var(--p-ink);
-  border-top: 1px solid color-mix(in srgb, var(--p-ink) 18%, transparent);
+  background: var(--pf-bg);
+  color: var(--pf-ink);
+  border-top: 1px solid color-mix(in srgb, var(--pf-ink) 18%, transparent);
 }
 
 /* ---- flight log line ---- */
@@ -34,7 +37,7 @@ html.show-proof .proof {
   font-size: clamp(0.6rem, 1.05vw, 0.74rem);
   font-weight: 700;
   letter-spacing: 0.24em;
-  color: color-mix(in srgb, var(--p-ink) 80%, transparent);
+  color: color-mix(in srgb, var(--pf-ink) 80%, transparent);
 }
 
 /* ---- the world chart ---- */
@@ -49,13 +52,13 @@ html.show-proof .proof {
 }
 
 .proof__dots circle {
-  fill: color-mix(in srgb, var(--p-ink) 22%, transparent);
+  fill: color-mix(in srgb, var(--pf-ink) 22%, transparent);
 }
 
 /* faint full route vs the red trail the plane reveals */
 .proof__route-ghost {
   fill: none;
-  stroke: color-mix(in srgb, var(--p-ink) 28%, transparent);
+  stroke: color-mix(in srgb, var(--pf-ink) 28%, transparent);
   stroke-width: 1;
   stroke-dasharray: 2 5;
 }
@@ -67,7 +70,7 @@ html.show-proof .proof {
 
 /* city pins light as the plane passes */
 .proof__city-dot {
-  fill: color-mix(in srgb, var(--p-ink) 35%, transparent);
+  fill: color-mix(in srgb, var(--pf-ink) 35%, transparent);
   transition: fill 0.3s ease;
 }
 .proof__city.is-on .proof__city-dot {
@@ -93,7 +96,7 @@ html.show-proof .proof {
   transition: stroke 0.5s ease 0.15s;
 }
 .proof__city.is-on .proof__city-leader {
-  stroke: color-mix(in srgb, var(--p-ink) 35%, transparent);
+  stroke: color-mix(in srgb, var(--pf-ink) 35%, transparent);
 }
 
 .proof__city-label {
@@ -105,7 +108,7 @@ html.show-proof .proof {
   transition: fill 0.5s ease 0.15s;
 }
 .proof__city.is-on .proof__city-label {
-  fill: color-mix(in srgb, var(--p-ink) 80%, transparent);
+  fill: color-mix(in srgb, var(--pf-ink) 80%, transparent);
 }
 
 /* the client's stop: dashed, pulsing, waiting */
@@ -137,7 +140,7 @@ html.show-proof .proof {
   opacity: 1;
 }
 .proof__plane path {
-  fill: var(--p-ink);
+  fill: var(--pf-ink);
 }
 
 /* mobile: labels stay legible as the chart shrinks */
@@ -179,7 +182,7 @@ html.show-proof .proof {
   font-size: clamp(0.56rem, 1vw, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: color-mix(in srgb, var(--p-ink) 55%, transparent);
+  color: color-mix(in srgb, var(--pf-ink) 55%, transparent);
 }
 
 .proof__foot {
@@ -201,4 +204,18 @@ html.show-proof .proof {
 }
 @media (max-width: 640px) {
   .proof__note { display: none; }
+}
+
+/* ---- demo palette variants (?statdemo=1&proof=...) ---- */
+html.proof-blue .proof__stage {
+  --pf-bg: #10298f; /* Klein-adjacent chart blue */
+  --pf-ink: #f6f3e7;
+}
+html.proof-butter .proof__stage {
+  --pf-bg: #f4e9c6;
+  --pf-ink: #191611;
+}
+html.proof-dark .proof__stage {
+  --pf-bg: #0b0a09;
+  --pf-ink: #fafaf6;
 }
