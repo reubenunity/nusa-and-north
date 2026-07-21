@@ -69,10 +69,8 @@ gsap.registerPlugin(ScrollTrigger);
     if (ck) ck.innerHTML = 'SCENE 04 &middot; SHORT FORM';
   }
   wireAutosaveToast();
-  // ?preview=sound — the Sound Department insert scene, pending sign-off
-  const pv2 = new URLSearchParams(location.search).get('preview');
-  if (pv2 === 'sound') {
-    document.documentElement.classList.add('preview-sound');
+  // SCENE 03B · THE SOUND DEPARTMENT — public
+  {
     const soundPlay = document.querySelector('.js-sound-play');
     soundPlay?.addEventListener('click', () =>
       import('./js/lightbox.js').then((mod) => mod.openLightbox(soundPlay.dataset.videoSrc, soundPlay))

@@ -5,12 +5,7 @@
    PREVIEW-GATED (?preview=sound) until sign-off.
    ============================================================ */
 
-.sound {
-  display: none;
-}
-html.preview-sound .sound {
-  display: block;
-}
+/* PUBLIC since 2026-07-21 ("ok sweet, deploy") */
 
 .sound__stage {
   position: relative;
