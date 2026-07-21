@@ -418,12 +418,22 @@ function buildBoard(section) {
 
   let raf = 0;
   let stopCounters = () => {};
-  // desktop pins the act — the show must start when the pin grabs
-  // (stage ~fully visible), not while the board peeks from below;
-  // mobile flows, so it fires early to be seen at all
-  const touch = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
-  const watchEl = touch ? section : section.querySelector('.proof__stage');
-  const io = onEnter(watchEl, () => {
+  let rowTimers = [];
+  let running = false;
+
+  const resetShow = () => {
+    running = false;
+    cancelAnimationFrame(raf);
+    rowTimers.forEach(clearTimeout);
+    rowTimers = [];
+    stopCounters();
+    jobs.forEach((job) => { job.done = false; job.lastFlip = 0; job.tile.textContent = '\u00a0'; });
+    rowEls.forEach(({ row }) => row.classList.remove('is-in'));
+    section.querySelectorAll('.proof__num').forEach((n) => { n.textContent = '0'; });
+  };
+
+  const startShow = () => {
+    running = true;
     if (prefersReducedMotion) {
       rowEls.forEach(({ row }) => row.classList.add('is-in'));
       jobs.forEach((job) => { job.tile.textContent = job.ch; job.done = true; });
@@ -431,7 +441,9 @@ function buildBoard(section) {
       return;
     }
     const t0 = performance.now();
-    rowEls.forEach(({ row, rowStart }) => setTimeout(() => row.classList.add('is-in'), rowStart));
+    rowEls.forEach(({ row, rowStart }) =>
+      rowTimers.push(setTimeout(() => row.classList.add('is-in'), rowStart))
+    );
     const tick = (now) => {
       const el = now - t0;
       let pending = false;
@@ -454,11 +466,28 @@ function buildBoard(section) {
     };
     raf = requestAnimationFrame(tick);
     stopCounters = runCounters(section, 2400);
-  }, touch ? 0.12 : 0.9);
+  };
+
+  // desktop: the show starts when the pin grabs (stage ~fully
+  // visible); touch: early, since the act flows. Either way it
+  // RESETS when the act leaves the screen and replays on return —
+  // timing-proof on every device.
+  const touch = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  const watchEl = touch ? section : section.querySelector('.proof__stage');
+  const enterAt = touch ? 0.12 : 0.9;
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      if (e.intersectionRatio >= enterAt && !running) startShow();
+      else if (!e.isIntersecting && running) resetShow();
+    }),
+    { threshold: [0, enterAt] }
+  );
+  io.observe(watchEl);
 
   return () => {
     io.disconnect();
     cancelAnimationFrame(raf);
+    rowTimers.forEach(clearTimeout);
     stopCounters();
     alt.innerHTML = '';
   };
