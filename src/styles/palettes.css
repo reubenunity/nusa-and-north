@@ -117,3 +117,17 @@ html.brand-flame.show-proof .cinema__stage {
   --c-clip: #23252a;
   --c-clip-active: #f5edda; /* sand paper glowing in the deep north */
 }
+
+/* ?brand=palm — cream + ink stay; every red becomes deep palm green
+   (the island, and the color language of luxury hospitality). */
+html.brand-palm {
+  --raw-red: #1e5f48;
+}
+
+/* ?brand=ocean — the accent your own footage voted for: its two
+   dominant colors are golden-hour amber and deep ocean teal
+   (sampled across all 15 film posters). The gold is the films' job;
+   the water becomes the brand's. */
+html.brand-ocean {
+  --raw-red: #0f5c74;
+}
