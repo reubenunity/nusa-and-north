@@ -84,7 +84,7 @@ html[data-palette='c'] {
   --c-accent: var(--raw-ink);
   --c-accent-fg: var(--raw-paper);
   --c-line: rgba(250, 250, 246, 0.28);
-  --c-panel: #15100d; /* deep warm dark — the ambient glow does the lighting */
+  --c-panel: #0a0909; /* true black chrome — the ambient glow does the lighting */
   --c-panel-fg: var(--raw-paper);
   --c-panel-fg-dim: rgba(250, 250, 246, 0.5);
   --c-panel-line: rgba(250, 250, 246, 0.14);

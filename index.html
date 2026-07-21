@@ -254,6 +254,12 @@
         <!-- widescreen letterbox bars -->
         <div class="cinema__bars" aria-hidden="true"></div>
 
+        <!-- screening-room seats: two silhouetted rows (demo-gated) -->
+        <div class="cinema__seats" aria-hidden="true">
+          <div class="cinema__seat-row cinema__seat-row--back"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="cinema__seat-row cinema__seat-row--front"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+
         <!-- the showreel, letterboxed 2.39:1 -->
         <div class="cinema__screen js-screen">
           <div
@@ -269,8 +275,10 @@
               loading="lazy"
             />
             <span class="cinema__screen-title">SHOWREEL</span>
+            <span class="cinema__flicker" aria-hidden="true"></span>
             <button class="cinema__play js-play-reel" type="button">&#9654;&#xFE0E; PLAY REEL</button>
           </div>
+          <p class="cinema__meta"><!-- DRAFT — pending sign-off -->NOW SCREENING &mdash; NUSA &amp; NORTH &middot; SHOWREEL &middot; 4K</p>
           <!-- services, said once, quietly -->
           <p class="cinema__services js-services"><!-- PLACEHOLDER -->BRAND FILMS &middot; COMMERCIALS &middot; SOCIAL CUTS &middot; TRAVEL &amp; HOSPITALITY</p>
           <p class="cinema__intermission js-intermission">
