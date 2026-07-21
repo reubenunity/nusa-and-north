@@ -18,6 +18,9 @@
 
 html {
   scroll-behavior: auto; /* Lenis owns scrolling */
+  /* iOS widens the page (loads "zoomed in") if anything overflows —
+     clamp at the root, body-only overflow-x is ignored there */
+  overflow-x: clip;
 }
 
 html.lenis,

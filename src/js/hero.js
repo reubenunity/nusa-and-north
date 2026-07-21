@@ -58,21 +58,31 @@ export function buildHeroLite() {
   const focusLabel = document.querySelector('.js-focus-label');
   const tcEl = document.querySelector('.js-hero-timecode');
 
-  const targets = mediaActive ? [media, headline] : [headline];
+  // blur-animating a wrapper around playing video stalls iPad GPUs
+  // (stuck mid-zoom) — so the video fades/scales in cheaply and only
+  // the headline text gets the blur rack
   const intro = gsap.timeline({ delay: 0.35 });
+  if (mediaActive) {
+    intro.fromTo(
+      media,
+      { opacity: 0, scale: 1.06 },
+      { opacity: 1, scale: 1, duration: 2.2, ease: 'power3.out' },
+      0
+    );
+  }
   intro.fromTo(
-    targets,
+    headline,
     { filter: 'blur(18px)', scale: 1.045 },
     {
       filter: 'blur(0px)',
       scale: 1,
       duration: 2.4,
       ease: 'power3.out',
-      stagger: 0.15,
       onComplete() {
         focusLabel.textContent = 'AF · LOCKED';
       },
-    }
+    },
+    0.15
   );
 
   // the timecode simply runs, like a camera left recording
@@ -85,7 +95,7 @@ export function buildHeroLite() {
   return () => {
     intro.kill();
     cancelAnimationFrame(raf);
-    gsap.set(targets, { clearProps: 'all' });
+    gsap.set([media, headline].filter(Boolean), { clearProps: 'all' });
   };
 }
 
