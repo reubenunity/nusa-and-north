@@ -248,7 +248,8 @@ export function buildSocial() {
     const m = reel.src.match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);
     if (!m) return null;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1`;
+    // 360p: the screens are ~250px wide — smaller stream, faster first frame
+    iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1&quality=360p`;
     iframe.allow = 'autoplay';
     iframe.setAttribute('tabindex', '-1');
     iframe.className = `social__loop${reel.wide ? ' social__loop--wide' : ''}`;
@@ -274,17 +275,19 @@ export function buildSocial() {
     // strip starts the visible reel and drops off-screen ones back to
     // posters. One or two streams instead of five.
     phones.forEach(({ btn, reel }) => {
+      // boot as soon as ANY sliver peeks in (the next phone warms while
+      // you watch the current one); drop only when fully gone
       const io = new IntersectionObserver(
         (entries) => entries.forEach((e) => {
           const existing = btn.querySelector('.social__loop');
-          if (e.intersectionRatio >= 0.6 && !existing) {
+          if (e.isIntersecting && !existing) {
             const iframe = makeLoop(reel);
             if (iframe) btn.appendChild(iframe);
-          } else if (e.intersectionRatio < 0.15 && existing) {
+          } else if (!e.isIntersecting && existing) {
             existing.remove();
           }
         }),
-        { threshold: [0, 0.15, 0.6] }
+        { threshold: 0, rootMargin: '20% 10%' }
       );
       io.observe(btn);
     });
