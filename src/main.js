@@ -23,22 +23,10 @@ import { buildEdit, buildEditFallback } from './js/edit.js';
 import { buildCinema, wireReel } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
-import { openLightbox } from './js/lightbox.js';
 import { buildProof } from './js/proof.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// hero reel shortcut — straight to the lightbox, no scrolling required
-{
-  const reelBtn = document.querySelector('.js-hero-reel');
-  const reelSlot = document.querySelector('.js-reel-slot');
-  if (reelBtn && reelSlot?.dataset.vimeoId) {
-    const { vimeoId, vimeoHash } = reelSlot.dataset;
-    reelBtn.addEventListener('click', () =>
-      openLightbox(`https://vimeo.com/${vimeoId}/${vimeoHash}`, reelBtn)
-    );
-  }
-}
 
 // ?statdemo — client preview of the results stamps with SAMPLE numbers;
 // real figures go on clips as data-stat and this block becomes moot
