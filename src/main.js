@@ -19,7 +19,7 @@ import { fullExperience, applyMotionClass, watchViewport, prefersReducedMotion }
 import { applyGate } from './js/scroll-gate.js';
 import { buildHero, buildHeroLite } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
-import { buildEdit, buildEditFallback } from './js/edit.js';
+import { buildEdit, buildEditFallback, wireAutosaveToast } from './js/edit.js';
 import { buildCinema, wireReel, buildVillage, buildSocial } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
@@ -68,6 +68,7 @@ if (new URLSearchParams(location.search).has('statdemo')) {
     const ck = document.querySelector('.cinema .stage-kicker');
     if (ck) ck.innerHTML = 'SCENE 04 &middot; SHORT FORM';
   }
+  wireAutosaveToast();
 }
 applyMotionClass();
 watchViewport();

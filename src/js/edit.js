@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Build the A1 waveform blocks to mirror the V1 clips, and the ruler ticks.
 // Idempotent — clears previous generated content first.
 export function populateEditChrome() {
+  applyClipStrips();
   const videoLane = document.querySelector('.js-video-lane');
   const audioLane = document.querySelector('.js-audio-lane');
   const ruler = document.querySelector('.js-ruler');
@@ -98,6 +99,17 @@ function ambientSrc(poster) {
     .replace('maxresdefault', 'mqdefault');
 }
 
+// Filmstrip thumbnails inside the clips, like a real NLE — tiny
+// repeated frames of each film (demo-gated with the rest).
+function applyClipStrips() {
+  if (!document.documentElement.classList.contains('show-proof')) return;
+  document.querySelectorAll('.js-video-lane .clip').forEach((clip) => {
+    if (!clip.dataset.poster || clip.dataset.stripped) return;
+    clip.dataset.stripped = '1';
+    clip.style.backgroundImage = `url("${ambientSrc(clip.dataset.poster)}")`;
+  });
+}
+
 // Update the program monitor (title, filename, poster, room glow)
 // for the given clip element. Cheap unless the clip actually changed.
 function applyMonitor(clip) {
@@ -126,6 +138,31 @@ function applyMonitor(clip) {
     posterEl?.classList.remove('is-on');
     ambientEl?.classList.remove('is-on');
   }
+}
+
+// "Project saved" toast pops occasionally while the edit is on
+// screen — the room feels worked-in. Demo-gated with the strips.
+export function wireAutosaveToast() {
+  if (!document.documentElement.classList.contains('show-proof')) return () => {};
+  const stage = document.querySelector('.edit__stage');
+  if (!stage || stage.querySelector('.edit__toast')) return () => {};
+  const toast = document.createElement('div');
+  toast.className = 'edit__toast';
+  stage.appendChild(toast);
+  let n = 0;
+  const iv = setInterval(() => {
+    const r = stage.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return; // off screen
+    n += 1;
+    const tc = document.querySelector('.js-edit-timecode')?.textContent || '00:00:00:00';
+    toast.textContent = `PROJECT SAVED \u2713 v${14 + n} \u00b7 ${tc}`;
+    toast.classList.add('is-on');
+    setTimeout(() => toast.classList.remove('is-on'), 2400);
+  }, 9000);
+  return () => {
+    clearInterval(iv);
+    toast.remove();
+  };
 }
 
 // Rect-based detection for the native swipe strip (infrequent scroll

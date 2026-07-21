@@ -476,3 +476,67 @@ html.show-proof .clip {
     translate: 0 -3px;
   }
 }
+
+/* ================================================================
+   FILMSTRIP CLIPS — demo-gated: the timeline shows the films
+   themselves, tiny repeated frames inside every clip, plus a
+   scrim so the filename stays legible. The portfolio is finally
+   visible IN the portfolio act.
+   ================================================================ */
+html.show-proof .clip {
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: left center;
+  overflow: hidden;
+}
+html.show-proof .clip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(transparent 40%, rgba(5, 4, 4, 0.78)),
+    rgba(5, 4, 4, 0.28);
+  transition: background-color 0.25s ease;
+}
+html.show-proof .clip .clip__name {
+  position: relative;
+  z-index: 1;
+}
+html.show-proof .clip.is-active {
+  background-color: transparent;
+  border: 2px solid var(--c-clip-active, #f2ede1);
+  box-shadow: 0 0 0 1px rgba(5, 4, 4, 0.8), 0 6px 22px rgba(0, 0, 0, 0.5);
+}
+html.show-proof .clip.is-active::before {
+  background:
+    linear-gradient(transparent 40%, rgba(5, 4, 4, 0.78)),
+    rgba(5, 4, 4, 0);
+}
+html.show-proof .clip.is-active .clip__name {
+  color: #f2ede1;
+}
+
+/* editor life: the project quietly auto-saves now and then */
+.edit__toast {
+  position: absolute;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2.4vh, 26px);
+  z-index: 6;
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 0.9vw, 0.64rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--c-panel-fg) 75%, transparent);
+  background: color-mix(in srgb, var(--c-panel-fg) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-panel-fg) 16%, transparent);
+  border-radius: 3px;
+  padding: 0.6em 0.9em;
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.4s ease, translate 0.4s ease;
+  pointer-events: none;
+}
+.edit__toast.is-on {
+  opacity: 1;
+  translate: 0 0;
+}
