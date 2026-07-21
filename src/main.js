@@ -71,6 +71,34 @@ gsap.registerPlugin(ScrollTrigger);
   wireAutosaveToast();
   // SCENE 03B · THE SOUND DEPARTMENT — public
   {
+    // the 30s SFX-only snippet player
+    const sfx = document.querySelector('.js-sfx-audio');
+    const sfxBtn = document.querySelector('.js-sfx-toggle');
+    const sfxFill = document.querySelector('.js-sfx-fill');
+    const sfxTime = document.querySelector('.js-sfx-time');
+    const sfxTrack = document.querySelector('.js-sfx-track');
+    if (sfx && sfxBtn) {
+      const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+      sfxBtn.addEventListener('click', () => (sfx.paused ? sfx.play() : sfx.pause()));
+      sfx.addEventListener('play', () => { sfxBtn.textContent = '\u275A\u275A'; });
+      sfx.addEventListener('pause', () => { sfxBtn.textContent = '\u25B6\uFE0E'; });
+      sfx.addEventListener('timeupdate', () => {
+        if (!sfx.duration) return;
+        sfxFill.style.width = `${(sfx.currentTime / sfx.duration) * 100}%`;
+        sfxTime.textContent = fmt(sfx.duration - sfx.currentTime);
+      });
+      sfx.addEventListener('ended', () => {
+        sfxFill.style.width = '0';
+        sfxTime.textContent = fmt(sfx.duration);
+        sfxBtn.textContent = '\u25B6\uFE0E';
+      });
+      sfxTrack.addEventListener('click', (e) => {
+        if (!sfx.duration) return;
+        const r = sfxTrack.getBoundingClientRect();
+        sfx.currentTime = ((e.clientX - r.left) / r.width) * sfx.duration;
+      });
+    }
+
     const soundPlay = document.querySelector('.js-sound-play');
     soundPlay?.addEventListener('click', () =>
       import('./js/lightbox.js').then((mod) => mod.openLightbox(soundPlay.dataset.videoSrc, soundPlay))

@@ -207,3 +207,64 @@
   text-align: center;
   padding: 0 6vw;
 }
+
+/* ---- the 30-second proof: SFX layer alone ---- */
+.sound__player {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: min(460px, 84vw);
+  margin-top: 0.2rem;
+}
+.sound__player-btn {
+  flex: 0 0 auto;
+  width: 2.6em;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid rgba(250, 250, 246, 0.7);
+  border-radius: 50%;
+  background: none;
+  color: rgba(250, 250, 246, 0.95);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, scale 0.2s ease;
+}
+.sound__player-btn:hover {
+  border-color: var(--c-signal, #e8362b);
+  scale: 1.06;
+}
+.sound__player-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(250, 250, 246, 0.16);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+.sound__player-track i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: var(--c-signal, #e8362b);
+  border-radius: 2px;
+}
+.sound__player-time {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(250, 250, 246, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+.sound__player-note {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.46rem, 0.78vw, 0.56rem);
+  letter-spacing: 0.14em;
+  color: rgba(250, 250, 246, 0.45);
+  text-align: center;
+  max-width: min(460px, 84vw);
+}
