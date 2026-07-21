@@ -194,6 +194,8 @@ export function buildSocial() {
   const wrap = document.createElement('div');
   wrap.className = 'social';
   wrap.innerHTML = `
+    <span class="social__ghost" aria-hidden="true">REELS</span>
+    <p class="social__hand hand" aria-hidden="true"><!-- DRAFT -->cut for thumbs, made with love</p>
     <p class="social__head">SOCIAL CUTS &mdash; AFTER HOURS</p>
     <div class="social__row js-social-row"></div>
     <p class="social__note"><!-- DRAFT — pending sign-off -->SHORT-FORM &middot; BUILT FOR PRODUCT, WEB &amp; SOCIAL</p>`;
@@ -213,6 +215,7 @@ export function buildSocial() {
           <span class="social__play" aria-hidden="true">&#9654;&#xFE0E;</span>
         </button>
         <i class="social__island" aria-hidden="true"></i>
+        <span class="social__hearts" aria-hidden="true"><i>&hearts;</i><i>&hearts;</i><i>&hearts;</i></span>
       </div>
       <figcaption class="social__tag">${reel.tag}</figcaption>`;
     const btn = fig.querySelector('.js-social-screen');
