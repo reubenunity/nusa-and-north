@@ -190,8 +190,10 @@ html.edit-static .edit__timeline {
 }
 html.no-scrub .edit__track-lane,
 html.edit-static .edit__track-lane {
-  padding-left: 12vw;
-  padding-right: 12vw;
+  /* head/tail room so the FIRST and LAST clips can reach the center
+     detection point at the scroll extremes on any screen width */
+  padding-left: calc(50vw - 90px);
+  padding-right: calc(50vw - 90px);
 }
 html.no-scrub .edit__playhead,
 html.edit-static .edit__playhead {
