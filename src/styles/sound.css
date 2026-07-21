@@ -53,11 +53,38 @@
   100% { transform: scaleY(var(--peak, 0.9)); }
 }
 
-/* ---- the film: glass frame, plays in the lightbox ---- */
+/* ---- the work, two-up: the film + the session behind it ---- */
+.sound__row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1.2rem, 2.6vw, 2.4rem);
+}
+.sound__item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+.sound__cap {
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 0.85vw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(250, 250, 246, 0.55);
+}
+@media (max-width: 760px) {
+  .sound__row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .sound__screen {
   position: relative;
   display: block;
-  width: min(560px, 84vw);
+  width: min(460px, 84vw);
   padding: clamp(7px, 1vh, 10px);
   border: 1px solid rgba(250, 250, 246, 0.16);
   border-radius: clamp(12px, 1.8vh, 18px);
@@ -96,6 +123,9 @@
 .sound__screen:hover .sound__play,
 .sound__screen:focus-visible .sound__play {
   scale: 1.08;
+}
+.sound__screen--static {
+  cursor: default;
 }
 
 /* ---- the project card ---- */
