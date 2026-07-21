@@ -280,20 +280,26 @@ html[data-hero='flood'] .hero__media {
   bottom: calc(var(--pad) + 2px);
   left: calc(var(--pad) + clamp(40px, 6vw, 72px));
   font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-size: clamp(0.64rem, 1.15vw, 0.8rem);
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--c-accent);
-  background: none;
+  letter-spacing: 0.16em;
+  color: var(--c-accent-fg);
+  background: var(--c-accent);
   border: none;
-  padding: 0.4em 0;
+  border-radius: 2px;
+  padding: 0.9em 1.5em;
   cursor: pointer;
   will-change: transform, opacity;
+  transition: transform 0.2s ease;
+  animation: reel-beacon 2.6s ease-in-out infinite;
 }
 .hud__reel:hover,
 .hud__reel:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
+  transform: translateY(-2px);
+  animation: none;
+}
+@keyframes reel-beacon {
+  50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--c-accent) 30%, transparent); }
 }
 
 /* small screens: drop the busier HUD bits */

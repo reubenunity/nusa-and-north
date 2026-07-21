@@ -7,6 +7,7 @@ import './styles/edit.css';
 import './styles/cinema.css';
 import './styles/recce.css';
 import './styles/lightbox.css';
+import './styles/proof.css';
 import './styles/fallbacks.css';
 import './styles/dev-panel.css';
 
@@ -23,6 +24,7 @@ import { buildCinema, wireReel } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
 import { openLightbox } from './js/lightbox.js';
+import { buildProof } from './js/proof.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,7 +47,11 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   document.querySelectorAll('.js-video-lane .clip').forEach((clip, i) => {
     if (samples[i]) clip.dataset.stat = samples[i];
   });
+  // the delivery report act is also part of the demo until real
+  // figures are confirmed — then show-proof becomes unconditional
+  document.documentElement.classList.add('show-proof');
 }
+buildProof();
 applyMotionClass();
 watchViewport();
 
