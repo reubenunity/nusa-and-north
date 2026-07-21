@@ -62,3 +62,51 @@ body {
   color: var(--c-signal);
   pointer-events: none;
 }
+
+/* ============================================================
+   PERSISTENT CTA — the quiet exit that rides the whole film.
+   Hidden on the hero (the opening stays cinematic) and at the
+   contact pin (no duplicate CTAs).
+   ============================================================ */
+.cta-chip {
+  position: fixed;
+  right: calc(clamp(14px, 2vw, 26px) + env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(14px, 2.4vh, 24px) + env(safe-area-inset-bottom, 0px));
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.58rem, 1vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  color: #fafaf6;
+  background: #e8362b;
+  padding: 0.9em 1.4em;
+  border-radius: 99px;
+  box-shadow: 0 10px 30px -10px rgba(232, 54, 43, 0.55);
+  opacity: 0;
+  translate: 0 10px;
+  pointer-events: none;
+  transition: opacity 0.4s ease, translate 0.4s ease, transform 0.2s ease;
+}
+.cta-chip::before {
+  content: '';
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #fafaf6;
+  animation: rec-blink 1.4s steps(1) infinite;
+}
+.cta-chip.is-on {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+.cta-chip:hover {
+  transform: translateY(-2px);
+}
+@media print {
+  .cta-chip { display: none; }
+}

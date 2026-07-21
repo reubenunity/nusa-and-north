@@ -69,6 +69,30 @@ gsap.registerPlugin(ScrollTrigger);
     if (ck) ck.innerHTML = 'SCENE 04 &middot; SHORT FORM';
   }
   wireAutosaveToast();
+
+  // the persistent CTA: on after one viewport of scroll, off while
+  // the real contact pin is on screen
+  {
+    const chip = document.querySelector('.js-cta-chip');
+    const contactPin = document.querySelector('.pin--next');
+    if (chip) {
+      let pinVisible = false;
+      const update = () => {
+        const past = (window.scrollY || 0) > window.innerHeight * 0.8;
+        chip.classList.toggle('is-on', past && !pinVisible);
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      if (contactPin) {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { pinVisible = e.isIntersecting; update(); }),
+          { threshold: 0.2 }
+        );
+        io.observe(contactPin);
+      }
+      update();
+    }
+  }
+
   // SCENE 03B · THE SOUND DEPARTMENT — public
   {
     // the 30s SFX-only snippet player
