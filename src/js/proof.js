@@ -364,6 +364,28 @@ function flapInto(el, text) {
   return timers;
 }
 
+// The filmography as flights — every delivery that landed.
+const BOARD_FILMS = [
+  ["HARPER'S BAZAAR UK", 'DELIVERED'],
+  ['ILLUZION PHUKET', 'DELIVERED'],
+  ['RADISSON FRANKFURT', 'DELIVERED'],
+  ['RADISSON FLORENCE', 'DELIVERED'],
+  ['RADISSON LUCERNE', 'DELIVERED'],
+  ['RADISSON TALLINN', 'DELIVERED'],
+  ['RADISSON ITB BERLIN', 'DELIVERED'],
+  ['FOUR SEASONS BANGKOK', 'DELIVERED'],
+  ['BANYAN TREE', 'DELIVERED'],
+  ['ANGSANA PHUKET', 'DELIVERED'],
+  ['LAGUNA LANG CO', 'DELIVERED'],
+  ['LE COMPTOIR', 'DELIVERED'],
+  ['SAVOUR THE VIBE PRAGUE', 'DELIVERED'],
+  ['COUCHVIBES', 'DELIVERED'],
+  ['THE ANANTARA EXPERIENCE', 'DELIVERED'],
+  ['HP', 'DELIVERED'],
+  ['HELLOBODY', 'DELIVERED'],
+  ['INSTA360', 'IN POST'],
+];
+
 function buildBoard(section) {
   const alt = section.querySelector('.js-proof-alt');
   alt.innerHTML = `
@@ -376,11 +398,11 @@ function buildBoard(section) {
   drawWorldBackdrop(alt.querySelector('.board__bg'));
   const colA = alt.querySelector('.js-board-a');
   const colB = alt.querySelector('.js-board-b');
-  const rows = [...STOPS_META.map(([city]) => [city, 'DELIVERED']), ['YOUR CITY', 'BOARDING']];
+  const rows = BOARD_FILMS;
 
   const rowEls = rows.map(([city, status], i) => {
     const row = document.createElement('div');
-    row.className = `board__row${status === 'BOARDING' ? ' board__row--boarding' : ''}`;
+    row.className = `board__row${status !== 'DELIVERED' ? ' board__row--boarding' : ''}`;
     row.innerHTML = '<span class="board__dest"></span><span class="board__status"></span>';
     (i < Math.ceil(rows.length / 2) ? colA : colB).appendChild(row);
     return { row, city, status };

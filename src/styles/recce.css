@@ -236,3 +236,40 @@
   letter-spacing: 0.14em;
   opacity: 0.75;
 }
+
+/* ================================================================
+   RECCE V2 — demo-gated (html.show-proof) until sign-off:
+   fewer, richer pins; scout's working notes; Albania marked live.
+   The public recce is untouched without the flag.
+   ================================================================ */
+.pin__scout {
+  display: none;
+  margin-top: 0.55em;
+  font-size: clamp(1.05rem, 1.9vw, 1.4rem);
+  line-height: 1.15;
+  color: var(--c-signal);
+  rotate: -1.5deg;
+}
+html.show-proof .pin__scout {
+  display: block;
+}
+html.show-proof .pin--trim {
+  display: none;
+}
+html.show-proof .pin--live .pin__line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--c-signal);
+}
+html.show-proof .pin--live .pin__line::before {
+  content: '';
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--c-signal);
+  animation: live-blink 1.4s steps(1) infinite;
+}
+@keyframes live-blink {
+  50% { opacity: 0.2; }
+}
