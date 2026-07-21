@@ -207,6 +207,10 @@ export function buildSocial() {
     <p class="social__note"><!-- DRAFT — pending sign-off -->REELS FOR SOCIAL &middot; PRODUCT FILMS FOR WEB &middot; ALL CUT FOR THUMBS</p>`;
   const row = wrap.querySelector('.js-social-row');
 
+  // live loops on fine-pointer machines; posters (tap to play) on touch,
+  // where five simultaneous players would chew batteries and data
+  const liveLoops = !window.matchMedia('(pointer: coarse)').matches;
+
   const phones = SOCIAL_REELS.map((reel) => {
     const fig = document.createElement('figure');
     fig.className = 'social__fig';
@@ -240,7 +244,52 @@ export function buildSocial() {
     setTimeout(() => el.classList.remove('is-pulse'), 1900);
   }, 3600);
 
-  // Autoplay loops removed for now ("at some point i'll add vimeo
-  // properly... for now lets take it off" — 2026-07-21). Posters +
-  // tap-to-fullscreen remain; the loop machinery lives in git history.
+  const makeLoop = (reel) => {
+    const m = reel.src.match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);
+    if (!m) return null;
+    const iframe = document.createElement('iframe');
+    // 360p: the screens are ~250px wide — smaller stream, faster first frame
+    iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1&quality=360p`;
+    iframe.allow = 'autoplay';
+    iframe.setAttribute('tabindex', '-1');
+    iframe.className = `social__loop${reel.wide ? ' social__loop--wide' : ''}`;
+    return iframe;
+  };
+
+  if (liveLoops) {
+    // desktop: all five ignite once the act is near — never on page load
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        phones.forEach(({ btn, reel }) => {
+          const iframe = makeLoop(reel);
+          if (iframe) btn.appendChild(iframe);
+        });
+      }),
+      { rootMargin: '40% 0px' }
+    );
+    io.observe(stage.closest('.cinema'));
+  } else if (!prefersReducedMotion && !navigator.connection?.saveData) {
+    // touch: only the phone(s) actually on screen stream — swiping the
+    // strip starts the visible reel and drops off-screen ones back to
+    // posters. One or two streams instead of five.
+    phones.forEach(({ btn, reel }) => {
+      // boot as soon as ANY sliver peeks in (the next phone warms while
+      // you watch the current one); drop only when fully gone
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          const existing = btn.querySelector('.social__loop');
+          if (e.isIntersecting && !existing) {
+            const iframe = makeLoop(reel);
+            if (iframe) btn.appendChild(iframe);
+          } else if (!e.isIntersecting && existing) {
+            existing.remove();
+          }
+        }),
+        { threshold: 0, rootMargin: '20% 10%' }
+      );
+      io.observe(btn);
+    });
+  }
 }
