@@ -294,11 +294,12 @@ export function buildEdit() {
 
   tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
 
-  // the escape hatch: jump clean past the sequence
+  // the escape hatch: land exactly on the Sound Department
   const onSkip = () => {
-    const st = tl.scrollTrigger;
-    if (!st) return;
-    (window.__lenis || window).scrollTo(st.end + window.innerHeight * 0.15, { duration: 1.1 });
+    const sound = document.querySelector('.sound');
+    if (!sound) return;
+    const y = sound.getBoundingClientRect().top + window.scrollY;
+    (window.__lenis || window).scrollTo(y, { duration: 1.1 });
   };
   skipBtn?.addEventListener('click', onSkip);
 
