@@ -106,12 +106,20 @@ function arcSegment(a, b) {
   return { d: `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}` };
 }
 
+const DESIGN_VARIANTS = ['board', 'passport', 'contact'];
+
 export function buildProof() {
   const section = document.querySelector('.proof');
   const svg = document.querySelector('.js-proof-map');
   if (!section || !svg || !document.documentElement.classList.contains('show-proof')) {
     return () => {};
   }
+  const variant = [...document.documentElement.classList]
+    .map((c) => c.replace(/^proof-/, ''))
+    .find((c) => DESIGN_VARIANTS.includes(c));
+  if (variant === 'board') return buildBoard(section);
+  if (variant === 'passport') return buildPassport(section);
+  if (variant === 'contact') return buildContact(section);
   svg.innerHTML = '';
 
   // ---- dot-matrix world ----
@@ -245,5 +253,224 @@ export function buildProof() {
   return () => {
     io.disconnect();
     cancelAnimationFrame(raf);
+  };
+}
+
+
+// ------------------------------------------------------------------
+// shared bits for the design mockups
+// ------------------------------------------------------------------
+const STOPS_META = [
+  ['DUBLIN', 'BRAND FILM'], ['LONDON', "HARPER'S BAZAAR"], ['MADRID', 'COMMERCIAL'],
+  ['BASEL', 'CITY STUDY'], ['FLORENCE', 'HOTEL FILM'], ['TIRANA', 'LOCATION SCOUT'],
+  ['ATHENS', 'TRAVEL FILM'], ['VIENNA', 'COMMERCIAL'], ['PRAGUE', 'CITY FILM'],
+  ['D\u00dcSSELDORF', 'COMMERCIAL'], ['FRANKFURT', 'HOTEL FILM'], ['BERLIN', 'BRAND FILM'],
+  ['VILNIUS', 'TRAVEL FILM'], ['TALLINN', 'HOTEL FILM'], ['BANGKOK', 'HOTEL FILM'],
+  ['HUE', 'RESORT FILM'], ['BALI', 'TRAVEL DIARIES'], ['SYDNEY', 'COMMERCIAL'],
+];
+
+function onEnter(section, cb) {
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => { if (e.isIntersecting) { io.disconnect(); cb(); } }),
+    { threshold: 0.25 }
+  );
+  io.observe(section);
+  return io;
+}
+
+function runCounters(section, dur = 1800) {
+  const stats = [...section.querySelectorAll('.js-proof-stat')];
+  const start = performance.now();
+  let raf = 0;
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - t, 3);
+    stats.forEach((stat) => {
+      stat.querySelector('.proof__num').textContent =
+        Math.round(parseFloat(stat.dataset.count) * eased) + (stat.dataset.suffix || '');
+    });
+    if (t < 1) raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+  return () => cancelAnimationFrame(raf);
+}
+
+// ------------------------------------------------------------------
+// MOCKUP 1 — the departures board (split-flap)
+// ------------------------------------------------------------------
+const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ';
+
+function flapInto(el, text) {
+  // every letter is a tile that flutters before settling
+  el.innerHTML = '';
+  const timers = [];
+  [...text].forEach((ch, i) => {
+    const tile = document.createElement('i');
+    tile.className = 'board__tile';
+    tile.textContent = ' ';
+    el.appendChild(tile);
+    let spins = 0;
+    const spinsMax = 4 + Math.floor(i * 0.8) + Math.floor(Math.random() * 4);
+    const iv = setInterval(() => {
+      spins += 1;
+      if (spins >= spinsMax) {
+        tile.textContent = ch;
+        clearInterval(iv);
+      } else {
+        tile.textContent = FLAP_CHARS[Math.floor(Math.random() * FLAP_CHARS.length)];
+      }
+    }, 45);
+    timers.push(iv);
+  });
+  return timers;
+}
+
+function buildBoard(section) {
+  const alt = section.querySelector('.js-proof-alt');
+  alt.innerHTML = `
+    <p class="board__head">DEPARTURES \u2014 NUSA &amp; NORTH</p>
+    <div class="board__cols">
+      <div class="board__col js-board-a"></div>
+      <div class="board__col js-board-b"></div>
+    </div>`;
+  const colA = alt.querySelector('.js-board-a');
+  const colB = alt.querySelector('.js-board-b');
+  const rows = [...STOPS_META.map(([city]) => [city, 'DELIVERED']), ['YOUR CITY', 'BOARDING']];
+
+  const rowEls = rows.map(([city, status], i) => {
+    const row = document.createElement('div');
+    row.className = `board__row${status === 'BOARDING' ? ' board__row--boarding' : ''}`;
+    row.innerHTML = '<span class="board__dest"></span><span class="board__status"></span>';
+    (i < Math.ceil(rows.length / 2) ? colA : colB).appendChild(row);
+    return { row, city, status };
+  });
+
+  const timers = [];
+  let stopCounters = () => {};
+  const io = onEnter(section, () => {
+    rowEls.forEach(({ row, city, status }, i) => {
+      const t = setTimeout(() => {
+        row.classList.add('is-in');
+        timers.push(...flapInto(row.querySelector('.board__dest'), city));
+        timers.push(...flapInto(row.querySelector('.board__status'), status));
+      }, 350 + i * 140);
+      timers.push(t);
+    });
+    timers.push(setTimeout(() => { stopCounters = runCounters(section); }, 900));
+  });
+
+  return () => {
+    io.disconnect();
+    stopCounters();
+    timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+    alt.innerHTML = '';
+  };
+}
+
+// ------------------------------------------------------------------
+// MOCKUP 2 — the passport (entry stamps thud onto the page)
+// ------------------------------------------------------------------
+const STAMP_SHAPES = ['round', 'oval', 'rect', 'pill'];
+const STAMP_TILTS = [-8, 6, -4, 11, -12, 3, 9, -6, 5, -10, 7, -3, 12, -7, 4, -11, 8, -5];
+const STAMP_YEARS = ['2021', '2022', '2022', '2023', '2023', '2023', '2024', '2024', '2024',
+  '2024', '2025', '2025', '2025', '2025', '2025', '2026', '2026', '2026'];
+
+function buildPassport(section) {
+  const alt = section.querySelector('.js-proof-alt');
+  alt.innerHTML = '<div class="pass__spread js-pass-spread"></div><div class="pass__totals js-pass-totals"></div>';
+  const spread = alt.querySelector('.js-pass-spread');
+  const totalsRow = alt.querySelector('.js-pass-totals');
+
+  const stamps = STOPS_META.map(([city], i) => {
+    const el = document.createElement('div');
+    const shape = STAMP_SHAPES[i % STAMP_SHAPES.length];
+    const inkClass = i % 3 === 2 ? ' pass__stamp--ink' : '';
+    el.className = `pass__stamp pass__stamp--${shape}${inkClass}`;
+    el.style.setProperty('--tilt', `${STAMP_TILTS[i % STAMP_TILTS.length]}deg`);
+    el.innerHTML = `<span class="pass__city">${city}</span><span class="pass__meta">NUSA &amp; NORTH \u00b7 ${STAMP_YEARS[i]}</span>`;
+    spread.appendChild(el);
+    return el;
+  });
+
+  const TOTALS = [['120+', 'FILMS'], ['40M+', 'VIEWS'], ['16', 'COUNTRIES'], ['25+', 'BRANDS']];
+  const totalEls = TOTALS.map(([num, label], i) => {
+    const el = document.createElement('div');
+    el.className = 'pass__stamp pass__stamp--total';
+    el.style.setProperty('--tilt', `${[-3, 2, -2, 3][i]}deg`);
+    el.innerHTML = `<span class="pass__num">${num}</span><span class="pass__meta">${label}</span>`;
+    totalsRow.appendChild(el);
+    return el;
+  });
+
+  const timers = [];
+  const io = onEnter(section, () => {
+    stamps.forEach((el, i) => timers.push(setTimeout(() => el.classList.add('is-in'), 300 + i * 170)));
+    totalEls.forEach((el, i) =>
+      timers.push(setTimeout(() => el.classList.add('is-in'), 300 + stamps.length * 170 + 250 + i * 300))
+    );
+  });
+
+  return () => {
+    io.disconnect();
+    timers.forEach(clearTimeout);
+    alt.innerHTML = '';
+  };
+}
+
+// ------------------------------------------------------------------
+// MOCKUP 3 — the contact sheet (frames develop, grease pencil marks)
+// ------------------------------------------------------------------
+// pull real posters from the timeline where a clip matches the stop
+const CONTACT_POSTERS = {
+  LONDON: 'Bazaar', BASEL: 'Lucerne', FLORENCE: 'Florence', PRAGUE: 'Prague',
+  FRANKFURT: 'Frankfurt', BERLIN: 'ITB', TALLINN: 'Tallinn', BANGKOK: 'Bangkok',
+  HUE: 'Laguna', BALI: 'Anantara',
+};
+const CIRCLED = ['LONDON', 'FRANKFURT', 'BANGKOK', 'BALI'];
+
+function buildContact(section) {
+  const alt = section.querySelector('.js-proof-alt');
+  alt.innerHTML = `
+    <div class="sheet js-sheet"></div>
+    <p class="sheet__tally hand js-sheet-tally">120+ films \u00b7 40M views \u00b7 16 countries \u00b7 25+ brands</p>`;
+  const sheet = alt.querySelector('.js-sheet');
+
+  const posterFor = (city) => {
+    const key = CONTACT_POSTERS[city];
+    if (!key) return null;
+    const clip = [...document.querySelectorAll('.js-video-lane .clip')].find((c) =>
+      (c.dataset.title || '').includes(key)
+    );
+    return clip?.dataset.poster || null;
+  };
+
+  const frames = STOPS_META.map(([city], i) => {
+    const el = document.createElement('figure');
+    el.className = 'sheet__frame';
+    const poster = posterFor(city);
+    el.innerHTML = `
+      ${poster ? `<img src="${poster}" alt="" loading="lazy" />` : '<span class="sheet__blank">35MM</span>'}
+      <figcaption>${String(i + 1).padStart(2, '0')} \u00b7 ${city}</figcaption>
+      ${CIRCLED.includes(city) ? `
+        <svg class="sheet__circle" viewBox="0 0 100 70" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse cx="50" cy="33" rx="44" ry="27" pathLength="100" />
+        </svg>` : ''}`;
+    sheet.appendChild(el);
+    return el;
+  });
+
+  const timers = [];
+  const io = onEnter(section, () => {
+    frames.forEach((el, i) => timers.push(setTimeout(() => el.classList.add('is-in'), 250 + i * 130)));
+    timers.push(
+      setTimeout(() => alt.querySelector('.js-sheet-tally').classList.add('is-in'),
+        250 + frames.length * 130 + 400)
+    );
+  });
+
+  return () => {
+    io.disconnect();
+    timers.forEach(clearTimeout);
+    alt.innerHTML = '';
   };
 }
