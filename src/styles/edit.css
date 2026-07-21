@@ -27,7 +27,7 @@ html.show-proof .edit__stage::before {
   pointer-events: none;
   background:
     radial-gradient(120% 95% at 50% 34%, transparent 42%, rgba(0, 0, 0, 0.55) 100%),
-    radial-gradient(60% 30% at 50% 0%, rgba(217, 164, 91, 0.05), transparent 75%);
+    radial-gradient(60% 30% at 50% 0%, rgba(255, 250, 240, 0.04), transparent 75%);
 }
 html.show-proof .edit__stage::after {
   content: '';

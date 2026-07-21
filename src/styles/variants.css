@@ -99,28 +99,14 @@ html[data-edit='red'] .edit__monitor-bar .js-edit-timecode {
 }
 
 /* ================================================================
-   THE GOLD CUT — demo-gated (html.show-proof): the dark acts trade
-   signal red for projector amber; red stays the voice of the paper
-   acts. One scoped remap, instantly reversible.
+   THE CREAM CUT — demo-gated (html.show-proof): the dark rooms
+   speak the SAME language as the paper acts, polarity flipped —
+   black page, cream highlights, red kept to tiny punctuation
+   (playhead, timecode, kickers). No second brand color.
    ================================================================ */
 html.show-proof .edit__stage,
 html.show-proof .cinema__stage {
-  --c-signal: #d9a45b;
-  --c-clip: #262220; /* idle clips go neutral warm gray, not dried red */
-  --c-clip-active: #d9a45b;
-  --c-clip-active-fg: #191106;
-}
-/* one accent per room: the hero keeps its original white
-   instruments + single red REC; gold begins at the edit bay. */
-/* the anamorphic flare warms to lamp-gold to match the rooms */
-html.show-proof .cinema__flare {
-  background: linear-gradient(90deg, transparent, rgba(235, 195, 130, 0.9), transparent);
-  box-shadow: 0 0 18px 3px rgba(217, 164, 91, 0.4);
-}
-
-/* the one place palette C hard-codes raw red on the dark chrome */
-html.show-proof[data-palette='c'] .edit__monitor-bar .js-edit-timecode,
-html.show-proof[data-palette='c'] .edit__playhead,
-html.show-proof[data-palette='c'] .edit__playhead-cap {
-  color: #d9a45b;
+  --c-clip: #262220; /* idle clips: neutral warm gray, not dried red */
+  --c-clip-active: #f2ede1; /* the active clip is PAPER in the dark */
+  --c-clip-active-fg: #16140e;
 }
