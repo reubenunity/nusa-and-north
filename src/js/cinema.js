@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { config } from '../config.js';
+import { prefersReducedMotion } from './motion.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -243,25 +244,49 @@ export function buildSocial() {
     setTimeout(() => el.classList.remove('is-pulse'), 1900);
   }, 3600);
 
-  // the loops ignite once the act is near — never on page load
+  const makeLoop = (reel) => {
+    const m = reel.src.match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);
+    if (!m) return null;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1`;
+    iframe.allow = 'autoplay';
+    iframe.setAttribute('tabindex', '-1');
+    iframe.className = `social__loop${reel.wide ? ' social__loop--wide' : ''}`;
+    return iframe;
+  };
+
   if (liveLoops) {
+    // desktop: all five ignite once the act is near — never on page load
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
         if (!e.isIntersecting) return;
         io.disconnect();
         phones.forEach(({ btn, reel }) => {
-          const m = reel.src.match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);
-          if (!m) return;
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1`;
-          iframe.allow = 'autoplay';
-          iframe.setAttribute('tabindex', '-1');
-          iframe.className = `social__loop${reel.wide ? ' social__loop--wide' : ''}`;
-          btn.appendChild(iframe);
+          const iframe = makeLoop(reel);
+          if (iframe) btn.appendChild(iframe);
         });
       }),
       { rootMargin: '40% 0px' }
     );
     io.observe(stage.closest('.cinema'));
+  } else if (!prefersReducedMotion && !navigator.connection?.saveData) {
+    // touch: only the phone(s) actually on screen stream — swiping the
+    // strip starts the visible reel and drops off-screen ones back to
+    // posters. One or two streams instead of five.
+    phones.forEach(({ btn, reel }) => {
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          const existing = btn.querySelector('.social__loop');
+          if (e.intersectionRatio >= 0.6 && !existing) {
+            const iframe = makeLoop(reel);
+            if (iframe) btn.appendChild(iframe);
+          } else if (e.intersectionRatio < 0.15 && existing) {
+            existing.remove();
+          }
+        }),
+        { threshold: [0, 0.15, 0.6] }
+      );
+      io.observe(btn);
+    });
   }
 }
