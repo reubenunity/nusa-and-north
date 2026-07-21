@@ -745,3 +745,27 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
   border: 1px solid color-mix(in srgb, var(--p-ink) 10%, transparent);
   box-shadow: 0 6px 18px -8px rgba(22, 17, 14, 0.25);
 }
+
+/* ---- mobile: phones at browsing size, not billboards ---- */
+@media (max-width: 700px) {
+  .social__phone {
+    height: clamp(230px, 38vh, 320px);
+  }
+  .social__fig {
+    gap: 0.6rem;
+  }
+  .social__tag {
+    padding: 0.55em 0.95em;
+    font-size: 0.44rem;
+  }
+  .social__ghost {
+    font-size: 30vw;
+  }
+  html.cinema-static .social__row {
+    padding: 0 8vw 0.6rem;
+    gap: 1rem;
+  }
+  .social {
+    gap: 1.2rem;
+  }
+}

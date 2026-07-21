@@ -488,3 +488,36 @@ html.proof-contact .proof__foot {
   transition: opacity 0.9s ease;
 }
 .sheet__tally.is-in { opacity: 1; }
+
+/* ---- mobile: the board becomes a clean printed manifest ---- */
+@media (max-width: 700px) {
+  .board__cols {
+    gap: 0;
+  }
+  .board__row {
+    padding: 0.34em 0;
+  }
+  .board__tile {
+    background: transparent;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    margin-right: 0.5px;
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+  }
+  .board__row--boarding .board__tile {
+    background: transparent;
+    color: var(--c-signal);
+  }
+  .board__head {
+    font-size: 0.56rem;
+  }
+  .proof__stage {
+    gap: 1.6rem;
+    padding: 56px var(--pad);
+  }
+  .proof__num {
+    font-size: 2.1rem;
+  }
+}
