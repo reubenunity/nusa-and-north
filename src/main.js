@@ -8,6 +8,7 @@ import './styles/cinema.css';
 import './styles/recce.css';
 import './styles/lightbox.css';
 import './styles/proof.css';
+import './styles/sound.css';
 import './styles/fallbacks.css';
 import './styles/dev-panel.css';
 
@@ -68,6 +69,21 @@ gsap.registerPlugin(ScrollTrigger);
     if (ck) ck.innerHTML = 'SCENE 04 &middot; SHORT FORM';
   }
   wireAutosaveToast();
+  // ?preview=sound — the Sound Department insert scene, pending sign-off
+  const pv2 = new URLSearchParams(location.search).get('preview');
+  if (pv2 === 'sound') {
+    document.documentElement.classList.add('preview-sound');
+    const wave = document.querySelector('.sound__wave');
+    if (wave && !wave.childElementCount) {
+      for (let i = 0; i < 48; i++) {
+        const bar = document.createElement('i');
+        bar.style.setProperty('--rest', (0.12 + Math.abs(Math.sin(i * 0.55)) * 0.3).toFixed(2));
+        bar.style.setProperty('--peak', (0.45 + Math.abs(Math.sin(i * 0.35 + 1)) * 0.5).toFixed(2));
+        bar.style.setProperty('--d', `${(i * 0.06) % 1.4}s`);
+        wave.appendChild(bar);
+      }
+    }
+  }
 }
 applyMotionClass();
 watchViewport();

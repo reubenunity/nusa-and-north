@@ -1,0 +1,96 @@
+/* ============================================================
+   SCENE 03B — THE SOUND DEPARTMENT
+   A slim insert scene after the edit: the A1 track gets its own
+   moment. One living waveform, one honest project card.
+   PREVIEW-GATED (?preview=sound) until sign-off.
+   ============================================================ */
+
+.sound {
+  display: none;
+}
+html.preview-sound .sound {
+  display: block;
+}
+
+.sound__stage {
+  position: relative;
+  min-height: 62vh;
+  min-height: 62svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1.6rem, 3.5vh, 2.6rem);
+  padding: clamp(64px, 10vh, 100px) var(--pad);
+  background: var(--c-panel, #0a0909);
+  color: var(--c-panel-fg, #fafaf6);
+  overflow: hidden;
+  border-top: 1px solid rgba(250, 250, 246, 0.08);
+}
+
+/* ---- the living waveform ---- */
+.sound__wave {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: clamp(60px, 12vh, 110px);
+}
+.sound__wave i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--c-panel-fg, #fafaf6) 55%, transparent);
+  transform: scaleY(var(--rest, 0.3));
+  transform-origin: center;
+}
+/* accent bars: the red peaks */
+.sound__wave i:nth-child(11n) {
+  background: var(--c-signal, #e8362b);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sound__wave i {
+    animation: sound-bounce 1.4s ease-in-out infinite alternate;
+    animation-delay: var(--d, 0s);
+  }
+}
+@keyframes sound-bounce {
+  0% { transform: scaleY(var(--rest, 0.3)); }
+  100% { transform: scaleY(var(--peak, 0.9)); }
+}
+
+/* ---- the project card ---- */
+.sound__card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+.sound__client {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem);
+  font-weight: 800;
+  font-stretch: 115%;
+  letter-spacing: 0.01em;
+}
+.sound__meta {
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--c-signal, #e8362b);
+}
+.sound__hand {
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  color: rgba(250, 250, 246, 0.75);
+  rotate: -1.5deg;
+}
+
+.sound__note {
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 0.9vw, 0.64rem);
+  letter-spacing: 0.22em;
+  color: rgba(250, 250, 246, 0.45);
+  text-align: center;
+  padding: 0 6vw;
+}
