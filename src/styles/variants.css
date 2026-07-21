@@ -97,3 +97,22 @@ html[data-edit='red'] .edit__stage {
 html[data-edit='red'] .edit__monitor-bar .js-edit-timecode {
   color: var(--p-base);
 }
+
+/* ================================================================
+   THE GOLD CUT — demo-gated (html.show-proof): the dark acts trade
+   signal red for projector amber; red stays the voice of the paper
+   acts. One scoped remap, instantly reversible.
+   ================================================================ */
+html.show-proof .edit__stage,
+html.show-proof .cinema__stage {
+  --c-signal: #d9a45b;
+  --c-clip: #262220; /* idle clips go neutral warm gray, not dried red */
+  --c-clip-active: #d9a45b;
+  --c-clip-active-fg: #191106;
+}
+/* the one place palette C hard-codes raw red on the dark chrome */
+html.show-proof[data-palette='c'] .edit__monitor-bar .js-edit-timecode,
+html.show-proof[data-palette='c'] .edit__playhead,
+html.show-proof[data-palette='c'] .edit__playhead-cap {
+  color: #d9a45b;
+}
