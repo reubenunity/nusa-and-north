@@ -173,28 +173,6 @@ html[data-edit='red'] .edit__dust {
   opacity: 1;
 }
 
-/* results stamp — mono chip in the monitor's top-right, only
-   rendered when the active clip carries a data-stat value */
-.edit__monitor-stat {
-  position: absolute;
-  top: 0.9em;
-  right: 0.9em;
-  z-index: 2;
-  display: none;
-  font-family: var(--font-mono);
-  font-size: clamp(0.56rem, 1vw, 0.7rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: rgba(250, 250, 246, 0.95);
-  background: rgba(5, 4, 4, 0.55);
-  border-left: 2px solid var(--c-signal);
-  padding: 0.55em 0.85em;
-  backdrop-filter: blur(2px);
-}
-.edit__monitor-stat.is-on {
-  display: block;
-}
-
 /* ghost play button — always legible, never loud; wakes on hover */
 .edit__monitor-play {
   position: absolute;

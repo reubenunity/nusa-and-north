@@ -31,12 +31,8 @@ gsap.registerPlugin(ScrollTrigger);
 // ?statdemo — client preview of the results stamps with SAMPLE numbers;
 // real figures go on clips as data-stat and this block becomes moot
 if (new URLSearchParams(location.search).has('statdemo')) {
-  const samples = ['2.4M VIEWS · SAMPLE', '860K VIEWS · SAMPLE', '1.2M VIEWS · SAMPLE'];
-  document.querySelectorAll('.js-video-lane .clip').forEach((clip, i) => {
-    if (samples[i]) clip.dataset.stat = samples[i];
-  });
-  // the delivery report act is also part of the demo until real
-  // figures are confirmed — then show-proof becomes unconditional
+  // the delivery act is part of the demo until real figures are
+  // confirmed — then show-proof becomes unconditional
   document.documentElement.classList.add('show-proof');
   // &proof=blue|butter|dark — flip the act's palette for review
   const pv = new URLSearchParams(location.search).get('proof');
