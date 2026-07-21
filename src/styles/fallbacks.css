@@ -103,11 +103,15 @@ html.lite-motion .hud {
 }
 
 /* sections fade up as they enter the viewport */
+html.hero-static .hud__scroll-hint {
+  display: none;
+}
+
 html.lite-motion .fade-up,
 html.bridge-static .fade-up {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(34px);
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1), transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 html.lite-motion .fade-up.in-view,
 html.bridge-static .fade-up.in-view {

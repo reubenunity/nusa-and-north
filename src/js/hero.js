@@ -49,6 +49,46 @@ function splitHeadline(headline) {
   headline.dataset.split = '1';
 }
 
+// Lightweight mobile hero: the cinematic auto focus pull and a live
+// HUD, no pin and no char explosion — nothing a phone can scramble.
+export function buildHeroLite() {
+  const media = document.querySelector('.hero__media');
+  const mediaActive = media && document.documentElement.dataset.hero !== 'flood';
+  const headline = document.querySelector('.hero__headline-wrap');
+  const focusLabel = document.querySelector('.js-focus-label');
+  const tcEl = document.querySelector('.js-hero-timecode');
+
+  const targets = mediaActive ? [media, headline] : [headline];
+  const intro = gsap.timeline({ delay: 0.35 });
+  intro.fromTo(
+    targets,
+    { filter: 'blur(18px)', scale: 1.045 },
+    {
+      filter: 'blur(0px)',
+      scale: 1,
+      duration: 2.4,
+      ease: 'power3.out',
+      stagger: 0.15,
+      onComplete() {
+        focusLabel.textContent = 'AF · LOCKED';
+      },
+    }
+  );
+
+  // the timecode simply runs, like a camera left recording
+  const startedAt = performance.now();
+  let raf = requestAnimationFrame(function tick() {
+    tcEl.textContent = timecode((performance.now() - startedAt) / 1000);
+    raf = requestAnimationFrame(tick);
+  });
+
+  return () => {
+    intro.kill();
+    cancelAnimationFrame(raf);
+    gsap.set(targets, { clearProps: 'all' });
+  };
+}
+
 export function buildHero() {
   const { hero, dismantlePresets } = config;
   const preset = dismantlePresets[hero.dismantlePreset];
@@ -69,16 +109,16 @@ export function buildHero() {
   // ---- the focus pull plays by itself on load, so nobody mistakes
   // the defocused frame for a loading state ----
   const focusTargets = mediaActive ? [media, headline] : [headline];
-  const intro = gsap.timeline({ delay: 0.3 });
+  const intro = gsap.timeline({ delay: 0.35 });
   intro.fromTo(
     focusTargets,
     { filter: `blur(${hero.startBlur}px)`, scale: 1.045 },
     {
       filter: 'blur(0px)',
       scale: 1,
-      duration: 1.6,
-      ease: 'power2.out',
-      stagger: 0.1,
+      duration: 2.4,
+      ease: 'power3.out',
+      stagger: 0.15,
       onComplete() {
         focusLabel.textContent = 'AF · LOCKED';
       },

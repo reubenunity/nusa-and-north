@@ -16,7 +16,7 @@ import Lenis from 'lenis';
 
 import { fullExperience, applyMotionClass, watchViewport, prefersReducedMotion } from './js/motion.js';
 import { applyGate } from './js/scroll-gate.js';
-import { buildHero } from './js/hero.js';
+import { buildHero, buildHeroLite } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
 import { buildCinema } from './js/cinema.js';
@@ -47,8 +47,10 @@ function build() {
   document.documentElement.classList.toggle('bridge-static', smallScreen);
   // the timeline is a swipe strip on phones — browse it or scroll past
   document.documentElement.classList.toggle('edit-static', smallScreen);
+  // phones: cinematic hero intro without the fragile pinned explosion
+  document.documentElement.classList.toggle('hero-static', smallScreen);
   teardowns = [
-    buildHero(),
+    smallScreen ? buildHeroLite() : buildHero(),
     ...(smallScreen ? [] : [buildBridge()]),
     smallScreen ? buildEditFallback() : buildEdit(),
     buildCinema(),
