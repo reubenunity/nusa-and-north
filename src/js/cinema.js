@@ -214,6 +214,7 @@ export function buildSocial() {
     const fig = document.createElement('figure');
     fig.className = 'social__fig';
     fig.innerHTML = `
+      <img class="social__glow" src="${reel.poster}" alt="" aria-hidden="true" loading="lazy" />
       <div class="social__phone">
         <button class="social__screen js-social-screen" type="button" aria-label="Play reel: ${reel.tag}">
           <img src="${reel.poster}" alt="" loading="lazy" />

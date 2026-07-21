@@ -703,3 +703,42 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
   18% { opacity: 0.95; }
   100% { opacity: 0; transform: translateY(-120px) scale(1.15) rotate(10deg); }
 }
+
+/* ---- screen light on paper: each reel glows around its phone ---- */
+.social__fig {
+  position: relative;
+}
+.social__glow {
+  position: absolute;
+  top: -3%;
+  left: -10%;
+  width: 120%;
+  height: 88%;
+  object-fit: cover;
+  filter: blur(34px) saturate(1.6) brightness(1.05);
+  opacity: 0.32;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  transition: opacity 0.4s ease;
+}
+.social__fig:hover .social__glow {
+  opacity: 0.5;
+}
+.social__phone {
+  position: relative;
+  z-index: 1;
+}
+
+/* captions become frosted light-mode glass pills */
+.social__tag {
+  position: relative;
+  z-index: 1;
+  padding: 0.7em 1.2em;
+  border-radius: 99px;
+  background: rgba(255, 255, 252, 0.55);
+  -webkit-backdrop-filter: blur(8px) saturate(1.3);
+  backdrop-filter: blur(8px) saturate(1.3);
+  border: 1px solid color-mix(in srgb, var(--p-ink) 10%, transparent);
+  box-shadow: 0 6px 18px -8px rgba(22, 17, 14, 0.25);
+}
