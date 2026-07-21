@@ -128,6 +128,43 @@
   cursor: default;
 }
 
+/* ---- the process: strip, rebuild, immerse ---- */
+.sound__process {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1.6rem, 4vw, 3.5rem);
+  width: min(1100px, 90vw);
+}
+.sound__step {
+  flex: 1;
+  max-width: 300px;
+  border-left: 2px solid var(--c-signal, #e8362b);
+  padding-left: clamp(0.8rem, 1.6vw, 1.2rem);
+}
+.sound__step-n {
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--c-signal, #e8362b);
+}
+.sound__step-t {
+  margin-top: 0.6em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 0.9vw, 0.64rem);
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: rgba(250, 250, 246, 0.7);
+}
+@media (max-width: 760px) {
+  .sound__process {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+  .sound__step { max-width: none; }
+}
+
 /* ---- the project card ---- */
 .sound__card {
   text-align: center;
