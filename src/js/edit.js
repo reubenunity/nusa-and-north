@@ -125,6 +125,17 @@ function applyMonitor(clip) {
   const posterEl = document.querySelector('.js-monitor-poster');
   const ambientEl = document.querySelector('.js-monitor-ambient');
   const poster = clip.dataset.poster;
+
+  // crossfade the room's color field to the new film (double buffer)
+  const backdrop = document.querySelector('.js-edit-backdrop');
+  if (backdrop && poster && document.documentElement.classList.contains('show-proof')) {
+    const [a, b] = backdrop.querySelectorAll('img');
+    const front = a.classList.contains('is-front') ? a : b;
+    const back = front === a ? b : a;
+    back.src = ambientSrc(poster);
+    back.classList.add('is-front');
+    front.classList.remove('is-front');
+  }
   if (poster) {
     if (posterEl) {
       posterEl.src = poster;

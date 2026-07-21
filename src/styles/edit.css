@@ -598,3 +598,55 @@ html.show-proof .edit__toast {
   backdrop-filter: blur(10px);
   border-radius: 7px;
 }
+
+/* ================================================================
+   THE ROOM IS THE FILM — demo-gated: the active clip's frame,
+   blurred into a fullscreen color field behind the glass. Crossfades
+   as the playhead moves between films.
+   ================================================================ */
+.edit__backdrop {
+  display: none;
+}
+html.show-proof .edit__backdrop {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+html.show-proof .edit__backdrop img {
+  position: absolute;
+  inset: -12%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  filter: blur(52px) saturate(1.75) brightness(0.56);
+  opacity: 0;
+  transition: opacity 1.1s ease;
+  transform: translateZ(0);
+}
+html.show-proof .edit__backdrop img.is-front {
+  opacity: 0.85;
+}
+/* dark veil keeps it a night room, not a poster wall */
+html.show-proof .edit__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(95% 75% at 50% 40%, transparent 38%, rgba(5, 4, 4, 0.62) 100%),
+    rgba(5, 4, 4, 0.18);
+}
+/* one blur layer is enough — retire the old ellipse glow here */
+html.show-proof .edit__monitor-ambient {
+  display: none;
+}
+/* content floats above the field */
+html.show-proof .edit__monitor {
+  position: relative;
+  z-index: 3;
+}
+html.show-proof .edit__timeline {
+  z-index: 3;
+}
