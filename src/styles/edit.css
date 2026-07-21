@@ -75,6 +75,10 @@ html[data-edit='red'] .edit__monitor::before {
   object-fit: cover;
   filter: blur(40px) saturate(2.4) brightness(1.15);
   mix-blend-mode: screen; /* emitted light, not paint */
+  /* feathered edges — Safari clips blur at the element box, which
+     otherwise reads as a hard border around the glow */
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 35%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 35%, transparent 72%);
   opacity: 0;
   transition: opacity 0.6s ease;
   pointer-events: none;

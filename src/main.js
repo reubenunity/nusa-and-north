@@ -43,7 +43,9 @@ function build() {
   // phones get the full scroll film too — except the production sheet,
   // whose two-column layout can't fit a pinned phone screen; it flows
   // statically with fade-up entrances instead
-  const smallScreen = window.innerWidth < 768;
+  // touch devices — iPads included — get the stable tier: pinned
+  // scrub + per-char explosions and touch scrolling don't mix
+  const smallScreen = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
   document.documentElement.classList.toggle('bridge-static', smallScreen);
   // the timeline is a swipe strip on phones — browse it or scroll past
   document.documentElement.classList.toggle('edit-static', smallScreen);
@@ -93,8 +95,8 @@ if (fullExperience) {
     }, 300);
   });
 
-  // the production sheet fades up as it enters view on phones
-  if (window.innerWidth < 768) {
+  // the production sheet fades up as it enters view on touch devices
+  if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) {
     const targets = document.querySelectorAll('.about__main, .about__still, .quote');
     const reveal = new IntersectionObserver(
       (entries) => {
