@@ -712,21 +712,25 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
   position: relative;
 }
 .social__glow {
+  /* a soft ellipse tucked BEHIND the phone (Safari clips blur at
+     element bounds, so the shape must be organic and stay inside
+     the fig — same recipe as the edit monitor's ambient) */
   position: absolute;
-  top: -3%;
-  left: -10%;
-  width: 120%;
-  height: 88%;
+  top: 5%;
+  left: -5%;
+  width: 110%;
+  height: 72%;
   object-fit: cover;
-  filter: blur(34px) saturate(1.6) brightness(1.05);
-  opacity: 0.32;
+  filter: blur(42px) saturate(1.6) brightness(1.05);
+  opacity: 0.26;
   z-index: 0;
   pointer-events: none;
   transform: translateZ(0);
   transition: opacity 0.4s ease;
+  border-radius: 50%;
 }
 .social__fig:hover .social__glow {
-  opacity: 0.5;
+  opacity: 0.42;
 }
 .social__phone {
   position: relative;
