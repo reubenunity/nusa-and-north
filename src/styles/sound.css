@@ -58,6 +58,51 @@ html.preview-sound .sound {
   100% { transform: scaleY(var(--peak, 0.9)); }
 }
 
+/* ---- the film: glass frame, plays in the lightbox ---- */
+.sound__screen {
+  position: relative;
+  display: block;
+  width: min(560px, 84vw);
+  padding: clamp(7px, 1vh, 10px);
+  border: 1px solid rgba(250, 250, 246, 0.16);
+  border-radius: clamp(12px, 1.8vh, 18px);
+  background: rgba(250, 250, 246, 0.06);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(250, 250, 246, 0.2),
+    0 20px 50px -16px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+.sound__screen img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: clamp(7px, 1.1vh, 11px);
+}
+.sound__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 2.8em;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid rgba(250, 250, 246, 0.85);
+  border-radius: 50%;
+  color: rgba(250, 250, 246, 0.95);
+  font-size: clamp(0.8rem, 1.3vw, 1.05rem);
+  background: rgba(5, 4, 4, 0.42);
+  backdrop-filter: blur(2px);
+  transition: scale 0.2s ease;
+}
+.sound__screen:hover .sound__play,
+.sound__screen:focus-visible .sound__play {
+  scale: 1.08;
+}
+
 /* ---- the project card ---- */
 .sound__card {
   text-align: center;
@@ -80,10 +125,16 @@ html.preview-sound .sound {
   letter-spacing: 0.24em;
   color: var(--c-signal, #e8362b);
 }
-.sound__hand {
-  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
-  color: rgba(250, 250, 246, 0.75);
-  rotate: -1.5deg;
+.sound__netflix {
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(250, 250, 246, 0.72);
+}
+.sound__netflix em {
+  font-style: normal;
+  color: var(--c-signal, #e8362b);
 }
 
 .sound__note {

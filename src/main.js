@@ -73,6 +73,10 @@ gsap.registerPlugin(ScrollTrigger);
   const pv2 = new URLSearchParams(location.search).get('preview');
   if (pv2 === 'sound') {
     document.documentElement.classList.add('preview-sound');
+    const soundPlay = document.querySelector('.js-sound-play');
+    soundPlay?.addEventListener('click', () =>
+      import('./js/lightbox.js').then((mod) => mod.openLightbox(soundPlay.dataset.videoSrc, soundPlay))
+    );
     const wave = document.querySelector('.sound__wave');
     if (wave && !wave.childElementCount) {
       for (let i = 0; i < 48; i++) {
