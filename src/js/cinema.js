@@ -70,6 +70,11 @@ export function buildCinema() {
 
   tl.fromTo(beam, { opacity: 0 }, { opacity: 0.8, duration: 0.18, ease: 'power1.out' }, 0.04);
   tl.to(dust, { opacity: 1, duration: 0.1 }, 0.08);
+  // the dolly-in: the frame keeps pushing toward the viewer for the
+  // whole held beat (demo-gated with the rest of the room dressing)
+  if (document.documentElement.classList.contains('show-proof')) {
+    tl.fromTo(screen, { scale: 1 }, { scale: 1.045, duration: 0.92, ease: 'none' }, 0.06);
+  }
   tl.fromTo(services, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' }, 0.22);
   tl.fromTo(intermission, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 0.42);
   // pad so authored positions map 1:1 onto pin progress
