@@ -38,7 +38,7 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   const pv = new URLSearchParams(location.search).get('proof');
   if (/^[a-z]+$/.test(pv || '')) document.documentElement.classList.add(`proof-${pv}`);
   // scene numbering with the Delivery in and the screening room cut
-  const cinCut = !new URLSearchParams(location.search).get('cinema');
+  const cinCut = new URLSearchParams(location.search).get('cinema') === 'cut';
   const proofKicker = document.querySelector('.proof .stage-kicker');
   const recceKicker = document.querySelector('.recce__kicker');
   if (cinCut && proofKicker) proofKicker.innerHTML = 'SCENE 04 &middot; THE DELIVERY';
@@ -56,13 +56,17 @@ if (new URLSearchParams(location.search).has('statdemo')) {
     reel.innerHTML = '<span class="clip__name">showreel.mov</span>';
     lane.appendChild(reel);
   }
-  // screening room is CUT by default (showreel now lives on the
-  // timeline); ?cinema=screen|village|social auditions alternatives
-  const cin = new URLSearchParams(location.search).get('cinema') || 'cut';
+  // the cinema slot now belongs to SOCIAL CUTS by default (real
+  // reels); ?cinema=cut|screen|village audition the alternatives
+  const cin = new URLSearchParams(location.search).get('cinema') || 'social';
   if (/^[a-z]+$/.test(cin)) {
     document.documentElement.classList.add(`cinema-${cin}`);
     if (cin === 'village') buildVillage();
     if (cin === 'social') buildSocial();
+  }
+  if (cin === 'social') {
+    const ck = document.querySelector('.cinema .stage-kicker');
+    if (ck) ck.innerHTML = 'SCENE 04 &middot; SOCIAL CUTS';
   }
 }
 applyMotionClass();

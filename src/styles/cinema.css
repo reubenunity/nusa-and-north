@@ -342,6 +342,11 @@ html.cinema-social .cinema__bars {
 html.cinema-cut .cinema {
   display: none;
 }
+/* under the social act the old screen furniture stays out of the way */
+html.cinema-social .cinema__meta,
+html.cinema-social .cinema__reflection {
+  display: none !important;
+}
 
 /* ---- the video village ---- */
 .village {

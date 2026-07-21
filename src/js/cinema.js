@@ -155,33 +155,64 @@ export function buildVillage() {
   powerOnStagger(stage.closest('.cinema'), monitors);
 }
 
-// THE SOCIAL SCREEN — late-night block of vertical reels.
-// Phone frames are placeholders until the real reel links arrive.
+// THE SOCIAL SCREEN — the vertical work, real reels in phone frames.
+const SOCIAL_REELS = [
+  {
+    src: 'https://vimeo.com/1123943736/b2bba13bf5',
+    poster: 'https://i.vimeocdn.com/video/2065676516-b4300baa189d4888a3ba1eed8ca0c14de7e8d89aee4b1f75301e070776b2ebd2-d_405x720',
+    tag: 'FOUR SEASONS \u00b7 NAM HAI',
+  },
+  {
+    src: 'https://vimeo.com/1139332827/877cff4ed9',
+    poster: 'https://i.vimeocdn.com/video/2085946390-f20a6bd4e0d2f12c3030b970bd21c209a699fd58b7c67429f1769f566cd8bbfb-d_480x600',
+    tag: 'HELLOBODY \u00b7 COCOS KISS',
+  },
+  {
+    src: 'https://vimeo.com/1139331392/5ee587949f',
+    poster: 'https://i.vimeocdn.com/video/2091333120-86f46e2ffa5aacd17a543723da08d07495b3a40c6a1ba9bc55b10e436a581711-d_480x600',
+    tag: 'HELLOBODY \u00b7 COCOS GOLD',
+  },
+  {
+    src: 'https://vimeo.com/1139331912/8e83f64171',
+    poster: 'https://i.vimeocdn.com/video/2085945379-09da3793430e6c41ea71300e0992959b466a7eea75b02ab79ffeff251461011d-d_480x600',
+    tag: 'HELLOBODY \u00b7 COCOS WOW',
+  },
+  {
+    src: 'https://vimeo.com/1143266792/307333a803',
+    poster: 'https://i.vimeocdn.com/video/2091389488-43bb49248177a293722a51f71d828fd1c7e8716c06f99974aed11ba03e7fe366-d_405x720',
+    tag: 'PECKS ROAD \u00b7 MELBOURNE',
+  },
+];
+
 export function buildSocial() {
   const stage = document.querySelector('.cinema__stage');
   if (!stage || stage.querySelector('.social')) return;
-  const films = clipData().filter((f) => f.poster).slice(0, 4);
 
   const wrap = document.createElement('div');
   wrap.className = 'social';
   wrap.innerHTML = `
     <p class="social__head">SOCIAL CUTS &mdash; AFTER HOURS</p>
     <div class="social__row js-social-row"></div>
-    <p class="social__note"><!-- PLACEHOLDER -->VERTICAL WORK &middot; REELS DROP IN HERE</p>`;
+    <p class="social__note"><!-- DRAFT — pending sign-off -->SHORT-FORM &middot; BUILT FOR PRODUCT, WEB &amp; SOCIAL</p>`;
   const row = wrap.querySelector('.js-social-row');
 
-  const phones = films.map((f, i) => {
-    const d = document.createElement('div');
-    d.className = 'social__phone';
-    d.innerHTML = `
+  const phones = SOCIAL_REELS.map((reel) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'social__phone';
+    b.setAttribute('aria-label', `Play reel: ${reel.tag}`);
+    b.innerHTML = `
       <i class="social__notch" aria-hidden="true"></i>
-      <img src="${f.poster}" alt="" loading="lazy" />
+      <img src="${reel.poster}" alt="" loading="lazy" />
       <span class="social__play" aria-hidden="true">&#9654;&#xFE0E;</span>
-      <span class="social__tag">REEL 0${i + 1} &middot; COMING SOON</span>`;
-    row.appendChild(d);
-    return d;
+      <span class="social__tag">${reel.tag}</span>`;
+    b.addEventListener('click', () => {
+      import('./lightbox.js').then((m) => m.openLightbox(reel.src, b));
+    });
+    row.appendChild(b);
+    return b;
   });
 
   stage.appendChild(wrap);
-  powerOnStagger(stage.closest('.cinema'), phones, 160);
+  powerOnStagger(stage.closest('.cinema'), phones, 140);
 }
