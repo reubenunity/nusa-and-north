@@ -81,7 +81,7 @@ html.recce-static .recce__stage {
 html.no-scrub .recce__viewport,
 html.recce-static .recce__viewport {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   padding: 5vh 0;
 }
 html.no-scrub .pin:nth-child(even),
@@ -186,7 +186,7 @@ html.edit-static .edit__monitor {
 html.no-scrub .edit__timeline,
 html.edit-static .edit__timeline {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 html.no-scrub .edit__track-lane,
 html.edit-static .edit__track-lane {
