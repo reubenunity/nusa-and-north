@@ -294,10 +294,10 @@ const STOPS_META = [
   ['HUE', 'RESORT FILM'], ['BALI', 'TRAVEL DIARIES'], ['SYDNEY', 'COMMERCIAL'],
 ];
 
-function onEnter(section, cb) {
+function onEnter(section, cb, threshold = 0.25) {
   const io = new IntersectionObserver(
     (entries) => entries.forEach((e) => { if (e.isIntersecting) { io.disconnect(); cb(); } }),
-    { threshold: 0.25 }
+    { threshold }
   );
   io.observe(section);
   return io;
@@ -449,7 +449,7 @@ function buildBoard(section) {
     };
     raf = requestAnimationFrame(tick);
     stopCounters = runCounters(section, 2400);
-  });
+  }, 0.12);
 
   return () => {
     io.disconnect();

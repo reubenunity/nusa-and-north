@@ -513,6 +513,16 @@ html.proof-contact .proof__foot {
   .board__head {
     font-size: 0.56rem;
   }
+  /* say DELIVERED once: names + a quiet check, not 17 repetitions */
+  .board__row:not(.board__row--boarding) .board__status {
+    display: none;
+  }
+  .board__row:not(.board__row--boarding)::after {
+    content: '\2713';
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: color-mix(in srgb, var(--pf-ink) 32%, transparent);
+  }
   .proof__stage {
     gap: 1.6rem;
     padding: 56px var(--pad);
