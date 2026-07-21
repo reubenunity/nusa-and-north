@@ -90,3 +90,98 @@ export function buildCinema() {
     gsap.set([beam, dust, bars, screen, services, intermission], { clearProps: 'all' });
   };
 }
+
+
+// ------------------------------------------------------------------
+// SCREENING-ROOM CONCEPT MOCKUPS (?cinema=village | social)
+// Injected once at startup when the demo class is present; the
+// original screen is hidden by CSS under these classes.
+// ------------------------------------------------------------------
+
+function clipData() {
+  return [...document.querySelectorAll('.js-video-lane .clip')].map((c) => ({
+    title: c.dataset.title,
+    poster: c.dataset.poster,
+    src: c.dataset.videoSrc,
+  }));
+}
+
+function powerOnStagger(section, items, step = 90) {
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      items.forEach((el, i) => setTimeout(() => el.classList.add('is-on'), 200 + i * step));
+    }),
+    { threshold: 0.25 }
+  );
+  io.observe(section);
+}
+
+// THE VIDEO VILLAGE — the on-set monitor bank. One hero feed, a wall
+// of smaller ones, every monitor a real film; click plays it.
+export function buildVillage() {
+  const stage = document.querySelector('.cinema__stage');
+  if (!stage || stage.querySelector('.village')) return;
+  const films = clipData().filter((f) => f.poster);
+  if (!films.length) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'village';
+  wrap.innerHTML = `
+    <p class="village__head">VIDEO VILLAGE &mdash; ALL FEEDS LIVE</p>
+    <div class="village__grid js-village-grid"></div>`;
+  const grid = wrap.querySelector('.js-village-grid');
+
+  const monitors = films.map((f, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `village__mon${i === 0 ? ' village__mon--hero' : ''}`;
+    b.setAttribute('aria-label', `Play ${f.title}`);
+    b.innerHTML = `
+      <img src="${f.poster}" alt="" loading="lazy" />
+      <i class="village__scan" aria-hidden="true"></i>
+      <span class="village__tc" aria-hidden="true">TC 0${(i + 1) % 10}:${String(11 + i * 3).slice(-2)}:${String(7 + i * 5).padStart(2, '0')}</span>
+      ${i === 0 ? '<span class="village__rec" aria-hidden="true"></span>' : ''}
+      <span class="village__label">${f.title}</span>`;
+    b.addEventListener('click', () => {
+      if (f.src) import('./lightbox.js').then((m) => m.openLightbox(f.src, b));
+    });
+    grid.appendChild(b);
+    return b;
+  });
+
+  stage.appendChild(wrap);
+  powerOnStagger(stage.closest('.cinema'), monitors);
+}
+
+// THE SOCIAL SCREEN — late-night block of vertical reels.
+// Phone frames are placeholders until the real reel links arrive.
+export function buildSocial() {
+  const stage = document.querySelector('.cinema__stage');
+  if (!stage || stage.querySelector('.social')) return;
+  const films = clipData().filter((f) => f.poster).slice(0, 4);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'social';
+  wrap.innerHTML = `
+    <p class="social__head">SOCIAL CUTS &mdash; AFTER HOURS</p>
+    <div class="social__row js-social-row"></div>
+    <p class="social__note"><!-- PLACEHOLDER -->VERTICAL WORK &middot; REELS DROP IN HERE</p>`;
+  const row = wrap.querySelector('.js-social-row');
+
+  const phones = films.map((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'social__phone';
+    d.innerHTML = `
+      <i class="social__notch" aria-hidden="true"></i>
+      <img src="${f.poster}" alt="" loading="lazy" />
+      <span class="social__play" aria-hidden="true">&#9654;&#xFE0E;</span>
+      <span class="social__tag">REEL 0${i + 1} &middot; COMING SOON</span>`;
+    row.appendChild(d);
+    return d;
+  });
+
+  stage.appendChild(wrap);
+  powerOnStagger(stage.closest('.cinema'), phones, 160);
+}

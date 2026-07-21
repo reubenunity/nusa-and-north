@@ -20,7 +20,7 @@ import { applyGate } from './js/scroll-gate.js';
 import { buildHero, buildHeroLite } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
-import { buildCinema, wireReel } from './js/cinema.js';
+import { buildCinema, wireReel, buildVillage, buildSocial } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
 import { buildProof } from './js/proof.js';
@@ -40,6 +40,13 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   // with the Delivery on screen the recce shifts to scene 06
   const recceKicker = document.querySelector('.recce__kicker');
   if (recceKicker) recceKicker.textContent = 'SCENE 06 · THE RECCE';
+  // &cinema=village|social|cut — audition screening-room concepts
+  const cin = new URLSearchParams(location.search).get('cinema');
+  if (/^[a-z]+$/.test(cin || '')) {
+    document.documentElement.classList.add(`cinema-${cin}`);
+    if (cin === 'village') buildVillage();
+    if (cin === 'social') buildSocial();
+  }
 }
 applyMotionClass();
 watchViewport();
@@ -77,7 +84,15 @@ function build() {
     smallScreen ? buildEditFallback() : buildEdit(),
     // triggers must be created in DOCUMENT order or ScrollTrigger
     // mis-measures the neighbors of the delivery act's pin spacer
-    ...(smallScreen ? [buildProof()] : [buildCinema(), buildProof(), buildRecce()]),
+    ...(smallScreen
+      ? [buildProof()]
+      : [
+          // ?cinema=cut hides the act entirely — pinning a
+          // display:none section breaks every measurement after it
+          ...(document.documentElement.classList.contains('cinema-cut') ? [] : [buildCinema()]),
+          buildProof(),
+          buildRecce(),
+        ]),
   ];
   if (smallScreen) wireReel();
   ScrollTrigger.refresh();
