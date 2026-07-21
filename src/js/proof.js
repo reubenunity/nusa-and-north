@@ -418,7 +418,12 @@ function buildBoard(section) {
 
   let raf = 0;
   let stopCounters = () => {};
-  const io = onEnter(section, () => {
+  // desktop pins the act — the show must start when the pin grabs
+  // (stage ~fully visible), not while the board peeks from below;
+  // mobile flows, so it fires early to be seen at all
+  const touch = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  const watchEl = touch ? section : section.querySelector('.proof__stage');
+  const io = onEnter(watchEl, () => {
     if (prefersReducedMotion) {
       rowEls.forEach(({ row }) => row.classList.add('is-in'));
       jobs.forEach((job) => { job.tile.textContent = job.ch; job.done = true; });
@@ -449,7 +454,7 @@ function buildBoard(section) {
     };
     raf = requestAnimationFrame(tick);
     stopCounters = runCounters(section, 2400);
-  }, 0.12);
+  }, touch ? 0.12 : 0.9);
 
   return () => {
     io.disconnect();
