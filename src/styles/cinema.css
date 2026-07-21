@@ -452,8 +452,7 @@ html.cinema-social .cinema__reflection {
 }
 
 /* ---- the social screen ---- */
-/* the stage must actually be a centering flex box in this mode —
-   the act was rendering top-left in dead space without it */
+/* the stage must actually be a centering flex box in this mode */
 html.cinema-social .cinema__stage {
   display: flex;
   flex-direction: column;
@@ -466,8 +465,8 @@ html.cinema-social .cinema__stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.4rem, 3.5vh, 2.6rem);
-  width: min(1400px, 94vw);
+  gap: clamp(1.6rem, 3.5vh, 2.6rem);
+  width: 100%;
 }
 .social__head {
   font-family: var(--font-mono);
@@ -479,69 +478,113 @@ html.cinema-social .cinema__stage {
 .social__row {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: clamp(1rem, 2.2vw, 2rem);
+  gap: clamp(1.2rem, 2.4vw, 2.6rem);
 }
-.social__phone {
-  position: relative;
-  height: clamp(300px, 52vh, 520px);
-  width: auto;
-  aspect-ratio: 9 / 19;
-  padding: 0;
-  border: 2px solid rgba(250, 250, 246, 0.22);
-  border-radius: clamp(16px, 2vw, 26px);
-  overflow: hidden;
-  background: #0c0b0a;
+.social__fig {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
   opacity: 0;
-  translate: 0 18px;
+  translate: 0 22px;
   transition: opacity 0.6s ease, translate 0.6s ease;
 }
-.social__phone.is-on { opacity: 1; translate: 0 0; }
-.social__phone img {
+.social__fig.is-on {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* the hardware: glossy bezel, dynamic island, deep shadow */
+.social__phone {
+  --bezel: clamp(7px, 0.9vh, 10px);
+  --r: clamp(30px, 4.4vh, 46px);
+  position: relative;
+  height: clamp(340px, 62vh, 620px);
+  aspect-ratio: 9 / 19.2;
+  padding: var(--bezel);
+  border-radius: var(--r);
+  background: linear-gradient(160deg, #1b1c20, #060607 55%, #141518);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.22),
+    0 2px 4px rgba(255, 255, 255, 0.06) inset,
+    0 24px 60px rgba(0, 0, 0, 0.6);
+}
+.social__screen {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: calc(var(--r) - var(--bezel));
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+.social__screen img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.85);
 }
-.social__notch {
+/* the live loop covers the screen; 4:5 sources overflow sideways */
+.social__loop {
   position: absolute;
-  top: 7px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  height: 102%;
+  aspect-ratio: 9 / 16;
+  width: auto;
+  border: 0;
+  pointer-events: none;
+}
+.social__loop--wide {
+  aspect-ratio: 4 / 5;
+}
+.social__island {
+  position: absolute;
+  top: calc(var(--bezel) + 8px);
   left: 50%;
   translate: -50% 0;
-  width: 34%;
-  height: 9px;
+  width: 26%;
+  height: clamp(14px, 2vh, 20px);
   border-radius: 99px;
   background: #000;
-  z-index: 2;
+  z-index: 3;
 }
+/* play affordance: touch always; desktop only on hover */
 .social__play {
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: 2.4em;
+  z-index: 2;
+  width: 2.6em;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border: 1.5px solid rgba(250, 250, 246, 0.8);
+  border: 1.5px solid rgba(250, 250, 246, 0.85);
   border-radius: 50%;
-  color: rgba(250, 250, 246, 0.9);
-  font-size: clamp(0.7rem, 1.2vw, 0.95rem);
-  background: rgba(5, 4, 4, 0.4);
+  color: rgba(250, 250, 246, 0.95);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  background: rgba(5, 4, 4, 0.42);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.25s ease, scale 0.25s ease;
+}
+@media (hover: hover) {
+  .social__play { opacity: 0; scale: 0.85; }
+  .social__screen:hover .social__play,
+  .social__screen:focus-visible .social__play { opacity: 1; scale: 1; }
 }
 .social__tag {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0.8em 0.6em;
   font-family: var(--font-mono);
-  font-size: clamp(0.4rem, 0.68vw, 0.52rem);
+  font-size: clamp(0.46rem, 0.75vw, 0.58rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-align: center;
-  color: rgba(250, 250, 246, 0.85);
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  letter-spacing: 0.16em;
+  color: rgba(250, 250, 246, 0.55);
 }
 .social__note {
   font-family: var(--font-mono);
@@ -549,6 +592,15 @@ html.cinema-social .cinema__stage {
   letter-spacing: 0.2em;
   color: rgba(250, 250, 246, 0.45);
 }
-@media (max-width: 700px) {
-  .social__row { flex-wrap: wrap; }
+
+/* touch tier: the row becomes a swipe strip of full phones */
+html.cinema-static .social__row {
+  justify-content: flex-start;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  width: 100%;
+  padding: 0 6vw 1rem;
+  scrollbar-width: none;
 }
+html.cinema-static .social__row::-webkit-scrollbar { display: none; }
+html.cinema-static .social__fig { flex: 0 0 auto; }

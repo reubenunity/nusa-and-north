@@ -166,16 +166,19 @@ const SOCIAL_REELS = [
     src: 'https://vimeo.com/1139332827/877cff4ed9',
     poster: 'https://i.vimeocdn.com/video/2085946390-f20a6bd4e0d2f12c3030b970bd21c209a699fd58b7c67429f1769f566cd8bbfb-d_480x600',
     tag: 'HELLOBODY \u00b7 COCOS KISS',
+    wide: true,
   },
   {
     src: 'https://vimeo.com/1139331392/5ee587949f',
     poster: 'https://i.vimeocdn.com/video/2091333120-86f46e2ffa5aacd17a543723da08d07495b3a40c6a1ba9bc55b10e436a581711-d_480x600',
     tag: 'HELLOBODY \u00b7 COCOS GOLD',
+    wide: true,
   },
   {
     src: 'https://vimeo.com/1139331912/8e83f64171',
     poster: 'https://i.vimeocdn.com/video/2085945379-09da3793430e6c41ea71300e0992959b466a7eea75b02ab79ffeff251461011d-d_480x600',
     tag: 'HELLOBODY \u00b7 COCOS WOW',
+    wide: true,
   },
   {
     src: 'https://vimeo.com/1143266792/307333a803',
@@ -196,23 +199,52 @@ export function buildSocial() {
     <p class="social__note"><!-- DRAFT — pending sign-off -->SHORT-FORM &middot; BUILT FOR PRODUCT, WEB &amp; SOCIAL</p>`;
   const row = wrap.querySelector('.js-social-row');
 
+  // live loops on fine-pointer machines; posters (tap to play) on touch,
+  // where five simultaneous players would chew batteries and data
+  const liveLoops = !window.matchMedia('(pointer: coarse)').matches;
+
   const phones = SOCIAL_REELS.map((reel) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'social__phone';
-    b.setAttribute('aria-label', `Play reel: ${reel.tag}`);
-    b.innerHTML = `
-      <i class="social__notch" aria-hidden="true"></i>
-      <img src="${reel.poster}" alt="" loading="lazy" />
-      <span class="social__play" aria-hidden="true">&#9654;&#xFE0E;</span>
-      <span class="social__tag">${reel.tag}</span>`;
-    b.addEventListener('click', () => {
-      import('./lightbox.js').then((m) => m.openLightbox(reel.src, b));
+    const fig = document.createElement('figure');
+    fig.className = 'social__fig';
+    fig.innerHTML = `
+      <div class="social__phone">
+        <button class="social__screen js-social-screen" type="button" aria-label="Play reel: ${reel.tag}">
+          <img src="${reel.poster}" alt="" loading="lazy" />
+          <span class="social__play" aria-hidden="true">&#9654;&#xFE0E;</span>
+        </button>
+        <i class="social__island" aria-hidden="true"></i>
+      </div>
+      <figcaption class="social__tag">${reel.tag}</figcaption>`;
+    const btn = fig.querySelector('.js-social-screen');
+    btn.addEventListener('click', () => {
+      import('./lightbox.js').then((m) => m.openLightbox(reel.src, btn));
     });
-    row.appendChild(b);
-    return b;
+    row.appendChild(fig);
+    return { fig, btn, reel };
   });
 
   stage.appendChild(wrap);
-  powerOnStagger(stage.closest('.cinema'), phones, 140);
+  powerOnStagger(stage.closest('.cinema'), phones.map((p) => p.fig), 140);
+
+  // the loops ignite once the act is near — never on page load
+  if (liveLoops) {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        phones.forEach(({ btn, reel }) => {
+          const m = reel.src.match(/vimeo\.com\/(\d+)(?:\/([a-z0-9]+))?/i);
+          if (!m) return;
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://player.vimeo.com/video/${m[1]}?${m[2] ? `h=${m[2]}&` : ''}background=1&autoplay=1&loop=1&muted=1`;
+          iframe.allow = 'autoplay';
+          iframe.setAttribute('tabindex', '-1');
+          iframe.className = `social__loop${reel.wide ? ' social__loop--wide' : ''}`;
+          btn.appendChild(iframe);
+        });
+      }),
+      { rootMargin: '40% 0px' }
+    );
+    io.observe(stage.closest('.cinema'));
+  }
 }
