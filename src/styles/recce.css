@@ -200,6 +200,14 @@
   letter-spacing: 0.12em;
   color: var(--p-ink);
 }
+.pin__reply {
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 0.9vw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--c-signal);
+}
+
 .pin__social {
   font-family: var(--font-mono);
   font-size: clamp(0.56rem, 0.95vw, 0.66rem);

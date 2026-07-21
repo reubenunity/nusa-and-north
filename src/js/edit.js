@@ -108,6 +108,11 @@ function applyMonitor(clip) {
 
   monitorTitle.textContent = title;
   monitorClipname.textContent = clip.querySelector('.clip__name').textContent;
+  const statEl = document.querySelector('.js-monitor-stat');
+  if (statEl) {
+    statEl.textContent = clip.dataset.stat || '';
+    statEl.classList.toggle('is-on', Boolean(clip.dataset.stat));
+  }
   gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
 
   const posterEl = document.querySelector('.js-monitor-poster');

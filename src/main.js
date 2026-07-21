@@ -22,8 +22,30 @@ import { buildEdit, buildEditFallback } from './js/edit.js';
 import { buildCinema, wireReel } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
+import { openLightbox } from './js/lightbox.js';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// hero reel shortcut — straight to the lightbox, no scrolling required
+{
+  const reelBtn = document.querySelector('.js-hero-reel');
+  const reelSlot = document.querySelector('.js-reel-slot');
+  if (reelBtn && reelSlot?.dataset.vimeoId) {
+    const { vimeoId, vimeoHash } = reelSlot.dataset;
+    reelBtn.addEventListener('click', () =>
+      openLightbox(`https://vimeo.com/${vimeoId}/${vimeoHash}`, reelBtn)
+    );
+  }
+}
+
+// ?statdemo — client preview of the results stamps with SAMPLE numbers;
+// real figures go on clips as data-stat and this block becomes moot
+if (new URLSearchParams(location.search).has('statdemo')) {
+  const samples = ['2.4M VIEWS · SAMPLE', '860K VIEWS · SAMPLE', '1.2M VIEWS · SAMPLE'];
+  document.querySelectorAll('.js-video-lane .clip').forEach((clip, i) => {
+    if (samples[i]) clip.dataset.stat = samples[i];
+  });
+}
 applyMotionClass();
 watchViewport();
 
