@@ -488,11 +488,3 @@ html.proof-contact .proof__foot {
   transition: opacity 0.9s ease;
 }
 .sheet__tally.is-in { opacity: 1; }
-
-/* the four totals are HIDDEN until the client supplies real figures —
-   placeholder metrics must never ship as fact. Delete this block to
-   bring the counters back. */
-html.show-proof .proof__grid,
-html.show-proof .proof__foot {
-  display: none;
-}
