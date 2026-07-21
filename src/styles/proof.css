@@ -23,9 +23,9 @@ html.show-proof .proof {
   align-items: center;
   gap: clamp(2.4rem, 5vh, 4rem);
   padding: clamp(70px, 12vh, 120px) var(--pad);
-  background: #0b0a09;
-  color: #fafaf6;
-  border-top: 1px solid rgba(250, 250, 246, 0.08);
+  background: var(--p-base);
+  color: var(--p-ink);
+  border-top: 1px solid color-mix(in srgb, var(--p-ink) 18%, transparent);
 }
 
 /* ---- flight log line ---- */
@@ -34,7 +34,7 @@ html.show-proof .proof {
   font-size: clamp(0.6rem, 1.05vw, 0.74rem);
   font-weight: 700;
   letter-spacing: 0.24em;
-  color: rgba(250, 250, 246, 0.8);
+  color: color-mix(in srgb, var(--p-ink) 80%, transparent);
 }
 
 /* ---- the world chart ---- */
@@ -49,13 +49,13 @@ html.show-proof .proof {
 }
 
 .proof__dots circle {
-  fill: rgba(250, 250, 246, 0.16);
+  fill: color-mix(in srgb, var(--p-ink) 22%, transparent);
 }
 
 /* faint full route vs the red trail the plane reveals */
 .proof__route-ghost {
   fill: none;
-  stroke: rgba(250, 250, 246, 0.18);
+  stroke: color-mix(in srgb, var(--p-ink) 28%, transparent);
   stroke-width: 1;
   stroke-dasharray: 2 5;
 }
@@ -67,7 +67,7 @@ html.show-proof .proof {
 
 /* city pins light as the plane passes */
 .proof__city-dot {
-  fill: rgba(250, 250, 246, 0.3);
+  fill: color-mix(in srgb, var(--p-ink) 35%, transparent);
   transition: fill 0.3s ease;
 }
 .proof__city.is-on .proof__city-dot {
@@ -88,12 +88,12 @@ html.show-proof .proof {
   100% { opacity: 0; transform: scale(4.5); stroke-width: 0.4; }
 }
 .proof__city-leader {
-  stroke: rgba(250, 250, 246, 0);
+  stroke: transparent;
   stroke-width: 0.6;
   transition: stroke 0.5s ease 0.15s;
 }
 .proof__city.is-on .proof__city-leader {
-  stroke: rgba(250, 250, 246, 0.3);
+  stroke: color-mix(in srgb, var(--p-ink) 35%, transparent);
 }
 
 .proof__city-label {
@@ -101,11 +101,11 @@ html.show-proof .proof {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  fill: rgba(250, 250, 246, 0);
+  fill: transparent;
   transition: fill 0.5s ease 0.15s;
 }
 .proof__city.is-on .proof__city-label {
-  fill: rgba(250, 250, 246, 0.75);
+  fill: color-mix(in srgb, var(--p-ink) 80%, transparent);
 }
 
 /* the client's stop: dashed, pulsing, waiting */
@@ -122,7 +122,7 @@ html.show-proof .proof {
   50% { stroke-opacity: 0.35; }
 }
 .proof__city--next .proof__city-label {
-  fill: rgba(227, 61, 46, 0);
+  fill: transparent;
 }
 .proof__city--next.is-on .proof__city-label {
   fill: var(--c-signal, #e33d2e);
@@ -137,7 +137,7 @@ html.show-proof .proof {
   opacity: 1;
 }
 .proof__plane path {
-  fill: #fafaf6;
+  fill: var(--p-ink);
 }
 
 /* mobile: labels stay legible as the chart shrinks */
@@ -179,7 +179,7 @@ html.show-proof .proof {
   font-size: clamp(0.56rem, 1vw, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: rgba(250, 250, 246, 0.55);
+  color: color-mix(in srgb, var(--p-ink) 55%, transparent);
 }
 
 .proof__foot {
@@ -188,4 +188,17 @@ html.show-proof .proof {
   letter-spacing: 0.2em;
   color: var(--c-signal, #e33d2e);
   font-weight: 700;
+}
+
+/* handwritten margin note — same voice as the recce board */
+.proof__note {
+  position: absolute;
+  right: calc(var(--pad) * 2);
+  top: calc(var(--pad) * 1.5);
+  font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  color: var(--c-signal);
+  rotate: -4deg;
+}
+@media (max-width: 640px) {
+  .proof__note { display: none; }
 }
