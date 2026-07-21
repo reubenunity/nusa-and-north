@@ -3,7 +3,11 @@
 // city as it passes while the campaign totals count up in rhythm.
 // No GSAP, no pins: SVG + one rAF, so it behaves on every tier.
 // GATED behind html.show-proof (?statdemo=1) until figures are real.
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { prefersReducedMotion } from './motion.js';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const W = 1000;
 const H = 430;
@@ -114,12 +118,31 @@ export function buildProof() {
   if (!section || !svg || !document.documentElement.classList.contains('show-proof')) {
     return () => {};
   }
+  // hard stop: pin the act so its animation delivers before the page
+  // moves on — desktop only; the touch tier stays pin-free by design
+  const smallScreen =
+    window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  let pin = null;
+  if (!smallScreen && !prefersReducedMotion) {
+    pin = ScrollTrigger.create({
+      trigger: '.proof__stage',
+      start: 'top top',
+      end: '+=130%',
+      pin: true,
+    });
+    if (import.meta.env.DEV) window.__proofPin = pin;
+  }
+  const withPin = (teardown) => () => {
+    pin?.kill();
+    teardown();
+  };
+
   const variant = [...document.documentElement.classList]
     .map((c) => c.replace(/^proof-/, ''))
     .find((c) => DESIGN_VARIANTS.includes(c));
-  if (variant === 'board') return buildBoard(section);
-  if (variant === 'passport') return buildPassport(section);
-  if (variant === 'contact') return buildContact(section);
+  if (variant === 'board') return withPin(buildBoard(section));
+  if (variant === 'passport') return withPin(buildPassport(section));
+  if (variant === 'contact') return withPin(buildContact(section));
   svg.innerHTML = '';
 
   // ---- dot-matrix world ----
@@ -250,10 +273,10 @@ export function buildProof() {
   );
   io.observe(section);
 
-  return () => {
+  return withPin(() => {
     io.disconnect();
     cancelAnimationFrame(raf);
-  };
+  });
 }
 
 

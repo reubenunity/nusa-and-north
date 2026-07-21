@@ -45,7 +45,6 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   const recceKicker = document.querySelector('.recce__kicker');
   if (recceKicker) recceKicker.textContent = 'SCENE 06 · THE RECCE';
 }
-buildProof();
 applyMotionClass();
 watchViewport();
 
@@ -81,6 +80,8 @@ function build() {
     ...(smallScreen ? [] : [buildBridge()]),
     smallScreen ? buildEditFallback() : buildEdit(),
     ...(smallScreen ? [] : [buildCinema(), buildRecce()]),
+    // last: its pin must be created after (and refreshed with) the others
+    buildProof(),
   ];
   if (smallScreen) wireReel();
   ScrollTrigger.refresh();
@@ -169,6 +170,7 @@ if (fullExperience) {
   // reduced-motion / small-screen: static layout, native scrolling,
   // timeline becomes a horizontal scroller
   buildEditFallback();
+  buildProof();
 
   // motion lite: fade sections up as they enter the viewport
   if (!prefersReducedMotion) {
