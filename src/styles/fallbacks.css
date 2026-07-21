@@ -158,8 +158,11 @@ html.no-scrub .swipe-hint--recce {
 html.no-scrub .edit__stage,
 html.edit-static .edit__stage {
   height: auto;
-  min-height: 0;
-  padding: 6vh 0 24px;
+  min-height: 100svh;
+  padding: 11vh 0 7vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 html.no-scrub .edit__monitor,
 html.edit-static .edit__monitor {
