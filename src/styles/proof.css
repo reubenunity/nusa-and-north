@@ -18,8 +18,8 @@ html.show-proof .proof {
   --pf-bg: var(--p-base);
   --pf-ink: var(--p-ink);
   position: relative;
-  min-height: 88vh;
-  min-height: 88svh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;

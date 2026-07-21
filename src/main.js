@@ -79,9 +79,9 @@ function build() {
     smallScreen ? buildHeroLite() : buildHero(),
     ...(smallScreen ? [] : [buildBridge()]),
     smallScreen ? buildEditFallback() : buildEdit(),
-    ...(smallScreen ? [] : [buildCinema(), buildRecce()]),
-    // last: its pin must be created after (and refreshed with) the others
-    buildProof(),
+    // triggers must be created in DOCUMENT order or ScrollTrigger
+    // mis-measures the neighbors of the delivery act's pin spacer
+    ...(smallScreen ? [buildProof()] : [buildCinema(), buildProof(), buildRecce()]),
   ];
   if (smallScreen) wireReel();
   ScrollTrigger.refresh();
@@ -165,7 +165,10 @@ if (fullExperience) {
   }
 
   // dev-only iteration panel — never ships in the production build
-  if (import.meta.env.DEV) initDevPanel(rebuild);
+  if (import.meta.env.DEV) {
+    initDevPanel(rebuild);
+    window.__ST = ScrollTrigger;
+  }
 } else {
   // reduced-motion / small-screen: static layout, native scrolling,
   // timeline becomes a horizontal scroller
