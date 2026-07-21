@@ -273,6 +273,7 @@ export function buildEdit() {
   );
 
   // ---- pinned phase: pure scrub, clips pass under the fixed playhead ----
+  const skipBtn = document.querySelector('.js-edit-skip');
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
@@ -281,6 +282,9 @@ export function buildEdit() {
       end: `+=${edit.scrollVh}%`,
       pin: '.edit__stage',
       scrub: true,
+      onToggle(self) {
+        skipBtn?.classList.toggle('is-on', self.isActive);
+      },
       onUpdate(self) {
         tcEl.textContent = timecode(self.progress * edit.sequenceSeconds);
         setActiveByProgress(self.progress);
@@ -290,7 +294,17 @@ export function buildEdit() {
 
   tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
 
+  // the escape hatch: jump clean past the sequence
+  const onSkip = () => {
+    const st = tl.scrollTrigger;
+    if (!st) return;
+    (window.__lenis || window).scrollTo(st.end + window.innerHeight * 0.15, { duration: 1.1 });
+  };
+  skipBtn?.addEventListener('click', onSkip);
+
   return () => {
+    skipBtn?.removeEventListener('click', onSkip);
+    skipBtn?.classList.remove('is-on');
     assembleTl.scrollTrigger?.kill();
     assembleTl.kill();
     tl.scrollTrigger?.kill();
