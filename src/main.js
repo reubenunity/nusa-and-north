@@ -28,11 +28,10 @@ import { buildProof } from './js/proof.js';
 gsap.registerPlugin(ScrollTrigger);
 
 
-// ?statdemo — client preview of the results stamps with SAMPLE numbers;
-// real figures go on clips as data-stat and this block becomes moot
-if (new URLSearchParams(location.search).has('statdemo')) {
-  // the delivery act is part of the demo until real figures are
-  // confirmed — then show-proof becomes unconditional
+// PUBLIC since 2026-07-21 ("lets flip it public") — the whole package
+// ships: delivery board, short form act, recce v2, glass edit bay.
+// ?proof= and ?cinema= params remain as private audition tools.
+{
   document.documentElement.classList.add('show-proof');
   // &proof=blue|butter|dark — flip the act's palette for review
   const pv = new URLSearchParams(location.search).get('proof');

@@ -419,6 +419,12 @@ function buildBoard(section) {
   let raf = 0;
   let stopCounters = () => {};
   const io = onEnter(section, () => {
+    if (prefersReducedMotion) {
+      rowEls.forEach(({ row }) => row.classList.add('is-in'));
+      jobs.forEach((job) => { job.tile.textContent = job.ch; job.done = true; });
+      stopCounters = runCounters(section, 10);
+      return;
+    }
     const t0 = performance.now();
     rowEls.forEach(({ row, rowStart }) => setTimeout(() => row.classList.add('is-in'), rowStart));
     const tick = (now) => {
