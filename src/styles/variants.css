@@ -110,6 +110,26 @@ html.show-proof .cinema__stage {
   --c-clip-active: #d9a45b;
   --c-clip-active-fg: #191106;
 }
+/* the gold thread runs through EVERY dark surface, hero included,
+   so the edit bay's gold doesn't arrive cold. REC stays red —
+   recording is red, always. */
+html.show-proof .hud__timecode,
+html.show-proof .hud__focus-label,
+html.show-proof .hud__scroll-hint {
+  color: #d9a45b;
+}
+html.show-proof .hud__focus-box {
+  border-color: rgba(217, 164, 91, 0.85);
+}
+html.show-proof .hud__battery-fill {
+  background: #d9a45b;
+}
+/* the anamorphic flare warms to lamp-gold to match the rooms */
+html.show-proof .cinema__flare {
+  background: linear-gradient(90deg, transparent, rgba(235, 195, 130, 0.9), transparent);
+  box-shadow: 0 0 18px 3px rgba(217, 164, 91, 0.4);
+}
+
 /* the one place palette C hard-codes raw red on the dark chrome */
 html.show-proof[data-palette='c'] .edit__monitor-bar .js-edit-timecode,
 html.show-proof[data-palette='c'] .edit__playhead,
