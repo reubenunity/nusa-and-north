@@ -654,15 +654,16 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
 }
 
 .social__hand {
+  /* anchored to the act's own header line — phones can never reach
+     it here, on any screen height */
   position: absolute;
-  right: calc(var(--pad) * 1.4);
-  top: calc(var(--pad) * 0.9);
+  right: clamp(2vw, 5vw, 7vw);
+  top: -0.7em;
   z-index: 6;
-  max-width: 40vw;
   font-size: clamp(1.2rem, 2.2vw, 1.8rem);
   color: var(--c-signal);
   rotate: -4deg;
-  text-align: right;
+  white-space: nowrap;
 }
 @media (max-width: 700px) {
   .social__hand { display: none; }
