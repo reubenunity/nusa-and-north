@@ -19,7 +19,7 @@ import { applyGate } from './js/scroll-gate.js';
 import { buildHero, buildHeroLite } from './js/hero.js';
 import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback } from './js/edit.js';
-import { buildCinema } from './js/cinema.js';
+import { buildCinema, wireReel } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
 
@@ -51,13 +51,16 @@ function build() {
   document.documentElement.classList.toggle('edit-static', smallScreen);
   // phones: cinematic hero intro without the fragile pinned explosion
   document.documentElement.classList.toggle('hero-static', smallScreen);
+  // touch tier is fully pin-free: screening room flows, recce swipes
+  document.documentElement.classList.toggle('cinema-static', smallScreen);
+  document.documentElement.classList.toggle('recce-static', smallScreen);
   teardowns = [
     smallScreen ? buildHeroLite() : buildHero(),
     ...(smallScreen ? [] : [buildBridge()]),
     smallScreen ? buildEditFallback() : buildEdit(),
-    buildCinema(),
-    buildRecce(),
+    ...(smallScreen ? [] : [buildCinema(), buildRecce()]),
   ];
+  if (smallScreen) wireReel();
   ScrollTrigger.refresh();
 }
 
@@ -97,7 +100,9 @@ if (fullExperience) {
 
   // the production sheet fades up as it enters view on touch devices
   if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) {
-    const targets = document.querySelectorAll('.about__main, .about__still, .quote');
+    const targets = document.querySelectorAll(
+      '.about__main, .about__still, .quote, .cinema__screen, .recce__head, .pin, .recce__footer'
+    );
     const reveal = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -114,8 +119,9 @@ if (fullExperience) {
       reveal.observe(el);
     });
 
-    // nudge the timeline strip when it first appears
-    const strip = document.querySelector('.edit__timeline');
+    // nudge the horizontal strips when they first appear
+    ['.edit__timeline', '.recce__viewport'].forEach((sel) => {
+    const strip = document.querySelector(sel);
     if (strip) {
       const io = new IntersectionObserver(
         (entries) => {
@@ -132,6 +138,7 @@ if (fullExperience) {
       );
       io.observe(strip);
     }
+    });
   }
 
   // dev-only iteration panel — never ships in the production build

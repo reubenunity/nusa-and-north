@@ -7,6 +7,25 @@ gsap.registerPlugin(ScrollTrigger);
 // The screening room: one confident moment. The screen assembles
 // while the room wipes into view, the projector beam ignites, and
 // the services line + intermission settle in beneath the reel.
+// PLAY REEL — swap the poster for the Vimeo player. Wired separately
+// so the static (touch) tier has a working reel too.
+export function wireReel() {
+  const reelSlot = document.querySelector('.js-reel-slot');
+  const playBtn = document.querySelector('.js-play-reel');
+  if (!reelSlot || !playBtn || playBtn.dataset.reelWired) return;
+  playBtn.dataset.reelWired = '1';
+  playBtn.addEventListener('click', () => {
+    const { vimeoId, vimeoHash } = reelSlot.dataset;
+    if (!vimeoId) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://player.vimeo.com/video/${vimeoId}?h=${vimeoHash}&autoplay=1&title=0&byline=0&portrait=0`;
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+    iframe.allowFullscreen = true;
+    reelSlot.innerHTML = '';
+    reelSlot.appendChild(iframe);
+  });
+}
+
 export function buildCinema() {
   const { cinema } = config;
 
@@ -56,23 +75,9 @@ export function buildCinema() {
   // pad so authored positions map 1:1 onto pin progress
   tl.set({}, {}, 1);
 
-  // PLAY REEL — swap the poster for the Vimeo player
-  const reelSlot = document.querySelector('.js-reel-slot');
-  const playBtn = document.querySelector('.js-play-reel');
-  const onPlay = () => {
-    const { vimeoId, vimeoHash } = reelSlot.dataset;
-    if (!vimeoId) return;
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://player.vimeo.com/video/${vimeoId}?h=${vimeoHash}&autoplay=1&title=0&byline=0&portrait=0`;
-    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-    iframe.allowFullscreen = true;
-    reelSlot.innerHTML = '';
-    reelSlot.appendChild(iframe);
-  };
-  playBtn?.addEventListener('click', onPlay);
+  wireReel();
 
   return () => {
-    playBtn?.removeEventListener('click', onPlay);
     entranceTl.scrollTrigger?.kill();
     entranceTl.kill();
     tl.scrollTrigger?.kill();

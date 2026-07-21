@@ -41,43 +41,55 @@ html.bridge-static .about__ghost {
 }
 
 /* cinema flows statically: cards stacked, screen visible */
-html.no-scrub .cinema__stage {
+html.no-scrub .cinema__stage,
+html.cinema-static .cinema__stage {
   height: auto;
   padding: 7vh 0;
 }
 html.no-scrub .cinema__beam,
 html.no-scrub .cinema__leader,
 html.no-scrub .cinema__grain,
-html.no-scrub .cinema__dust {
+html.no-scrub .cinema__dust,
+html.cinema-static .cinema__beam,
+html.cinema-static .cinema__grain,
+html.cinema-static .cinema__dust {
   display: none;
 }
-html.no-scrub .cinema__bars {
+html.no-scrub .cinema__bars,
+html.cinema-static .cinema__bars {
   display: none;
 }
-html.no-scrub .cinema__screen {
+html.no-scrub .cinema__screen,
+html.cinema-static .cinema__screen {
   position: static;
   opacity: 1;
   margin-top: 2rem;
 }
 html.no-scrub .cinema__services,
-html.no-scrub .cinema__intermission {
+html.no-scrub .cinema__intermission,
+html.cinema-static .cinema__services,
+html.cinema-static .cinema__intermission {
   opacity: 1;
 }
 
 /* recce board becomes a native horizontal scroller */
-html.no-scrub .recce__stage {
+html.no-scrub .recce__stage,
+html.recce-static .recce__stage {
   height: auto;
   min-height: 0;
 }
-html.no-scrub .recce__viewport {
+html.no-scrub .recce__viewport,
+html.recce-static .recce__viewport {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: 5vh 0;
 }
-html.no-scrub .pin:nth-child(even) {
+html.no-scrub .pin:nth-child(even),
+html.recce-static .pin:nth-child(even) {
   margin-top: 0;
 }
-html.no-scrub .recce__track {
+html.no-scrub .recce__track,
+html.recce-static .recce__track {
   padding: 0 8vw;
 }
 
@@ -124,7 +136,8 @@ html.bridge-static .fade-up.in-view {
   display: none;
 }
 html.no-scrub .swipe-hint,
-html.edit-static .edit__stage .swipe-hint {
+html.edit-static .edit__stage .swipe-hint,
+html.recce-static .swipe-hint--recce {
   display: flex;
   align-items: center;
   gap: 0.8em;
@@ -149,7 +162,8 @@ html.edit-static .edit__stage .swipe-hint::after {
 @keyframes swipe-nudge {
   50% { transform: translateX(9px); }
 }
-html.no-scrub .swipe-hint--recce {
+html.no-scrub .swipe-hint--recce,
+html.recce-static .swipe-hint--recce {
   padding-left: calc(var(--pad) * 1.8);
   padding-top: 2vh;
 }
