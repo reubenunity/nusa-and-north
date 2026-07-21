@@ -173,10 +173,17 @@ html.no-scrub .edit__stage,
 html.edit-static .edit__stage {
   height: auto;
   min-height: 100svh;
-  padding: 11vh 0 7vh;
+  padding: 10vh 0 3vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* monitor floats centered in the free space, strip anchors to the
+     bottom — no dead black gap under the timeline */
+  justify-content: flex-start;
+}
+html.no-scrub .edit__monitor,
+html.edit-static .edit__monitor {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 html.no-scrub .edit__monitor,
 html.edit-static .edit__monitor {
