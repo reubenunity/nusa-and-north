@@ -295,6 +295,22 @@ function runCounters(section, dur = 1800) {
   return () => cancelAnimationFrame(raf);
 }
 
+// Paint the dot world + full route into an svg as a static backdrop.
+function drawWorldBackdrop(svg) {
+  const dots = make('g', { class: 'proof__dots' }, svg);
+  for (let lat = LAT_BOT + 2; lat <= LAT_TOP; lat += 3) {
+    for (let lon = -178; lon <= 180; lon += 3.4) {
+      if (LAND.some((p) => inPoly(lon, lat, p))) {
+        make('circle', { cx: px(lon).toFixed(1), cy: py(lat).toFixed(1), r: 1.5 }, dots);
+      }
+    }
+  }
+  const stops = [...CITIES, NEXT_STOP].map((c) => ({ ...c, x: px(c.lon), y: py(c.lat) }));
+  const fullD = stops.slice(0, -1).map((a, i) => arcSegment(a, stops[i + 1]).d).join(' ');
+  make('path', { d: fullD, class: 'proof__route-trail' }, svg);
+  stops.forEach((c) => make('circle', { cx: c.x, cy: c.y, r: 2.4, class: 'proof__bg-stop' }, svg));
+}
+
 // ------------------------------------------------------------------
 // MOCKUP 1 — the departures board (split-flap)
 // ------------------------------------------------------------------
@@ -328,11 +344,13 @@ function flapInto(el, text) {
 function buildBoard(section) {
   const alt = section.querySelector('.js-proof-alt');
   alt.innerHTML = `
+    <svg class="board__bg" viewBox="0 0 1000 430" aria-hidden="true"></svg>
     <p class="board__head">DEPARTURES \u2014 NUSA &amp; NORTH</p>
     <div class="board__cols">
       <div class="board__col js-board-a"></div>
       <div class="board__col js-board-b"></div>
     </div>`;
+  drawWorldBackdrop(alt.querySelector('.board__bg'));
   const colA = alt.querySelector('.js-board-a');
   const colB = alt.querySelector('.js-board-b');
   const rows = [...STOPS_META.map(([city]) => [city, 'DELIVERED']), ['YOUR CITY', 'BOARDING']];

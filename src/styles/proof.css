@@ -250,6 +250,39 @@ html.proof-contact .proof__foot {
 }
 
 /* ---- mockup 1: departures board ---- */
+.proof__alt {
+  position: relative;
+}
+/* the route map on the back wall of the departures hall */
+.board__bg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(1080px, 108%);
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.board__bg .proof__dots circle {
+  fill: color-mix(in srgb, var(--pf-ink) 10%, transparent);
+}
+.board__bg .proof__route-trail {
+  fill: none;
+  stroke: color-mix(in srgb, var(--c-signal) 30%, transparent);
+  stroke-width: 1.3;
+  stroke-dasharray: 3 4;
+}
+.board__bg .proof__bg-stop {
+  fill: color-mix(in srgb, var(--c-signal) 32%, transparent);
+}
+.board__head,
+.board__cols {
+  position: relative;
+  z-index: 1;
+}
+
 .board__head {
   font-family: var(--font-mono);
   font-size: clamp(0.62rem, 1.1vw, 0.78rem);
