@@ -228,3 +228,21 @@ html.edit-static .edit__timeline::-webkit-scrollbar-thumb {
   background: var(--c-signal);
   border-radius: 2px;
 }
+
+/* ================================================================
+   TOUCH TIER: act boundaries snap. Without pins, a stopped thumb
+   often leaves two acts half-visible — proximity snap magnetizes
+   section tops to the screen top when you settle near a boundary,
+   while long acts still scroll freely inside themselves.
+   ================================================================ */
+html.edit-static {
+  scroll-snap-type: y proximity;
+}
+html.edit-static .hero,
+html.edit-static .bridge,
+html.edit-static .edit,
+html.edit-static .cinema,
+html.edit-static .proof,
+html.edit-static .recce {
+  scroll-snap-align: start;
+}
