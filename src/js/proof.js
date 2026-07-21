@@ -337,32 +337,7 @@ function drawWorldBackdrop(svg) {
 // ------------------------------------------------------------------
 // MOCKUP 1 — the departures board (split-flap)
 // ------------------------------------------------------------------
-const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ';
-
-function flapInto(el, text) {
-  // every letter is a tile that flutters before settling
-  el.innerHTML = '';
-  const timers = [];
-  [...text].forEach((ch, i) => {
-    const tile = document.createElement('i');
-    tile.className = 'board__tile';
-    tile.textContent = ' ';
-    el.appendChild(tile);
-    let spins = 0;
-    const spinsMax = 4 + Math.floor(i * 0.8) + Math.floor(Math.random() * 4);
-    const iv = setInterval(() => {
-      spins += 1;
-      if (spins >= spinsMax) {
-        tile.textContent = ch;
-        clearInterval(iv);
-      } else {
-        tile.textContent = FLAP_CHARS[Math.floor(Math.random() * FLAP_CHARS.length)];
-      }
-    }, 45);
-    timers.push(iv);
-  });
-  return timers;
-}
+const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 // The filmography as flights — every delivery that landed.
 const BOARD_FILMS = [
@@ -398,34 +373,80 @@ function buildBoard(section) {
   drawWorldBackdrop(alt.querySelector('.board__bg'));
   const colA = alt.querySelector('.js-board-a');
   const colB = alt.querySelector('.js-board-b');
-  const rows = BOARD_FILMS;
 
-  const rowEls = rows.map(([city, status], i) => {
+  // Build every tile up front; ONE rAF loop drives all of them.
+  // (One interval per tile — hundreds of timers — was thrashing
+  // layout hard enough to stutter the scroll two acts away.)
+  const jobs = [];
+  const half = Math.ceil(BOARD_FILMS.length / 2);
+  const rowEls = BOARD_FILMS.map(([film, status], i) => {
     const row = document.createElement('div');
     row.className = `board__row${status !== 'DELIVERED' ? ' board__row--boarding' : ''}`;
-    row.innerHTML = '<span class="board__dest"></span><span class="board__status"></span>';
-    (i < Math.ceil(rows.length / 2) ? colA : colB).appendChild(row);
-    return { row, city, status };
+    const dest = document.createElement('span');
+    dest.className = 'board__dest';
+    const stat = document.createElement('span');
+    stat.className = 'board__status';
+    row.append(dest, stat);
+    (i < half ? colA : colB).appendChild(row);
+
+    const rowStart = 350 + i * 120;
+    const prime = (holder, text) => {
+      [...text].forEach((ch, t) => {
+        const tile = document.createElement('i');
+        tile.className = 'board__tile';
+        tile.textContent = '\u00a0';
+        holder.appendChild(tile);
+        if (ch === ' ') {
+          jobs.push({ tile, ch: '\u00a0', settleAt: rowStart, lastFlip: 0, done: false });
+        } else {
+          jobs.push({
+            tile,
+            ch,
+            settleAt: rowStart + 260 + t * 55 + Math.random() * 180,
+            lastFlip: 0,
+            done: false,
+          });
+        }
+      });
+    };
+    prime(dest, film);
+    prime(stat, status);
+    return { row, rowStart };
   });
 
-  const timers = [];
+  let raf = 0;
   let stopCounters = () => {};
   const io = onEnter(section, () => {
-    rowEls.forEach(({ row, city, status }, i) => {
-      const t = setTimeout(() => {
-        row.classList.add('is-in');
-        timers.push(...flapInto(row.querySelector('.board__dest'), city));
-        timers.push(...flapInto(row.querySelector('.board__status'), status));
-      }, 350 + i * 140);
-      timers.push(t);
-    });
-    timers.push(setTimeout(() => { stopCounters = runCounters(section); }, 900));
+    const t0 = performance.now();
+    rowEls.forEach(({ row, rowStart }) => setTimeout(() => row.classList.add('is-in'), rowStart));
+    const tick = (now) => {
+      const el = now - t0;
+      let pending = false;
+      for (const job of jobs) {
+        if (job.done) continue;
+        if (el >= job.settleAt) {
+          job.tile.textContent = job.ch;
+          job.done = true;
+        } else {
+          pending = true;
+          // flutter only once it's close to landing, and gently —
+          // ~12 glyph swaps per tile total, batched in this one frame
+          if (el > job.settleAt - 700 && now - job.lastFlip > 70) {
+            job.tile.textContent = FLAP_CHARS[(Math.random() * FLAP_CHARS.length) | 0];
+            job.lastFlip = now;
+          }
+        }
+      }
+      if (pending) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    stopCounters = runCounters(section, 2400);
   });
 
   return () => {
     io.disconnect();
+    cancelAnimationFrame(raf);
     stopCounters();
-    timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
     alt.innerHTML = '';
   };
 }
