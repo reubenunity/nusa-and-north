@@ -12,21 +12,31 @@ const LAT_BOT = -62;
 const px = (lon) => ((lon + 180) / 360) * W;
 const py = (lat) => ((LAT_TOP - lat) / (LAT_TOP - LAT_BOT)) * H;
 
-// The route, in shooting order. dx/dy/anchor place each label so the
-// dense European cluster doesn't collide.
+// The route: every country/city they've filmed, flown west to east.
+// lx/ly are ABSOLUTE label anchor positions (viewBox coords), hand-
+// placed so the dense European cluster stays legible; leader: true
+// draws a hairline from the dot to the label.
 const CITIES = [
-  { name: 'LONDON', lon: -0.1, lat: 51.5, dx: -8, dy: -6, anchor: 'end' },
-  { name: 'FRANKFURT', lon: 8.7, lat: 50.1, dx: 4, dy: -9, anchor: 'start' },
-  { name: 'BASEL', lon: 7.6, lat: 47.6, dx: -8, dy: 5, anchor: 'end' },
-  { name: 'FLORENCE', lon: 11.3, lat: 43.8, dx: 2, dy: 14, anchor: 'start' },
-  { name: 'PRAGUE', lon: 14.4, lat: 50.1, dx: 8, dy: 4, anchor: 'start' },
-  { name: 'TALLINN', lon: 24.8, lat: 59.4, dx: 8, dy: -3, anchor: 'start' },
-  { name: 'HUE', lon: 107.6, lat: 16.5, dx: 7, dy: -6, anchor: 'start' },
-  { name: 'BANGKOK', lon: 100.5, lat: 13.8, dx: -8, dy: 0, anchor: 'end' },
-  { name: 'PHUKET', lon: 98.4, lat: 7.9, dx: -8, dy: 9, anchor: 'end' },
-  { name: 'BALI', lon: 115.2, lat: -8.7, dx: 2, dy: 16, anchor: 'start' },
+  { name: 'IRELAND', lon: -6.3, lat: 53.3, lx: 470, ly: 62, anchor: 'end' },
+  { name: 'UK', lon: -0.1, lat: 51.5, lx: 488, ly: 80, anchor: 'end' },
+  { name: 'SPAIN', lon: -3.7, lat: 40.4, lx: 480, ly: 117, anchor: 'end' },
+  { name: 'BASEL', lon: 7.6, lat: 47.6, lx: 496, ly: 98, anchor: 'end', leader: true },
+  { name: 'ITALY', lon: 11.3, lat: 43.8, lx: 528, ly: 118, anchor: 'middle' },
+  { name: 'ALBANIA', lon: 19.8, lat: 41.3, lx: 570, ly: 112, anchor: 'start' },
+  { name: 'GREECE', lon: 23.7, lat: 38.0, lx: 578, ly: 127, anchor: 'start' },
+  { name: 'AUSTRIA', lon: 16.4, lat: 48.2, lx: 562, ly: 97, anchor: 'start' },
+  { name: 'PRAGUE', lon: 14.4, lat: 50.1, lx: 548, ly: 80, anchor: 'start' },
+  { name: 'D\u00dcSSELDORF', lon: 6.8, lat: 51.2, lx: 462, ly: 42, anchor: 'end', leader: true },
+  { name: 'FRANKFURT', lon: 8.7, lat: 50.1, lx: 512, ly: 32, anchor: 'middle', leader: true },
+  { name: 'BERLIN', lon: 13.4, lat: 52.5, lx: 548, ly: 34, anchor: 'start', leader: true },
+  { name: 'LITHUANIA', lon: 25.3, lat: 54.7, lx: 588, ly: 66, anchor: 'start' },
+  { name: 'TALLINN', lon: 24.8, lat: 59.4, lx: 577, ly: 50, anchor: 'start' },
+  { name: 'THAILAND', lon: 100.5, lat: 13.8, lx: 771, ly: 194, anchor: 'end' },
+  { name: 'VIETNAM', lon: 107.6, lat: 16.5, lx: 807, ly: 178, anchor: 'start' },
+  { name: 'BALI', lon: 115.2, lat: -8.7, lx: 824, ly: 280, anchor: 'start' },
+  { name: 'AUSTRALIA', lon: 151.2, lat: -33.9, lx: 926, ly: 358, anchor: 'start' },
 ];
-const NEXT_STOP = { name: 'NEXT STOP — YOURS', lon: 130, lat: -18, dx: 12, dy: 4 };
+const NEXT_STOP = { name: 'NEXT STOP \u2014 YOURS', lon: 170, lat: -18, lx: 952, ly: 302, anchor: 'end' };
 
 // Hand-drawn coarse landmasses (lon,lat) — deliberately abstract;
 // they only exist to be sampled into the dot grid.
@@ -144,14 +154,22 @@ export function buildProof() {
     const g = make('g', { class: `proof__city${isNext ? ' proof__city--next' : ''}` }, svg);
     make('circle', { cx: c.x, cy: c.y, r: isNext ? 7 : 2.6, class: 'proof__city-dot' }, g);
     if (!isNext) make('circle', { cx: c.x, cy: c.y, r: 2.6, class: 'proof__city-halo' }, g);
+    if (c.leader) {
+      // hairline from the dot toward its remote label
+      const t = 0.82;
+      make(
+        'line',
+        {
+          x1: c.x, y1: c.y,
+          x2: c.x + (c.lx - c.x) * t, y2: c.y + (c.ly - c.y) * t,
+          class: 'proof__city-leader',
+        },
+        g
+      );
+    }
     const label = make(
       'text',
-      {
-        x: c.x + c.dx,
-        y: c.y + c.dy,
-        'text-anchor': c.anchor || 'start',
-        class: 'proof__city-label',
-      },
+      { x: c.lx, y: c.ly, 'text-anchor': c.anchor || 'start', class: 'proof__city-label' },
       g
     );
     label.textContent = c.name;
@@ -192,7 +210,7 @@ export function buildProof() {
 
   let raf = 0;
   const fly = () => {
-    const DUR = 8000;
+    const DUR = 11000;
     const start = performance.now();
     const tick = (now) => {
       const t = Math.min(1, (now - start) / DUR);
