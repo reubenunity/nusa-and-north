@@ -66,7 +66,7 @@ if (new URLSearchParams(location.search).has('statdemo')) {
   }
   if (cin === 'social') {
     const ck = document.querySelector('.cinema .stage-kicker');
-    if (ck) ck.innerHTML = 'SCENE 04 &middot; SOCIAL CUTS';
+    if (ck) ck.innerHTML = 'SCENE 04 &middot; SHORT FORM';
   }
 }
 applyMotionClass();

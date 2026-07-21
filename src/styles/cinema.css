@@ -591,11 +591,21 @@ html.cinema-social .cinema__bars {
   .social__screen:focus-visible .social__play { opacity: 1; scale: 1; }
 }
 .social__tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45em;
   font-family: var(--font-mono);
   font-size: clamp(0.46rem, 0.75vw, 0.58rem);
   font-weight: 700;
   letter-spacing: 0.16em;
   color: color-mix(in srgb, var(--p-ink) 60%, transparent);
+}
+.social__kind {
+  font-style: normal;
+  font-size: 0.88em;
+  letter-spacing: 0.2em;
+  color: var(--c-signal);
 }
 .social__note {
   font-family: var(--font-mono);
@@ -645,11 +655,14 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
 
 .social__hand {
   position: absolute;
-  right: calc(var(--pad) * 1.6);
-  top: calc(var(--pad) * 1.2);
+  right: calc(var(--pad) * 1.4);
+  top: calc(var(--pad) * 0.9);
+  z-index: 6;
+  max-width: 40vw;
   font-size: clamp(1.2rem, 2.2vw, 1.8rem);
   color: var(--c-signal);
   rotate: -4deg;
+  text-align: right;
 }
 @media (max-width: 700px) {
   .social__hand { display: none; }
@@ -679,6 +692,11 @@ html.cinema-static .social__fig { flex: 0 0 auto; }
   .social__phone:hover .social__hearts i:nth-child(2) { animation-delay: 0.55s; right: 0.9em; }
   .social__phone:hover .social__hearts i:nth-child(3) { animation-delay: 1.1s; right: -0.5em; }
 }
+.social__phone.is-pulse .social__hearts i {
+  animation: heart-rise 1.6s ease-out;
+}
+.social__phone.is-pulse .social__hearts i:nth-child(2) { animation-delay: 0.4s; right: 0.9em; }
+.social__phone.is-pulse .social__hearts i:nth-child(3) { animation-delay: 0.8s; right: -0.5em; }
 @keyframes heart-rise {
   0% { opacity: 0; transform: translateY(0) scale(0.7) rotate(-8deg); }
   18% { opacity: 0.95; }

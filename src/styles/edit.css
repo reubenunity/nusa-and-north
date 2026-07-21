@@ -466,3 +466,13 @@ html[data-palette='c'] .edit__playhead-cap {
 .audio-block.is-active i {
   background: var(--c-clip-active, var(--c-signal));
 }
+
+/* demo: clips nudge up under the cursor — the timeline feels touchable */
+html.show-proof .clip {
+  transition: translate 0.25s ease;
+}
+@media (hover: hover) {
+  html.show-proof .clip:hover {
+    translate: 0 -3px;
+  }
+}

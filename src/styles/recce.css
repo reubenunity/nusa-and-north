@@ -273,3 +273,14 @@ html.show-proof .pin--live .pin__line::before {
 @keyframes live-blink {
   50% { opacity: 0.2; }
 }
+
+/* demo: pins respond like the phones — straighten and lift */
+html.show-proof .pin {
+  transition: rotate 0.35s ease, translate 0.35s ease;
+}
+@media (hover: hover) {
+  html.show-proof .pin:hover {
+    rotate: 0deg;
+    translate: 0 -8px;
+  }
+}
