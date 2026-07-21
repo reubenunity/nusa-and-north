@@ -82,6 +82,10 @@ gsap.registerPlugin(ScrollTrigger);
         chip.classList.toggle('is-on', past && !pinVisible);
       };
       window.addEventListener('scroll', update, { passive: true });
+      // count chip clicks as a named event in GoatCounter
+      chip.addEventListener('click', () => {
+        window.goatcounter?.count?.({ path: 'cta-start-a-project', title: 'CTA: Start a project', event: true });
+      });
       if (contactPin) {
         const io = new IntersectionObserver(
           (entries) => entries.forEach((e) => { pinVisible = e.isIntersecting; update(); }),
