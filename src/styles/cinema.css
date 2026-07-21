@@ -91,6 +91,9 @@
   opacity: 0.07;
   pointer-events: none;
   z-index: 5;
+  /* oversized + transform-animated: compositor-only, no repaints */
+  inset: -60%;
+  will-change: transform;
 }
 @media (prefers-reduced-motion: no-preference) {
   .cinema__grain {
@@ -98,10 +101,10 @@
   }
 }
 @keyframes grain-jump {
-  0% { background-position: 0 0; }
-  33% { background-position: -40px 55px; }
-  66% { background-position: 60px -30px; }
-  100% { background-position: 0 0; }
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-2%, 3%); }
+  66% { transform: translate(3%, -2%); }
+  100% { transform: translate(0, 0); }
 }
 
 /* widescreen letterbox bars */

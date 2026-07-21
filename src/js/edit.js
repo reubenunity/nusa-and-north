@@ -90,7 +90,47 @@ function wirePlayback() {
   }
 }
 
-function setActiveClip(monitorTitle, monitorClipname) {
+// The ambient glow is blurred to oblivion anyway — feed it a tiny
+// image instead of the full frame, so the swap never spikes a frame.
+function ambientSrc(poster) {
+  return poster
+    .replace(/_\d+x\d+/, '_320x180')
+    .replace('maxresdefault', 'mqdefault');
+}
+
+// Update the program monitor (title, filename, poster, room glow)
+// for the given clip element. Cheap unless the clip actually changed.
+function applyMonitor(clip) {
+  const monitorTitle = document.querySelector('.js-monitor-title');
+  const monitorClipname = document.querySelector('.js-monitor-clipname');
+  const title = clip.dataset.title;
+  if (monitorTitle.textContent === title) return;
+
+  monitorTitle.textContent = title;
+  monitorClipname.textContent = clip.querySelector('.clip__name').textContent;
+  gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
+
+  const posterEl = document.querySelector('.js-monitor-poster');
+  const ambientEl = document.querySelector('.js-monitor-ambient');
+  const poster = clip.dataset.poster;
+  if (poster) {
+    if (posterEl) {
+      posterEl.src = poster;
+      posterEl.classList.add('is-on');
+    }
+    if (ambientEl) {
+      ambientEl.src = ambientSrc(poster);
+      ambientEl.classList.add('is-on');
+    }
+  } else {
+    posterEl?.classList.remove('is-on');
+    ambientEl?.classList.remove('is-on');
+  }
+}
+
+// Rect-based detection for the native swipe strip (infrequent scroll
+// events, not per-frame scrub) — the pinned scrub uses math instead.
+function setActiveClip() {
   const playheadX = window.innerWidth / 2;
   const clips = gsap.utils.toArray('.js-video-lane .clip');
   const audioBlocks = gsap.utils.toArray('.js-audio-lane .audio-block');
@@ -104,29 +144,7 @@ function setActiveClip(monitorTitle, monitorClipname) {
     if (on) activeIdx = i;
   });
 
-  if (activeIdx >= 0) {
-    const title = clips[activeIdx].dataset.title;
-    const name = clips[activeIdx].querySelector('.clip__name').textContent;
-    if (monitorTitle.textContent !== title) {
-      monitorTitle.textContent = title;
-      monitorClipname.textContent = name;
-      gsap.fromTo(monitorTitle, { opacity: 0.2 }, { opacity: 1, duration: 0.3 });
-
-      // swap the program-feed poster frame + the room's ambient glow
-      const posterEl = document.querySelector('.js-monitor-poster');
-      const ambientEl = document.querySelector('.js-monitor-ambient');
-      const poster = clips[activeIdx].dataset.poster;
-      [posterEl, ambientEl].forEach((el) => {
-        if (!el) return;
-        if (poster) {
-          el.src = poster;
-          el.classList.add('is-on');
-        } else {
-          el.classList.remove('is-on');
-        }
-      });
-    }
-  }
+  if (activeIdx >= 0) applyMonitor(clips[activeIdx]);
 }
 
 export function buildEdit() {
@@ -137,8 +155,6 @@ export function buildEdit() {
   const ruler = document.querySelector('.edit__ruler');
   const tracks = document.querySelector('.js-tracks');
   const lanes = gsap.utils.toArray('.edit__track-lane');
-  const monitorTitle = document.querySelector('.js-monitor-title');
-  const monitorClipname = document.querySelector('.js-monitor-clipname');
   const tcEl = document.querySelector('.js-edit-timecode');
 
   const rulerInner = populateEditChrome();
@@ -147,6 +163,41 @@ export function buildEdit() {
   const videoLane = document.querySelector('.js-video-lane');
   // scrub travel: last clip's right edge ends at the playhead
   const travel = videoLane.scrollWidth - window.innerWidth / 2;
+
+  // Precompute clip spans ONCE — the scrub then derives the active
+  // clip mathematically instead of measuring 30 rects every frame
+  // (that per-frame layout work was freezing the smooth scroll).
+  const clipEls = gsap.utils.toArray('.js-video-lane .clip');
+  const audioEls = gsap.utils.toArray('.js-audio-lane .audio-block');
+  const laneBase = videoLane.getBoundingClientRect().left -
+    new DOMMatrix(getComputedStyle(videoLane).transform).m41;
+  const spans = clipEls.map((c) => ({
+    left: laneBase + c.offsetLeft,
+    right: laneBase + c.offsetLeft + c.offsetWidth,
+  }));
+  const playheadX = window.innerWidth / 2;
+  let activeIdx = -1;
+
+  const setActiveByProgress = (p) => {
+    const x = -travel * p;
+    let idx = -1;
+    for (let i = 0; i < spans.length; i++) {
+      if (spans[i].left + x <= playheadX && spans[i].right + x >= playheadX) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx === activeIdx) return;
+    if (activeIdx >= 0) {
+      clipEls[activeIdx].classList.remove('is-active');
+      audioEls[activeIdx]?.classList.remove('is-active');
+    }
+    activeIdx = idx;
+    if (idx < 0) return;
+    clipEls[idx].classList.add('is-active');
+    audioEls[idx]?.classList.add('is-active');
+    applyMonitor(clipEls[idx]);
+  };
 
   // ---- assembly: the NLE builds itself WHILE wiping into view,
   // so it arrives fully formed the moment it pins ----
@@ -184,7 +235,7 @@ export function buildEdit() {
       scrub: true,
       onUpdate(self) {
         tcEl.textContent = timecode(self.progress * edit.sequenceSeconds);
-        setActiveClip(monitorTitle, monitorClipname);
+        setActiveByProgress(self.progress);
       },
     },
   });
@@ -207,9 +258,7 @@ export function buildEditFallback() {
   populateEditChrome();
   wirePlayback();
   const timelineEl = document.querySelector('.edit__timeline');
-  const monitorTitle = document.querySelector('.js-monitor-title');
-  const monitorClipname = document.querySelector('.js-monitor-clipname');
-  const onScroll = () => setActiveClip(monitorTitle, monitorClipname);
+  const onScroll = () => setActiveClip();
   timelineEl.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // light up the first clip immediately
 
