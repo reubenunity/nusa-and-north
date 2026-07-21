@@ -1,28 +1,211 @@
-// The delivery report: when the act scrolls into view the render
-// bar fills and the campaign totals count up. No pins, no GSAP —
-// one IntersectionObserver + rAF, so it behaves on every tier.
+// The delivery act: a dot-matrix world chart with the actual shoot
+// route flown across it — a plane arcs London → Bali, pinging each
+// city as it passes while the campaign totals count up in rhythm.
+// No GSAP, no pins: SVG + one rAF, so it behaves on every tier.
+// GATED behind html.show-proof (?statdemo=1) until figures are real.
+import { prefersReducedMotion } from './motion.js';
+
+const W = 1000;
+const H = 430;
+const LAT_TOP = 76;
+const LAT_BOT = -62;
+const px = (lon) => ((lon + 180) / 360) * W;
+const py = (lat) => ((LAT_TOP - lat) / (LAT_TOP - LAT_BOT)) * H;
+
+// The route, in shooting order. dx/dy/anchor place each label so the
+// dense European cluster doesn't collide.
+const CITIES = [
+  { name: 'LONDON', lon: -0.1, lat: 51.5, dx: -8, dy: -6, anchor: 'end' },
+  { name: 'FRANKFURT', lon: 8.7, lat: 50.1, dx: 4, dy: -9, anchor: 'start' },
+  { name: 'BASEL', lon: 7.6, lat: 47.6, dx: -8, dy: 5, anchor: 'end' },
+  { name: 'FLORENCE', lon: 11.3, lat: 43.8, dx: 2, dy: 14, anchor: 'start' },
+  { name: 'PRAGUE', lon: 14.4, lat: 50.1, dx: 8, dy: 4, anchor: 'start' },
+  { name: 'TALLINN', lon: 24.8, lat: 59.4, dx: 8, dy: -3, anchor: 'start' },
+  { name: 'HUE', lon: 107.6, lat: 16.5, dx: 7, dy: -6, anchor: 'start' },
+  { name: 'BANGKOK', lon: 100.5, lat: 13.8, dx: -8, dy: 0, anchor: 'end' },
+  { name: 'PHUKET', lon: 98.4, lat: 7.9, dx: -8, dy: 9, anchor: 'end' },
+  { name: 'BALI', lon: 115.2, lat: -8.7, dx: 2, dy: 16, anchor: 'start' },
+];
+const NEXT_STOP = { name: 'NEXT STOP — YOURS', lon: 130, lat: -18, dx: 12, dy: 4 };
+
+// Hand-drawn coarse landmasses (lon,lat) — deliberately abstract;
+// they only exist to be sampled into the dot grid.
+const LAND = [
+  // North & Central America
+  [[-165,65],[-153,70],[-140,70],[-125,72],[-110,73],[-95,73],[-85,70],[-80,62],[-70,60],[-60,52],[-55,47],[-65,44],[-70,42],[-75,36],[-80,31],[-81,26],[-84,30],[-90,29],[-94,29],[-97,26],[-97,22],[-95,17],[-90,14],[-85,11],[-83,9],[-79,9],[-82,14],[-87,16],[-92,18],[-97,20],[-105,22],[-110,24],[-115,30],[-120,34],[-124,40],[-124,48],[-130,55],[-135,58],[-140,60],[-150,61],[-158,58],[-165,60]],
+  // Greenland
+  [[-45,60],[-40,65],[-32,68],[-25,71],[-30,76],[-45,78],[-55,76],[-58,72],[-52,65],[-48,61]],
+  // South America
+  [[-78,7],[-72,11],[-64,10],[-60,8],[-52,4],[-50,0],[-44,-3],[-37,-6],[-35,-9],[-39,-15],[-40,-22],[-48,-26],[-53,-33],[-58,-38],[-62,-41],[-65,-47],[-69,-52],[-74,-53],[-73,-46],[-71,-38],[-71,-30],[-70,-20],[-75,-15],[-79,-7],[-81,-3],[-78,2]],
+  // Eurasia (Europe, Middle East, Asia in one crude sweep)
+  [[-9,37],[-9,43],[-2,44],[-1,46],[-4,48],[1,50],[4,52],[8,55],[8,57],[11,59],[5,59],[5,62],[12,66],[18,69],[25,71],[33,69],[40,67],[50,69],[60,70],[70,73],[80,73],[90,75],[100,77],[110,74],[120,73],[130,72],[140,72],[150,68],[160,66],[170,66],[178,65],[178,62],[165,60],[160,56],[156,51],[150,55],[143,53],[141,48],[135,44],[130,42],[127,39],[126,35],[122,37],[120,32],[122,27],[115,22],[110,20],[108,16],[109,12],[106,9],[103,10],[104,14],[100,14],[98,10],[100,6],[103,2],[101,3],[98,8],[97,15],[94,17],[91,22],[88,21],[85,19],[82,15],[80,10],[78,8],[76,10],[72,19],[68,22],[66,25],[61,25],[57,26],[52,25],[55,22],[59,23],[58,20],[54,17],[45,13],[43,12],[39,21],[36,28],[34,28],[32,31],[35,36],[36,36],[30,36],[27,37],[26,40],[22,40],[23,37],[21,37],[19,40],[16,38],[15,40],[18,42],[13,45],[12,44],[14,40],[16,38],[12,42],[10,44],[7,43],[4,43],[3,41],[0,39],[-2,37],[-5,36]],
+  // Africa
+  [[-9,35],[-6,33],[-1,35],[10,37],[11,34],[19,32],[25,32],[30,31],[32,31],[34,28],[37,22],[38,18],[43,12],[48,11],[51,12],[51,10],[46,5],[41,-2],[40,-10],[36,-18],[35,-24],[32,-29],[27,-34],[20,-35],[17,-33],[15,-27],[12,-18],[13,-10],[9,-2],[9,4],[4,6],[-2,5],[-8,4],[-13,8],[-17,12],[-17,15],[-16,20],[-13,26],[-9,30]],
+  // Australia
+  [[113,-22],[114,-26],[115,-32],[118,-35],[124,-33],[129,-32],[132,-32],[135,-35],[138,-35],[140,-38],[146,-39],[150,-37],[153,-32],[153,-27],[151,-24],[149,-20],[146,-18],[143,-14],[142,-11],[139,-17],[136,-12],[132,-11],[129,-15],[125,-14],[122,-17],[117,-20]],
+  // UK + Ireland
+  [[-6,50],[-1,51],[1,52],[-2,55],[-4,58],[-7,57],[-8,54],[-10,52]],
+  // Japan
+  [[130,32],[133,34],[136,35],[140,36],[141,40],[142,44],[144,44],[141,38],[140,34],[135,33],[131,31]],
+  // Sumatra / Java
+  [[95,5],[99,2],[103,-2],[106,-6],[110,-7],[115,-8],[115,-9],[105,-7],[100,0],[95,3]],
+  // Borneo
+  [[109,1],[113,4],[117,6],[119,1],[116,-3],[112,-3],[109,-1]],
+  // New Guinea
+  [[131,-1],[136,-2],[141,-3],[146,-6],[144,-8],[138,-7],[133,-4],[130,-2]],
+  // Philippines
+  [[120,18],[122,16],[124,12],[125,8],[122,8],[120,12],[119,16]],
+  // Madagascar
+  [[44,-16],[47,-15],[50,-16],[49,-22],[45,-25],[43,-22]],
+  // New Zealand
+  [[167,-45],[172,-42],[174,-38],[176,-38],[174,-41],[169,-46]],
+];
+
+function inPoly(lon, lat, poly) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i];
+    const [xj, yj] = poly[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+const NS = 'http://www.w3.org/2000/svg';
+function make(tag, attrs, parent) {
+  const el = document.createElementNS(NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  parent?.appendChild(el);
+  return el;
+}
+
+// Great-circle-ish arc between two projected points: a quadratic
+// whose control point lifts perpendicular to the chord.
+function arcSegment(a, b) {
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const dist = Math.hypot(dx, dy);
+  const lift = Math.min(dist * 0.18, 46);
+  // lift always "upward" on screen for that flight-chart look
+  const cx = mx - (dy / (dist || 1)) * lift * Math.sign(dx || 1);
+  const cy = my - Math.abs(dx / (dist || 1)) * lift;
+  return { d: `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}` };
+}
+
 export function buildProof() {
   const section = document.querySelector('.proof');
-  if (!section || !document.documentElement.classList.contains('show-proof')) {
+  const svg = document.querySelector('.js-proof-map');
+  if (!section || !svg || !document.documentElement.classList.contains('show-proof')) {
     return () => {};
   }
+  svg.innerHTML = '';
 
-  const bar = section.querySelector('.js-proof-bar');
+  // ---- dot-matrix world ----
+  const dots = make('g', { class: 'proof__dots' }, svg);
+  for (let lat = LAT_BOT + 2; lat <= LAT_TOP; lat += 3) {
+    for (let lon = -178; lon <= 180; lon += 3.4) {
+      if (LAND.some((p) => inPoly(lon, lat, p))) {
+        make('circle', { cx: px(lon).toFixed(1), cy: py(lat).toFixed(1), r: 1.5 }, dots);
+      }
+    }
+  }
+
+  // ---- route geometry ----
+  const pts = CITIES.map((c) => ({ ...c, x: px(c.lon), y: py(c.lat) }));
+  const nextPt = { ...NEXT_STOP, x: px(NEXT_STOP.lon), y: py(NEXT_STOP.lat) };
+  const stops = [...pts, nextPt];
+
+  const segs = [];
+  let total = 0;
+  for (let i = 0; i < stops.length - 1; i++) {
+    const { d } = arcSegment(stops[i], stops[i + 1]);
+    // probes stay in the svg (invisible: no stroke) — getTotalLength
+    // is unreliable on detached elements in WebKit
+    const probe = make('path', { d, fill: 'none' }, svg);
+    const len = probe.getTotalLength();
+    segs.push({ d, probe, len, start: total });
+    total += len;
+  }
+  const cityLens = stops.map((_, i) => (i === 0 ? 0 : segs[i - 1].start + segs[i - 1].len));
+
+  const fullD = segs.map((s) => s.d).join(' ');
+  make('path', { d: fullD, class: 'proof__route-ghost' }, svg);
+  const trail = make('path', { d: fullD, class: 'proof__route-trail' }, svg);
+  trail.style.strokeDasharray = String(total);
+  trail.style.strokeDashoffset = String(total);
+
+  // ---- city pins + labels ----
+  const cityGroups = stops.map((c, i) => {
+    const isNext = i === stops.length - 1;
+    const g = make('g', { class: `proof__city${isNext ? ' proof__city--next' : ''}` }, svg);
+    make('circle', { cx: c.x, cy: c.y, r: isNext ? 7 : 2.6, class: 'proof__city-dot' }, g);
+    if (!isNext) make('circle', { cx: c.x, cy: c.y, r: 2.6, class: 'proof__city-halo' }, g);
+    const label = make(
+      'text',
+      {
+        x: c.x + c.dx,
+        y: c.y + c.dy,
+        'text-anchor': c.anchor || 'start',
+        class: 'proof__city-label',
+      },
+      g
+    );
+    label.textContent = c.name;
+    return g;
+  });
+
+  // ---- the plane ----
+  const plane = make('g', { class: 'proof__plane' }, svg);
+  make('path', { d: 'M8,0 L-5,4.5 L-2,0 L-5,-4.5 Z' }, plane);
+
+  const planeAt = (len) => {
+    const seg = segs.find((s) => len <= s.start + s.len) || segs[segs.length - 1];
+    const local = Math.min(seg.len, Math.max(0, len - seg.start));
+    const p = seg.probe.getPointAtLength(local);
+    const q = seg.probe.getPointAtLength(Math.min(seg.len, local + 2));
+    const angle = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI;
+    return { p, angle };
+  };
+
+  // ---- counters ----
   const stats = [...section.querySelectorAll('.js-proof-stat')];
-  let raf = 0;
+  const setCounters = (t) => {
+    stats.forEach((stat) => {
+      const target = parseFloat(stat.dataset.count);
+      stat.querySelector('.proof__num').textContent =
+        Math.round(target * t) + (stat.dataset.suffix || '');
+    });
+  };
 
-  const countUp = () => {
-    bar?.classList.add('is-done');
+  const finish = () => {
+    trail.style.strokeDashoffset = '0';
+    cityGroups.forEach((g) => g.classList.add('is-on'));
+    const { p, angle } = planeAt(total);
+    plane.setAttribute('transform', `translate(${p.x},${p.y}) rotate(${angle})`);
+    plane.classList.add('is-on');
+    setCounters(1);
+  };
+
+  let raf = 0;
+  const fly = () => {
+    const DUR = 8000;
     const start = performance.now();
-    const dur = 1700;
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      stats.forEach((stat) => {
-        const target = parseFloat(stat.dataset.count);
-        const num = stat.querySelector('.proof__num');
-        num.textContent = Math.round(target * eased) + (stat.dataset.suffix || '');
+      const t = Math.min(1, (now - start) / DUR);
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      const len = total * eased;
+      trail.style.strokeDashoffset = String(total - len);
+      const { p, angle } = planeAt(len);
+      plane.setAttribute('transform', `translate(${p.x},${p.y}) rotate(${angle})`);
+      plane.classList.add('is-on');
+      cityGroups.forEach((g, i) => {
+        if (len >= cityLens[i] - 1) g.classList.add('is-on');
       });
+      setCounters(eased);
       if (t < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -33,10 +216,11 @@ export function buildProof() {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         io.disconnect();
-        countUp();
+        if (prefersReducedMotion) finish();
+        else setTimeout(fly, 350);
       });
     },
-    { threshold: 0.35 }
+    { threshold: 0.3 }
   );
   io.observe(section);
 
