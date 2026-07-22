@@ -127,7 +127,7 @@ export function buildProof() {
     pin = ScrollTrigger.create({
       trigger: '.proof__stage',
       start: 'top top',
-      end: '+=130%',
+      end: '+=100%',
       pin: true,
     });
     if (import.meta.env.DEV) window.__proofPin = pin;

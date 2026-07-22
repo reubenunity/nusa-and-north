@@ -52,7 +52,7 @@ export const config = {
   cinema: {
     // Scroll distance for the pinned screening room — a short,
     // confident hold on the reel.
-    scrollVh: 160,
+    scrollVh: 60,
   },
 
   recce: {
