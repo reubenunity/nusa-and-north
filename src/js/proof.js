@@ -343,6 +343,7 @@ const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 // The filmography as flights — every delivery that landed.
 const BOARD_FILMS = [
+  ['INSTA360 LUNA ULTRA', 'DELIVERED'],
   ["HARPER'S BAZAAR UK", 'DELIVERED'],
   ['ILLUZION PHUKET', 'DELIVERED'],
   ['RADISSON FRANKFURT', 'DELIVERED'],
@@ -360,7 +361,6 @@ const BOARD_FILMS = [
   ['THE ANANTARA EXPERIENCE', 'DELIVERED'],
   ['HP', 'DELIVERED'],
   ['HELLOBODY', 'DELIVERED'],
-  ['INSTA360', 'IN POST'],
 ];
 
 function buildBoard(section) {
