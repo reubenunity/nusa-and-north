@@ -343,6 +343,7 @@ const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 // The filmography as flights — every delivery that landed.
 const BOARD_FILMS = [
+  ['VISIT TALLINN', 'DELIVERED'],
   ['INSTA360 LUNA ULTRA', 'DELIVERED'],
   ["HARPER'S BAZAAR UK", 'DELIVERED'],
   ['ILLUZION PHUKET', 'DELIVERED'],
