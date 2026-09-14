@@ -195,6 +195,13 @@ function setActiveClip() {
   if (activeIdx >= 0) applyMonitor(clips[activeIdx]);
 }
 
+// Deep links ask this for the page scroll that parks a given clip
+// under the playhead (set by buildEdit; null on the static timeline).
+let pinnedScrollFor = null;
+export function scrollYForClip(clipEl) {
+  return pinnedScrollFor ? pinnedScrollFor(clipEl) : null;
+}
+
 export function buildEdit() {
   const { edit } = config;
 
@@ -294,6 +301,15 @@ export function buildEdit() {
 
   tl.to([...lanes, rulerInner], { x: -travel, duration: 1 }, 0);
 
+  pinnedScrollFor = (clipEl) => {
+    const i = clipEls.indexOf(clipEl);
+    const st = tl.scrollTrigger;
+    if (i < 0 || !st) return null;
+    const center = (spans[i].left + spans[i].right) / 2;
+    const p = Math.min(1, Math.max(0, (center - playheadX) / travel));
+    return st.start + p * (st.end - st.start);
+  };
+
   // the escape hatch: land exactly on the Sound Department
   const onSkip = () => {
     const sound = document.querySelector('.sound');
@@ -304,6 +320,7 @@ export function buildEdit() {
   skipBtn?.addEventListener('click', onSkip);
 
   return () => {
+    pinnedScrollFor = null;
     skipBtn?.removeEventListener('click', onSkip);
     skipBtn?.classList.remove('is-on');
     assembleTl.scrollTrigger?.kill();

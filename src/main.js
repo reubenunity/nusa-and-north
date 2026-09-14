@@ -25,6 +25,7 @@ import { buildCinema, wireReel, buildVillage, buildSocial } from './js/cinema.js
 import { buildRecce } from './js/recce.js';
 import { initDevPanel } from './js/dev-panel.js';
 import { buildProof } from './js/proof.js';
+import { wireFilmDeepLink } from './js/film-link.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,7 @@ gsap.registerPlugin(ScrollTrigger);
     const reel = document.createElement('div');
     reel.className = 'clip';
     reel.dataset.title = 'Showreel';
+    reel.dataset.slug = 'showreel';
     reel.dataset.videoSrc = 'https://vimeo.com/1161420054/949ddb9393';
     reel.dataset.poster =
       'https://i.vimeocdn.com/video/2116792164-e2a3a54c64ac92b7abea89746e8c0a7c484fd62f334632b0d54e0105dc1ebe96-d_1280x720';
@@ -328,3 +330,6 @@ if (fullExperience) {
 
   if (import.meta.env.DEV) initDevPanel(() => {});
 }
+
+// ?film=<slug> — straight to the player (share pages at /film/<slug>/ land here)
+wireFilmDeepLink();
