@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { createRecceDepth } from './recce-cards.js';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { config } from '../config.js';
 
@@ -32,6 +33,8 @@ export function buildRecce() {
     );
   });
 
+  const depth = createRecceDepth(track);
+  depth.update();
   const travel = Math.max(0, track.scrollWidth - window.innerWidth);
 
   const tl = gsap.timeline({
@@ -42,12 +45,14 @@ export function buildRecce() {
       end: `+=${recce.scrollVh}%`,
       pin: '.recce__stage',
       scrub: true,
+      onUpdate: () => depth.update(),
     },
   });
 
   tl.to(track, { x: -travel, duration: 1 }, 0);
 
   return () => {
+    depth.cleanup();
     entranceTl.scrollTrigger?.kill();
     entranceTl.kill();
     tl.scrollTrigger?.kill();

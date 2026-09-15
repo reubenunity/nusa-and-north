@@ -38,8 +38,8 @@ export function buildBridge() {
   aboutEls.forEach((el, i) => {
     entranceTl.fromTo(
       el,
-      { opacity: 0, y: 46 },
-      { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' },
+      { opacity: 0, y: 46, x: el.closest('.about__credits') ? -55 : 0 },
+      { opacity: 1, y: 0, x: 0, duration: 0.3, ease: 'power2.out' },
       0.18 + i * 0.06
     );
   });
@@ -65,8 +65,8 @@ export function buildBridge() {
   quotes.forEach((el, i) => {
     tl.fromTo(
       el,
-      { opacity: 0, y: 40, rotation: 1.6, scale: 0.97 },
-      { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.14, ease: 'power2.out' },
+      { opacity: 0, x: 65, y: 40, rotation: -5, rotationX: 15, scale: 0.92 },
+      { opacity: 1, x: 0, y: 0, rotation: 0, rotationX: 0, scale: 1, duration: 0.14, ease: 'power2.out' },
       bridge.quotesIn + i * 0.09
     );
   });

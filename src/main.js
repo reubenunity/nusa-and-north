@@ -11,6 +11,10 @@ import './styles/proof.css';
 import './styles/sound.css';
 import './styles/fallbacks.css';
 import './styles/dev-panel.css';
+import './styles/preview.css';
+import { wireExperienceExtras, buildExperienceExtras } from './js/experience-extras.js';
+import './styles/experience-extras.css';
+import { buildSelectedFilms } from './js/preview.js';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,6 +27,9 @@ import { buildBridge } from './js/bridge.js';
 import { buildEdit, buildEditFallback, wireAutosaveToast } from './js/edit.js';
 import { buildCinema, wireReel, buildVillage, buildSocial } from './js/cinema.js';
 import { buildRecce } from './js/recce.js';
+import { buildStudioDetails, wireSoundExperience, buildSoundVisual } from './js/craft-preview.js';
+import { wireRecceCards, buildRecceTouchDepth } from './js/recce-cards.js';
+wireRecceCards();
 import { initDevPanel } from './js/dev-panel.js';
 import { buildProof } from './js/proof.js';
 import { wireFilmDeepLink } from './js/film-link.js';
@@ -44,20 +51,7 @@ gsap.registerPlugin(ScrollTrigger);
   const recceKicker = document.querySelector('.recce__kicker');
   if (cinCut && proofKicker) proofKicker.innerHTML = 'SCENE 04 &middot; THE DELIVERY';
   if (recceKicker) recceKicker.textContent = cinCut ? 'SCENE 05 · THE RECCE' : 'SCENE 06 · THE RECCE';
-  // the showreel closes the timeline — final clip on V1
-  const lane = document.querySelector('.js-video-lane');
-  if (lane && !lane.querySelector('[data-title="Showreel"]')) {
-    const reel = document.createElement('div');
-    reel.className = 'clip';
-    reel.dataset.title = 'Showreel';
-    reel.dataset.slug = 'showreel';
-    reel.dataset.videoSrc = 'https://vimeo.com/1161420054/949ddb9393';
-    reel.dataset.poster =
-      'https://i.vimeocdn.com/video/2116792164-e2a3a54c64ac92b7abea89746e8c0a7c484fd62f334632b0d54e0105dc1ebe96-d_1280x720';
-    reel.style.setProperty('--clip-w', '26');
-    reel.innerHTML = '<span class="clip__name">showreel.mov</span>';
-    lane.appendChild(reel);
-  }
+  // Do not present the placeholder showreel in the review.
   // the cinema slot now belongs to SOCIAL CUTS by default (real
   // reels); ?cinema=cut|screen|village audition the alternatives
   const cin = new URLSearchParams(location.search).get('cinema') || 'social';
@@ -145,6 +139,8 @@ gsap.registerPlugin(ScrollTrigger);
     }
   }
 }
+wireSoundExperience();
+wireExperienceExtras();
 applyMotionClass();
 watchViewport();
 
@@ -166,7 +162,7 @@ function build() {
   // statically with fade-up entrances instead
   // touch devices — iPads included — get the stable tier: pinned
   // scrub + per-char explosions and touch scrolling don't mix
-  const smallScreen = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.innerWidth <= 1024 || window.matchMedia('(pointer: coarse)').matches;
   document.documentElement.classList.toggle('bridge-static', smallScreen);
   // the timeline is a swipe strip on phones — browse it or scroll past
   document.documentElement.classList.toggle('edit-static', smallScreen);
@@ -177,12 +173,16 @@ function build() {
   document.documentElement.classList.toggle('recce-static', smallScreen);
   teardowns = [
     smallScreen ? buildHeroLite() : buildHero(),
+    buildSelectedFilms(smallScreen),
+    buildExperienceExtras(),
     ...(smallScreen ? [] : [buildBridge()]),
+    buildStudioDetails(smallScreen),
     smallScreen ? buildEditFallback() : buildEdit(),
+    buildSoundVisual(smallScreen),
     // triggers must be created in DOCUMENT order or ScrollTrigger
     // mis-measures the neighbors of the delivery act's pin spacer
     ...(smallScreen
-      ? [buildProof()]
+      ? [buildProof(), buildRecceTouchDepth()]
       : [
           // ?cinema=cut hides the act entirely — pinning a
           // display:none section breaks every measurement after it
@@ -230,7 +230,7 @@ if (fullExperience) {
   });
 
   // the production sheet fades up as it enters view on touch devices
-  if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) {
+  if (window.innerWidth <= 1024 || window.matchMedia('(pointer: coarse)').matches) {
     const targets = document.querySelectorAll(
       '.about__main, .about__still, .quote, .cinema__screen, .recce__head, .pin, .recce__footer'
     );
@@ -250,37 +250,23 @@ if (fullExperience) {
       reveal.observe(el);
     });
 
-    // nudge the horizontal strips when they first appear
-    ['.edit__timeline', '.recce__viewport'].forEach((sel) => {
-    const strip = document.querySelector(sel);
-    if (strip) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            io.disconnect();
-            setTimeout(() => {
-              strip.scrollTo({ left: 140, behavior: 'smooth' });
-              setTimeout(() => strip.scrollTo({ left: 0, behavior: 'smooth' }), 750);
-            }, 500);
-          });
-        },
-        { threshold: 0.4 }
-      );
-      io.observe(strip);
-    }
-    });
+
   }
 
   // dev-only iteration panel — never ships in the production build
   if (import.meta.env.DEV) {
-    initDevPanel(rebuild);
+    // Keep the review free of developer controls.
     window.__ST = ScrollTrigger;
   }
 } else {
   // reduced-motion / small-screen: static layout, native scrolling,
   // timeline becomes a horizontal scroller
+  buildStudioDetails(true);
+  buildRecceTouchDepth();
+  buildSelectedFilms(true);
+  buildExperienceExtras();
   buildEditFallback();
+  buildSoundVisual(true);
   buildProof();
 
   // motion lite: fade sections up as they enter the viewport
@@ -305,30 +291,9 @@ if (fullExperience) {
     });
   }
 
-  // nudge the horizontal strips when they first appear, so nobody
-  // misses that they swipe sideways
-  if (!prefersReducedMotion) {
-    ['.edit__timeline', '.recce__viewport'].forEach((sel) => {
-      const el = document.querySelector(sel);
-      if (!el) return;
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            io.disconnect();
-            setTimeout(() => {
-              el.scrollTo({ left: 140, behavior: 'smooth' });
-              setTimeout(() => el.scrollTo({ left: 0, behavior: 'smooth' }), 750);
-            }, 500);
-          });
-        },
-        { threshold: 0.4 }
-      );
-      io.observe(el);
-    });
-  }
 
-  if (import.meta.env.DEV) initDevPanel(() => {});
+
+
 }
 
 // ?film=<slug> — straight to the player (share pages at /film/<slug>/ land here)

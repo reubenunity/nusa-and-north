@@ -28,6 +28,7 @@ export function wireReel() {
 }
 
 export function buildCinema() {
+  if(document.documentElement.classList.contains('cinema-social')) return buildSocialArc();
   const { cinema } = config;
 
   const section = document.querySelector('.cinema');
@@ -202,7 +203,7 @@ export function buildSocial() {
   wrap.innerHTML = `
     <span class="social__ghost" aria-hidden="true">REELS</span>
     <p class="social__hand hand" aria-hidden="true"><!-- DRAFT -->cut for thumbs, made with love</p>
-    <p class="social__head"><!-- DRAFT — pending sign-off -->SHORT FORM &mdash; SOCIAL &amp; WEB</p>
+    <p class="social__head">SHORT FORM · SOCIAL &amp; WEB</p><h2 class="social__title">SMALL SCREEN.<br><span>BIG FEELING.</span></h2>
     <div class="social__row js-social-row"></div>
     <p class="social__note"><!-- DRAFT — pending sign-off -->REELS FOR SOCIAL &middot; PRODUCT FILMS FOR WEB &middot; ALL CUT FOR THUMBS</p>`;
   const row = wrap.querySelector('.js-social-row');
@@ -233,6 +234,10 @@ export function buildSocial() {
     return { fig, btn, reel };
   });
 
+  const pearl = document.createElement('div');
+  pearl.className = 'social-pearl';
+  pearl.setAttribute('aria-hidden', 'true');
+  stage.appendChild(pearl);
   stage.appendChild(wrap);
   powerOnStagger(stage.closest('.cinema'), phones.map((p) => p.fig), 140);
 
@@ -292,4 +297,27 @@ export function buildSocial() {
       io.observe(btn);
     });
   }
+}
+
+// A camera move along a shallow arc of screens. Each reel comes forward in turn.
+function buildSocialArc(){
+ const section=document.querySelector('.cinema'),stage=section.querySelector('.cinema__stage'),row=section.querySelector('.social__row'),figs=[...row.children];
+ const ctx=gsap.context(()=>{
+  if(!prefersReducedMotion){
+   gsap.fromTo(stage.querySelector('.social-pearl'),{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0% 0 0 0)',ease:'power2.out',scrollTrigger:{trigger:section,start:'top bottom',end:'top top',scrub:1}});
+   gsap.fromTo(section.querySelector('.social'),{y:60,opacity:0},{y:0,opacity:1,ease:'power2.out',scrollTrigger:{trigger:section,start:'top 85%',end:'top 15%',scrub:1}});
+  }
+  const travel=()=>Math.max(0,row.scrollWidth-innerWidth+innerWidth*.3);
+  const paint=progress=>{
+   const active=progress*(figs.length-1);
+   figs.forEach((fig,i)=>{
+    const distance=i-active;
+    gsap.set(fig,{rotationY:Math.max(-22,Math.min(22,-distance*12)),z:210-Math.min(150,Math.abs(distance)*65),scale:.88,y:Math.min(35,Math.abs(distance)*16)});
+    fig.classList.toggle('is-featured',Math.abs(distance)<.55);
+   });
+  };
+  gsap.fromTo(row,{x:()=>innerWidth*.15},{x:()=>innerWidth*.15-travel(),ease:'none',scrollTrigger:{trigger:section,start:'top top',end:'+=240%',pin:stage,scrub:1,invalidateOnRefresh:true,onUpdate:self=>paint(self.progress)}});
+  paint(0);
+ },section);
+ return ()=>{ctx.revert();figs.forEach(fig=>fig.classList.remove('is-featured'));};
 }

@@ -1,0 +1,5 @@
+insta360: https://upload.wikimedia.org/wikipedia/commons/1/1b/Insta360_logo_%28transparent%29.svg
+four-seasons: https://upload.wikimedia.org/wikipedia/en/a/a1/Four_Seasons_logo.svg
+hp: https://upload.wikimedia.org/wikipedia/commons/0/05/HP_logo_2025.svg
+harpers-bazaar: https://www.harpersbazaar.com/_assets/design-tokens/harpersbazaar/static/images/logos/logo.823d7af.svg
+radisson: https://upload.wikimedia.org/wikipedia/commons/7/74/Radisson_Hotels_logo.svg

@@ -224,6 +224,7 @@ export function buildEdit() {
   // (that per-frame layout work was freezing the smooth scroll).
   const clipEls = gsap.utils.toArray('.js-video-lane .clip');
   const audioEls = gsap.utils.toArray('.js-audio-lane .audio-block');
+  if (clipEls[0]) { clipEls[0].classList.add('is-active'); applyMonitor(clipEls[0]); }
   const laneBase = videoLane.getBoundingClientRect().left -
     new DOMMatrix(getComputedStyle(videoLane).transform).m41;
   const spans = clipEls.map((c) => ({
