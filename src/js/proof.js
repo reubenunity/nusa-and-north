@@ -343,6 +343,7 @@ const FLAP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 // The filmography as flights — every delivery that landed.
 const BOARD_FILMS = [
+  ['RADISSON BERLIN', 'DELIVERED'],
   ['RADISSON RED INNSBRUCK', 'DELIVERED'],
   ['VISIT TALLINN', 'DELIVERED'],
   ['INSTA360 LUNA ULTRA', 'DELIVERED'],

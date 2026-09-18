@@ -14,7 +14,7 @@ export function wireExperienceExtras(){
  wireStories();wireSwipeCues();
 }
 function wireStories(){
- const stories=[['radisson-red-innsbruck','HOSPITALITY','Sounds of Innsbruck','Innsbruck, Austria','A film for Radisson RED, Innsbruck.'],['visit-tallinn','DESTINATION FILM','Visit Tallinn','Tallinn, Estonia','A destination film for Visit Tallinn.'],['radisson-vilnius','HOSPITALITY','The Taste of Heritage','Vilnius, Lithuania','A film for Radisson Collection, Vilnius.'],['insta360-luna-ultra','COMMERCIAL','Luna Ultra','Insta360','A commercial film for Insta360’s Luna Ultra.']];
+ const stories=[['radisson-berlin','HOSPITALITY','The Taste of Heritage','Berlin, Germany','A film for Radisson Collection, Berlin.'],['radisson-red-innsbruck','HOSPITALITY','Sounds of Innsbruck','Innsbruck, Austria','A film for Radisson RED, Innsbruck.'],['visit-tallinn','DESTINATION FILM','Visit Tallinn','Tallinn, Estonia','A destination film for Visit Tallinn.']];
  const dialog=document.createElement('dialog');dialog.className='project-story';dialog.setAttribute('aria-label','Project story');dialog.setAttribute('data-lenis-prevent','');document.body.append(dialog);
  let origin,savedOverflow;const close=()=>{dialog.close();document.documentElement.style.overflow=savedOverflow;window.__lenis?.start();origin?.focus({preventScroll:true});};
  dialog.addEventListener('cancel',e=>{e.preventDefault();close();});

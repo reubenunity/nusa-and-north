@@ -6,10 +6,9 @@ import { prefersReducedMotion } from './motion.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const selections = [
+  ['radisson-berlin', 'BERLIN', 'Radisson Collection · The Taste of Heritage', 'HOSPITALITY'],
   ['radisson-red-innsbruck', 'INNSBRUCK', 'Radisson RED · Sounds of Innsbruck', 'HOSPITALITY'],
   ['visit-tallinn', 'TALLINN', 'Visit Tallinn', 'DESTINATION FILM'],
-  ['radisson-vilnius', 'VILNIUS', 'Radisson Collection · The Taste of Heritage', 'HOSPITALITY'],
-  ['insta360-luna-ultra', 'LUNA ULTRA', 'Insta360 · Luna Ultra', 'COMMERCIAL'],
 ];
 const section = document.createElement('section');
 section.id = 'selected-work';
@@ -20,7 +19,7 @@ section.innerHTML = `
     <div class="selected-atmosphere" aria-hidden="true"></div>
     <header class="selected-header"><div><p class="selected-kicker">SCENE 01B · SELECTED FILMS</p><h2>IN THE<br><span>FRAME.</span></h2></div><a class="selected-skip" href="#edit">ALL FILMS ↗</a></header>
     <div class="selected-space"><div class="selected-deck"></div></div>
-    <footer class="selected-footer"><div class="selected-pagination" aria-label="Choose a featured film"></div><span class="selected-hint">SCROLL TO EXPLORE</span><span class="selected-count" aria-hidden="true">01 / 04</span></footer>
+    <footer class="selected-footer"><div class="selected-pagination" aria-label="Choose a featured film"></div><span class="selected-hint">SCROLL TO EXPLORE</span><span class="selected-count" aria-hidden="true">01 / ${String(selections.length).padStart(2, '0')}</span></footer>
     <div class="selected-progress" aria-hidden="true"><i></i></div>
   </div>`;
 const deck = section.querySelector('.selected-deck');
