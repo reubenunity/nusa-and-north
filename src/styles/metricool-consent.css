@@ -1,0 +1,101 @@
+.metricool-consent,
+.metricool-settings,
+.metricool-privacy {
+  color: #131110;
+  background: #fafaf6;
+  font-family: var(--font-display);
+}
+.metricool-consent {
+  position: fixed;
+  left: calc(16px + env(safe-area-inset-left, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 1100;
+  width: min(430px, calc(100vw - 32px));
+  padding: 20px;
+  border: 1px solid rgba(19, 17, 16, 0.25);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+.metricool-consent[hidden], .metricool-settings[hidden] { display: none; }
+.metricool-consent h2 { margin-bottom: 8px; font-size: 18px; }
+.metricool-consent p { font-size: 13px; line-height: 1.55; }
+.metricool-actions { display: flex; gap: 10px; margin-top: 16px; }
+.metricool-actions button {
+  flex: 1;
+  min-height: 44px;
+  padding: 11px 12px;
+  border: 1px solid #131110;
+  border-radius: 2px;
+  color: #131110;
+  background: transparent;
+  font: 600 13px var(--font-display);
+  cursor: pointer;
+}
+.metricool-actions button:hover { background: rgba(19, 17, 16, 0.07); }
+.metricool-consent button:focus-visible,
+.metricool-settings:focus-visible,
+.metricool-footer-link:focus-visible,
+.metricool-privacy button:focus-visible,
+.metricool-privacy a:focus-visible { outline: 2px solid #e8362b; outline-offset: 4px; }
+.metricool-text-button, .metricool-footer-link {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.metricool-text-button { min-height: 32px; margin-top: 8px; font-size: 12px; }
+.metricool-settings {
+  position: fixed;
+  left: calc(14px + env(safe-area-inset-left, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 901;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid rgba(19, 17, 16, 0.35);
+  border-radius: 99px;
+  font: 500 11px var(--font-mono);
+  cursor: pointer;
+}
+.metricool-consent-open .cta-chip { opacity: 0; pointer-events: none; }
+.metricool-privacy {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid rgba(19, 17, 16, 0.3);
+  border-radius: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.metricool-privacy::backdrop { background: rgba(19, 17, 16, 0.65); }
+.metricool-privacy h2 { padding-right: 45px; font-size: 24px; }
+.metricool-privacy h3 { margin-top: 22px; font-size: 16px; }
+.metricool-privacy p, .metricool-privacy li { margin-top: 10px; font-size: 14px; line-height: 1.6; }
+.metricool-privacy ul { padding-left: 20px; }
+.metricool-privacy a { color: inherit; text-underline-offset: 3px; }
+.metricool-privacy-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  color: #131110;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+@media (max-width: 480px) {
+  .metricool-consent { padding: 16px; }
+  .metricool-settings { font-size: 10px; }
+  .metricool-actions button { padding-inline: 8px; }
+}
+@media print {
+  .metricool-consent, .metricool-settings, .metricool-privacy { display: none; }
+}

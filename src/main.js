@@ -1,3 +1,5 @@
+import './styles/metricool-consent.css';
+import { initMetricoolConsent } from './js/metricool-consent.js';
 import './styles/palettes.css';
 import './styles/variants.css';
 import './styles/base.css';
@@ -33,6 +35,8 @@ wireRecceCards();
 import { initDevPanel } from './js/dev-panel.js';
 import { buildProof } from './js/proof.js';
 import { wireFilmDeepLink } from './js/film-link.js';
+
+initMetricoolConsent();
 
 gsap.registerPlugin(ScrollTrigger);
 

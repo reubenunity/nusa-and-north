@@ -609,6 +609,7 @@
           <span>NUSA &amp; NORTH</span>
           <span>VIDEO PRODUCTION</span>
           <span>BASED WORLDWIDE</span>
+          <button type="button" class="metricool-footer-link" data-metricool-privacy>PRIVACY &amp; METRICOOL</button>
         </footer>
       </div>
     </section>
@@ -620,6 +621,38 @@
       target="_blank"
       rel="noopener"
     >START A PROJECT</a>
+
+    <!-- This preference controls optional Metricool analytics only. -->
+    <section class="metricool-consent" id="metricool-consent" aria-labelledby="metricool-consent-title" hidden>
+      <h2 id="metricool-consent-title">Metricool analytics</h2>
+      <p>Allow optional Metricool visit statistics? Metricool receives your page URL, referring URL, viewport size and IP address. This choice controls Metricool only; existing GoatCounter analytics and embedded services are unaffected.</p>
+      <div class="metricool-actions">
+        <button type="button" data-metricool-choice="accepted">Accept Metricool</button>
+        <button type="button" data-metricool-choice="declined">Decline Metricool</button>
+      </div>
+      <button type="button" class="metricool-text-button" data-metricool-privacy>Privacy details &amp; settings</button>
+    </section>
+    <button type="button" class="metricool-settings" id="metricool-settings" data-metricool-privacy hidden>Privacy &amp; Metricool</button>
+    <dialog class="metricool-privacy" id="metricool-privacy" aria-labelledby="metricool-privacy-title" data-lenis-prevent>
+      <button type="button" class="metricool-privacy-close" id="metricool-privacy-close" aria-label="Close privacy details">&times;</button>
+      <h2 id="metricool-privacy-title">Privacy &amp; analytics</h2>
+      <p>Nusa &amp; North website &middot; Updated 14 October 2026</p>
+      <h3>Optional Metricool analytics</h3>
+      <p>With your acceptance, we use Metricool to measure visits and referral sources. Its tracking script sends Metricool the full address of the page you visit (including any query parameters or fragments), the referring page address when available, and your browser viewport width and height. Metricool also receives your IP address and the HTTP request information supplied by your browser; its service uses IP information to determine country.</p>
+      <p>The current Metricool tracker does not set cookies. Your acceptance or decline is saved in this browser's local storage so we can remember your choice. If browser storage is unavailable, your choice applies only to the current page.</p>
+      <p>Metricool loads only after acceptance. You can decline or change your choice at any time using <strong>Privacy &amp; Metricool</strong>. Declining stops future Metricool tracking from this site; it cannot recall information already transmitted. Clearing this site's browser data removes the saved choice.</p>
+      <p>Read <a href="https://metricool.com/privacy-policy/" target="_blank" rel="noopener">Metricool's privacy policy</a> and <a href="https://help.metricool.com/how-to-connect-your-website-or-blog-to-metricool-ejuy1" target="_blank" rel="noopener">tracking information</a>.</p>
+      <h3>Existing services</h3>
+      <p>This choice controls Metricool only. The site already uses GoatCounter for cookieless visit statistics and counts clicks on <strong>Start a project</strong>. GoatCounter remains active independently of your Metricool choice. See <a href="https://www.goatcounter.com/privacy" target="_blank" rel="noopener">GoatCounter's privacy information</a>.</p>
+      <p>We also load Google Fonts, images from Vimeo, and video players from Vimeo or YouTube when used. Those services receive browser requests. Booking and social links take you to external services with their own privacy practices; your Metricool choice does not control them.</p>
+      <h3>Contact</h3>
+      <p>For questions about this website's use of analytics, email <a href="mailto:nusaandnorth@gmail.com">nusaandnorth@gmail.com</a>.</p>
+      <p id="metricool-preference" aria-live="polite"></p>
+      <div class="metricool-actions">
+        <button type="button" data-metricool-choice="accepted">Accept Metricool</button>
+        <button type="button" data-metricool-choice="declined">Decline Metricool</button>
+      </div>
+    </dialog>
 
         <script type="module" src="/src/main.js"></script>
   </body>
