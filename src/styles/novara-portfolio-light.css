@@ -1,0 +1,82 @@
+/* A light petrol–amber colour study, scoped to the portfolio. */
+:root:has(body.novara-portfolio-page) {
+  --portfolio-paper: #ececec;
+  --portfolio-ink: #161616;
+  background: var(--portfolio-paper);
+  color: var(--portfolio-ink);
+  color-scheme: light;
+}
+body.novara-portfolio-page {
+  background: #e8e7dd;
+  color: var(--portfolio-ink);
+}
+.novara-portfolio-page .novara-shader-r {
+  background: linear-gradient(125deg, #e4b580, #e8e7dd 52%, #78a6b0);
+}
+.novara-portfolio-page .novara-shader-r-canvas { opacity: 1; }
+.novara-portfolio-page :focus-visible {
+  outline-color: #a73a2f;
+}
+.novara-portfolio-page .portfolio-intro > p,
+.novara-portfolio-page .portfolio-hint,
+.novara-portfolio-page .portfolio-client,
+.novara-portfolio-page .portfolio-reel-copy .portfolio-client,
+.novara-portfolio-page .portfolio-grid-copy .portfolio-client,
+.novara-portfolio-page .portfolio-reel-selection label,
+.novara-portfolio-page .portfolio-footer {
+  color: #555753;
+}
+.novara-portfolio-page .portfolio-toolbar {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.novara-portfolio-page .portfolio-switch {
+  background: #ffffff30;
+  border-color: #16161624;
+}
+.novara-portfolio-page .portfolio-switch button {
+  color: #555753;
+}
+.novara-portfolio-page .portfolio-switch button:hover {
+  color: #161616;
+  background: #1616160b;
+}
+.novara-portfolio-page .portfolio-switch button[aria-pressed='true'],
+.novara-portfolio-page .portfolio-switch button[aria-pressed='true']:hover {
+  color: #fafaf6;
+  background: #161616;
+}
+.novara-portfolio-page .rf-root {
+  --rf-ink: #161616;
+}
+.novara-portfolio-page .rf-corner {
+  color: #40423e;
+}
+.novara-portfolio-page .rf-step {
+  border-color: #16161636;
+  background: #ececece8;
+  color: #161616;
+}
+.novara-portfolio-page .rf-step:hover {
+  background: #161616;
+  color: #fafaf6;
+}
+.novara-portfolio-page .portfolio-reel-details {
+  border-color: #16161625;
+}
+.novara-portfolio-page .portfolio-project-action {
+  background: #161616;
+  color: #fafaf6;
+}
+.novara-portfolio-page .portfolio-reel-action:hover {
+  background: #363835;
+}
+.novara-portfolio-page .portfolio-grid-copy .portfolio-project-action {
+  background: transparent;
+  border-color: #1616163d;
+  color: #353732;
+}
+.novara-portfolio-page .portfolio-footer a {
+  color: #161616;
+}

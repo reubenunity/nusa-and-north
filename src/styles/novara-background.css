@@ -1,0 +1,201 @@
+/* One shared Shader R canvas; the existing homepage keeps its composition. */
+body.novara-shader-active {
+  position: relative;
+  isolation: isolate;
+  background: #0a0909;
+}
+.novara-shader-r {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background: #0a0909;
+}
+.novara-shader-r[hidden] { display: none; }
+.novara-shader-r-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: .32;
+  pointer-events: none;
+}
+
+/* The project screen and stills sit on the same canvas as the homepage.
+   Media frames retain their own dark loading surface. */
+body.novara-shader-active.novara-project-page .np-screen.project-screen-host,
+body.novara-shader-active.novara-project-page .np-frames .project-gallery,
+body.novara-shader-active.novara-project-page .np-footer {
+  background: transparent;
+}
+/* Keep the preserved grid's paper footer readable, with the shared colour
+   visible through it just as it is through the homepage footer. */
+body.novara-shader-active .archive-footer { background: rgba(250, 250, 246, .88); }
+
+/* Shade the board's centre without placing a hard panel over the canvas.
+   These are background gradients: the content keeps its original contrast. */
+body.novara-shader-active .novara-craft { background: transparent; }
+body.novara-shader-active .novara-board {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 9, 9, 0),
+    rgba(10, 9, 9, .76) clamp(48px, 8vh, 96px),
+    rgba(10, 9, 9, .76) calc(100% - clamp(48px, 8vh, 96px)),
+    rgba(10, 9, 9, 0)
+  );
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+body.novara-shader-active .novara-board .nb-stage { background: transparent; }
+
+/* Feather the charcoal layer; never mask the phones, captions or controls. */
+body.novara-shader-active .novara-craft .nc-social-stage { background: transparent; }
+body.novara-shader-active .novara-craft .nc-social-pearl {
+  --pearl-edge: clamp(180px, 32vh, 340px);
+  background:
+    radial-gradient(ellipse at 20% 48%, #26222055, transparent 48%),
+    radial-gradient(ellipse at 75% 40%, #1c1e2266, transparent 48%),
+    radial-gradient(ellipse at 55% 65%, #171d2080, transparent 42%),
+    rgba(19, 17, 16, .78);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--pearl-edge), #000 calc(100% - var(--pearl-edge)), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--pearl-edge), #000 calc(100% - var(--pearl-edge)), transparent);
+}
+body.novara-shader-active .novara-craft .nc-social-pearl::after {
+  background: linear-gradient(180deg, #13111055, transparent 30%, transparent 60%, #131110cc 100%);
+}
+/* A charcoal backplate keeps the light controls clear within the lower feather. */
+body.novara-shader-active .novara-craft .nc-controls::before {
+  content: '';
+  position: absolute;
+  inset: -4px -8px;
+  z-index: -1;
+  border-radius: 999px;
+  background: rgba(19, 17, 16, .94);
+  border: 1px solid #fafaf624;
+  pointer-events: none;
+}
+
+/* Begin the paper transition behind the CTA images, then reach a readable
+   light surface before the footer wordmark. No document spacing changes. */
+body.novara-shader-active .cta-peek { position: relative; z-index: 1; }
+body.novara-shader-active .footer {
+  --footer-feather: clamp(200px, 28vh, 300px);
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  background: transparent;
+}
+body.novara-shader-active .footer::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--footer-feather)) 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 250, 246, 0) 0,
+    rgba(250, 250, 246, .04) calc(var(--footer-feather) * .2),
+    rgba(250, 250, 246, .16) calc(var(--footer-feather) * .4),
+    rgba(250, 250, 246, .38) calc(var(--footer-feather) * .65),
+    rgba(250, 250, 246, .66) calc(var(--footer-feather) * .9),
+    rgba(250, 250, 246, .82) calc(var(--footer-feather) + 30px),
+    rgba(250, 250, 246, .88) calc(var(--footer-feather) + 70px),
+    rgba(250, 250, 246, .88)
+  );
+}
+body.novara-shader-active .footer .novara-slideshow { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .novara-shader-r-canvas { transition: none; }
+}
+
+/* Dissolve the film into the same moving canvas visible below it. */
+body.novara-shader-active .hero{background:transparent}
+body.novara-shader-active .hero-media{mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.88) 70%,rgba(0,0,0,.38) 88%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 52%,rgba(0,0,0,.88) 70%,rgba(0,0,0,.38) 88%,transparent 100%)}
+
+/* Temporary concept swatches, outside the document's layout. */
+.novara-colour-preview {
+  position: fixed;
+  z-index: 90;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  color: #fafaf6;
+  font: 500 11px/1.5 var(--mono, 'JetBrains Mono', monospace);
+}
+.novara-colour-preview .ncp-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-left: auto;
+  padding: 10px 15px;
+  border: 1px solid #fafaf633;
+  border-radius: 999px;
+  background: #131110f5;
+  color: #fafaf6;
+  box-shadow: 0 5px 20px #0003;
+  font: inherit;
+  cursor: pointer;
+}
+.novara-colour-preview .ncp-current {
+  width: 11px;
+  height: 11px;
+  flex: 0 0 11px;
+  border-radius: 50%;
+  background: var(--preview-colour);
+  box-shadow: 0 0 0 1px #fafaf64d;
+}
+.novara-colour-preview .ncp-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: min(390px, calc(100vw - 36px));
+  max-height: calc(100svh - 100px);
+  overflow: auto;
+  padding: 18px 12px 12px;
+  border: 1px solid #fafaf633;
+  border-radius: 18px;
+  background: #131110;
+  box-shadow: 0 14px 50px #0006;
+}
+.novara-colour-preview .ncp-panel[hidden] { display: none; }
+.novara-colour-preview fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.novara-colour-preview legend { padding: 0 6px; color: #fafaf6; font: 700 12px/1.5 var(--mono, monospace); }
+.novara-colour-preview .ncp-note { margin: 4px 6px 12px; color: #b3afa9; font-size: 10px; }
+.novara-colour-preview .ncp-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.novara-colour-preview .ncp-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.novara-colour-preview .ncp-option:hover { background: #fafaf60b; }
+.novara-colour-preview .ncp-option:has(input:checked) { border-color: #fafaf62e; background: #fafaf60b; }
+.novara-colour-preview .ncp-option:focus-within { outline: 2px solid #fafaf6; outline-offset: 1px; }
+.novara-colour-preview .ncp-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  clip-path: inset(50%);
+}
+.novara-colour-preview .ncp-swatch {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px #fafaf629;
+}
+.novara-colour-preview .ncp-name { flex: 1; min-width: 0; font-size: 10px; line-height: 1.4; }
+.novara-colour-preview .ncp-check { opacity: 0; flex: 0 0 10px; font-size: 12px; }
+.novara-colour-preview input:checked ~ .ncp-check { opacity: 1; }
+@media (max-width: 600px) {
+  .novara-colour-preview { right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); }
+}

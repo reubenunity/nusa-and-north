@@ -1,0 +1,117 @@
+/* The original Nusa & North departures board, scoped to the Novara concept.
+   The dark palette is explicit; no proof variants or global classes are needed. */
+.novara-board {
+  --nb-bg: #0a0909;
+  --nb-ink: #fafaf6;
+  --nb-red: #e8362b;
+  --nb-mono: var(--font-mono, 'JetBrains Mono', monospace);
+  --nb-display: var(--font-display, Archivo, sans-serif);
+  display: block;
+  position: relative;
+  scroll-margin-top: 90px;
+  background: var(--nb-bg);
+  color: var(--nb-ink);
+  border-top: 1px solid #fafaf629;
+  border-bottom: 1px solid #fafaf629;
+}
+.novara-board .nb-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100svh;
+  gap: clamp(28px, 4vw, 48px);
+  padding: clamp(55px, 7vw, 90px) var(--gutter, 4vw);
+  background: var(--nb-bg);
+}
+.novara-board .nb-alt {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(24px, 3vw, 36px);
+  width: min(1080px, 100%);
+}
+.novara-board .nb-bg {
+  /* Original fixed backdrop layer: tile repaints do not repaint the dot map. */
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: min(1080px, 108%);
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+.novara-board .nb-dots circle { fill: #fafaf616; }
+.novara-board .nb-route-trail { fill: none; stroke: #e8362b4d; stroke-width: 1.3; stroke-dasharray: 3 4; }
+.novara-board .nb-bg-stop { fill: #e8362b52; }
+.novara-board .nb-head,
+.novara-board .nb-cols { position: relative; z-index: 1; }
+.novara-board .nb-head {
+  margin: 0;
+  color: var(--nb-red);
+  font: 700 clamp(10px, 1.1vw, 12.5px)/1.6 var(--nb-mono);
+  letter-spacing: .3em;
+  text-align: center;
+}
+.novara-board .nb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(28px, 5vw, 80px); width: 100%; }
+.novara-board .nb-col { min-width: 0; }
+.novara-board .nb-row {
+  contain: layout paint;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: .42em 0;
+  border-bottom: 1px solid #fafaf624;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.novara-board .nb-row.is-in { opacity: 1; }
+.novara-board .nb-dest,
+.novara-board .nb-status { display: flex; flex-wrap: nowrap; white-space: nowrap; }
+.novara-board .nb-tile {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: calc(1ch + .14em);
+  padding: .18em 0;
+  margin-right: 1.5px;
+  border-radius: 2px;
+  background: #fafaf611;
+  color: var(--nb-ink);
+  text-align: center;
+  font: 700 clamp(11.2px, 1.25vw, 14.72px)/1.3 var(--nb-mono);
+}
+.novara-board .nb-status .nb-tile { color: #fafaf69e; }
+.novara-board .nb-totals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 25px; width: min(1080px, 100%); }
+.novara-board .nb-stat { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.novara-board .nb-num {
+  font: 800 clamp(38px, 5.1vw, 70px)/1 var(--nb-display);
+  font-stretch: 115%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.035em;
+}
+.novara-board .nb-label { color: #fafaf68c; font: 500 clamp(8px, .85vw, 10px)/1.65 var(--nb-mono); letter-spacing: .14em; }
+.novara-board .nb-foot { margin: 0; color: var(--nb-red); font: 500 clamp(8px, .85vw, 10px)/1.8 var(--nb-mono); letter-spacing: .15em; text-align: center; }
+
+/* Original touch fallback: one clean manifest, then a two-by-two total grid. */
+@media (max-width: 767px) {
+  .novara-board .nb-stage { min-height: 0; padding: 52px 20px; gap: 30px; }
+  .novara-board .nb-alt { gap: 22px; }
+  .novara-board .nb-cols { grid-template-columns: 1fr; gap: 0; }
+  .novara-board .nb-row { padding: 6px 0; gap: 12px; }
+  .novara-board .nb-tile { width: 1ch; padding: 0; margin-right: .5px; font-size: 10px; letter-spacing: .04em; background: transparent; }
+  .novara-board .nb-status .nb-tile { font-size: 9px; color: #fafaf673; }
+  .novara-board .nb-head { font-size: 9px; letter-spacing: .2em; }
+  .novara-board .nb-bg { width: 100%; }
+  .novara-board .nb-totals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
+  .novara-board .nb-num { font-size: 38px; }
+  .novara-board .nb-label { font-size: 8px; letter-spacing: .1em; }
+  .novara-board .nb-foot { font-size: 8px; letter-spacing: .1em; max-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .novara-board .nb-stage { min-height: 0; }
+  .novara-board .nb-row { transition: none; }
+}

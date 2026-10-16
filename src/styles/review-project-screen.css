@@ -1,0 +1,127 @@
+.project-screen-host {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  background: var(--ink, #131110);
+}
+
+.project-screen-track { position: relative; width: 100%; }
+.project-screen-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 84vh;
+  height: clamp(70svh, 84svh, 90svh);
+  overflow: hidden;
+  isolation: isolate;
+}
+.project-screen-aperture {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: inset(18% 14% 18% 14% round 0px);
+  background: #080707;
+  pointer-events: none;
+}
+.project-screen-media { position: absolute; inset: 0; transform: scale(1.07999); transform-origin: center; }
+.project-screen-poster,
+.project-screen-preview {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.project-screen-preview { opacity: 0; }
+[data-preview-playing="true"] .project-screen-preview { opacity: 1; }
+.project-screen-play {
+  position: absolute;
+  inset: 18% 14%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink, #131110);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.project-screen-play:focus-visible { outline: 3px solid var(--signal, #e8362b); outline-offset: -5px; }
+.project-screen-play-cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px 25px 10px 10px;
+  background: var(--paper, #fafaf6);
+  border-radius: 999px;
+  box-shadow: 0 2px 24px #0003;
+  font: 600 11px/1.3 var(--font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: .08em;
+  white-space: nowrap;
+  transition: background-color .18s, color .18s;
+}
+.project-screen-play-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ink, #131110);
+  color: var(--paper, #fafaf6);
+}
+.project-screen-play-icon svg { display: block; margin-left: 2px; }
+.project-screen-play:hover .project-screen-play-cue,
+.project-screen-play:focus-visible .project-screen-play-cue { background: var(--signal, #e8362b); color: var(--paper, #fafaf6); }
+.project-screen-hint {
+  position: absolute;
+  z-index: 3;
+  right: 20px;
+  bottom: 22px;
+  left: 20px;
+  margin: 0;
+  color: #fafaf699;
+  text-align: center;
+  font: 400 10px/1.5 var(--font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: .12em;
+  pointer-events: none;
+}
+.project-screen-hint span { display: inline-block; padding-left: 14px; color: var(--signal, #e8362b); }
+.project-screen-poster-error .project-screen-aperture { background: #24201d; }
+
+.project-screen-static { padding: 0 4vw; }
+.project-screen-static .project-screen-stage { position: relative; top: auto; height: auto; aspect-ratio: 16 / 9; }
+.project-screen-static .project-screen-aperture { clip-path: none !important; }
+.project-screen-static .project-screen-media { transform: none !important; }
+.project-screen-static .project-screen-play { inset: 0 !important; }
+.project-screen-static .project-screen-hint { display: none; }
+
+@media (max-width: 800px), (max-height: 500px) {
+  .project-screen-host { padding: 0; }
+  .project-screen-track { height: auto !important; padding: 0 12px; }
+  .project-screen-stage { position: relative; top: auto; height: auto; aspect-ratio: 16 / 9; }
+  .project-screen-aperture { clip-path: none !important; }
+  .project-screen-media { transform: none !important; }
+  .project-screen-play { inset: 0 !important; padding: 12px; }
+  .project-screen-play-cue { min-height: 56px; padding: 6px 20px 6px 6px; gap: 11px; font-size: 10px; }
+  .project-screen-hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-screen-track { height: auto !important; }
+  .project-screen-stage { position: relative; top: auto; height: auto; aspect-ratio: 16 / 9; }
+  .project-screen-aperture { clip-path: none !important; }
+  .project-screen-media { transform: none !important; }
+  .project-screen-play { inset: 0 !important; }
+  .project-screen-play-cue { transition: none; }
+  .project-screen-hint { display: none; }
+}

@@ -1,0 +1,69 @@
+/* Content adaptation only. The original Novara layout stylesheet stays intact
+   in novara.html, including its spacing, six-card composition and typography scale. */
+@font-face{font-family:Archivo;src:url('/brand/fonts/archivo.woff2') format('woff2');font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('/brand/fonts/mono.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--bg:#0a0909;--ink:#fafaf6;--paper:#fafaf6;--paper-ink:#131110;--mono:'JetBrains Mono',monospace;--raw-paper:#fafaf6;--font-mono:var(--mono)}
+.nav-brand{display:inline-flex;align-items:center;gap:9px;padding-top:9px;padding-bottom:9px}
+.nav-brand img{flex-shrink:0}
+.nav-links a{white-space:nowrap}
+.hero-title{font-size:clamp(52px,8.7vw,160px)}
+.footer .word{font-size:clamp(38px,8.7vw,160px)}
+.card-link{position:absolute;inset:0;z-index:3;border-radius:inherit}
+.card-link:focus-visible{outline-offset:-5px}
+.wcard:focus-within img{transform:scale(1.1)}
+/* HorizonX Interactive Hover Button: original dot expansion and label swap.
+   Source: https://horizonx.so/tools/interactive-hover-button
+   Export: /horizonx/interactive-hover-button.html. Adapted to a brand link. */
+.works-all{width:max-content;max-width:100%;padding:0}
+.works-all::after{display:none}
+.works-all-button{--ihb-duration:300ms;--ihb-travel:48px;--ihb-nudge:4px;--ihb-bloom:1.8;position:relative;box-sizing:border-box;display:grid;place-items:center;width:max-content;min-width:188px;max-width:100%;height:50px;padding:8px 28px;border:1px solid #6b625b;border-radius:40px;background:#131110;color:#fafaf6;font-family:Archivo,sans-serif;font-size:14px;font-weight:600;line-height:1;text-align:center;cursor:pointer;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.works-all-button .ihb-fill{position:absolute;left:10%;top:44%;width:6px;height:6px;border-radius:8px;background:#e8362b;transform:scale(1);transform-origin:center;transition:left var(--ihb-duration) ease,top var(--ihb-duration) ease,width var(--ihb-duration) ease,height var(--ihb-duration) ease,transform var(--ihb-duration) ease,background-color var(--ihb-duration) ease;pointer-events:none}
+.works-all-button .ihb-rest{position:relative;z-index:1;display:inline-block;white-space:nowrap;transform:translateX(var(--ihb-nudge));opacity:1;transition:transform var(--ihb-duration) ease,opacity var(--ihb-duration) ease}
+.works-all-button .ihb-swap{position:absolute;z-index:2;top:0;left:0;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:100%;color:#131110;white-space:nowrap;transform:translateX(var(--ihb-travel));opacity:0;transition:transform var(--ihb-duration) ease,opacity var(--ihb-duration) ease;pointer-events:none}
+.works-all-button .ihb-arrow{width:1.15em;height:1.15em;flex:0 0 auto}
+.works-all-button[data-state='auto']:hover .ihb-fill,.works-all-button[data-state='auto']:focus-visible .ihb-fill{left:0;top:0;width:100%;height:100%;transform:scale(var(--ihb-bloom));background:#fafaf6}
+.works-all-button[data-state='auto']:hover .ihb-rest,.works-all-button[data-state='auto']:focus-visible .ihb-rest{transform:translateX(var(--ihb-travel));opacity:0}
+.works-all-button[data-state='auto']:hover .ihb-swap,.works-all-button[data-state='auto']:focus-visible .ihb-swap{transform:translateX(calc(-1 * var(--ihb-nudge)));opacity:1}
+.works-all-button:focus-visible{outline:2px solid #fafaf6;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.works-all-button .ihb-fill,.works-all-button .ihb-rest,.works-all-button .ihb-swap{transition:none!important}}
+.works-collection-footer{position:absolute;z-index:4;right:var(--gutter);bottom:24px;left:var(--gutter);display:flex;align-items:center;justify-content:center;gap:28px}
+.works-collection-link{display:inline-flex;align-items:center;gap:24px;min-height:48px;padding:12px 20px;border:1px solid #fafaf65c;border-radius:999px;background:#131110e8;color:#fafaf6;font-size:11px;letter-spacing:.06em;white-space:nowrap;transition:background .2s,color .2s}
+.works-collection-link>span{font-size:21px;line-height:1}
+.works-collection-link:hover{background:#fafaf6;color:#131110}
+@media(max-width:768px){.works-collection-footer{display:none}}
+.footer-imgs figure>a{display:block;width:100%;height:100%}
+.footer-cols>div{min-width:0}
+.footer-cols a{overflow-wrap:anywhere}
+.footer-base button{font:inherit;letter-spacing:inherit;text-transform:inherit}
+.hero-reel:hover .dot{background:var(--ink)}
+.hero-reel:hover svg{fill:var(--bg)}
+#site-menu,#privacy{position:fixed;margin:auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:28px;padding:35px;max-width:calc(100vw - 32px);max-height:calc(100svh - 32px);overflow:auto}
+#site-menu::backdrop,#privacy::backdrop{background:#000c;backdrop-filter:blur(8px)}
+#site-menu{width:440px}
+.menu-close{display:block;margin-left:auto;width:42px;height:42px;border-radius:50%;border:1px solid #48433e;font-size:26px}
+.motion-setting{font:11px var(--mono);text-transform:uppercase;margin-top:25px;text-decoration:underline;text-underline-offset:5px}
+#privacy{width:510px}
+#privacy h2{margin-bottom:20px}
+#privacy p{font-size:16px;line-height:1.6;margin-bottom:25px}
+.privacy-close{padding:12px 25px;border:1px solid #48433e;border-radius:99px}
+.lightbox .lightbox__frame{width:min(92vw,calc((100svh - 112px)*16/9));max-height:calc(100svh - 112px)}
+.lightbox .lightbox__close{top:-54px;min-width:44px;min-height:44px;font-size:24px}
+/* Keyboard focus into the pinned track is translated into its native page
+   position in JS. When motion is off, the same composition scrolls natively. */
+@media(max-width:768px){.hero-title{font-size:clamp(46px,13vw,90px);max-width:10ch}.footer .word{font-size:8.5vw}.wcard.tall{height:64vw;min-height:340px}.works-h{min-height:0}.footer-cols{gap:30px 20px}.footer-cols a,.footer-cols p{font-size:10px}.hero-reel{display:flex;position:relative;bottom:auto;right:auto;z-index:3;margin-top:-65px;margin-left:auto;margin-right:var(--gutter);width:fit-content}.hero-inner{padding-bottom:100px}}
+@media(prefers-reduced-motion:reduce){.works-track{width:100%;overflow-x:auto;scroll-snap-type:x proximity;will-change:auto}.wcard{scroll-snap-align:center}.works-h{min-height:0}.values .w{color:var(--ink)}.hero-media video:not(.manual-motion){visibility:hidden}.hero-media{background:url('/stills/hero-poster.jpg') center/cover}}
+
+/* The supplied photograph stays intact; its mirrored display and shade are CSS. */
+.about-img{position:relative;isolation:isolate;min-width:0}
+.about-img img{transform:scaleX(-1);object-position:39% center}
+.about-img::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(10,9,9,.8) 0%,rgba(10,9,9,.32) 35%,rgba(10,9,9,0) 76%)}
+#sound,#social,#feedback,#locations{scroll-margin-top:90px}
+@media(max-width:768px){.about-img{width:100%}.about-copy,.about-copy p{min-width:0;max-width:100%}}
+
+.novara-services button{font:400 12px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;border:1px solid #55504c;color:var(--ink-dim);border-radius:999px;padding:9px 16px;transition:color .2s,border-color .2s,background .2s;cursor:pointer}
+.novara-services button:hover,.novara-services button[aria-expanded=true]{color:var(--ink);border-color:var(--ink);background:#fafaf612}
+.novara-services .service-detail{flex-basis:100%;border-top:1px solid #fafaf62b;margin-top:12px;padding-top:20px}
+.novara-services .service-detail[hidden]{display:none}
+.service-detail h3{font:700 17px/1.3 Archivo,sans-serif;text-transform:uppercase;margin-bottom:12px}
+.service-detail p{font:400 15px/1.65 Archivo,sans-serif;color:#c7c3bd}
+.service-detail a{display:inline-block;font:500 10px/1.6 var(--mono);text-transform:uppercase;letter-spacing:.04em;margin-top:18px;border-bottom:1px solid #c7c3bd;padding-bottom:5px}

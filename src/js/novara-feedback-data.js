@@ -1,0 +1,48 @@
+// Exact excerpts supplied in text-FDD542C3AED7-1.txt, for the local concept.
+// Project stills illustrate the work; they are not portraits of the speakers.
+export const testimonials = [
+  {
+    quote: "I am still speechless, and already watched the video 5 times today, bc it's just so beautiful, simply beautiful.",
+    name: 'Leonarda Crnčić',
+    role: '',
+    organisation: 'Radisson Collection, Berlin',
+    context: 'On The Taste of Heritage',
+    image: '/films/radisson-berlin/frame-06.webp',
+    alt: 'Friends raising a toast at sunset in the Radisson Collection Berlin film.',
+    location: 'Berlin, Germany',
+    position: '50% 50%', scale: 1,
+  },
+  {
+    quote: 'Our team was truly impressed by their storytelling approach, creative vision, and production quality.',
+    name: 'Nancy Bui',
+    role: 'Assistant Digital & Marketing Manager',
+    organisation: 'Banyan Tree Lang Co & Angsana Lang Co',
+    context: '',
+    image: '/stills/novara-feedback/vietnam-film.webp',
+    alt: 'Hillside villas above the coastline in the Lang Co resort film.',
+    location: 'Lang Co, Vietnam',
+    position: '50% 50%', scale: 1,
+  },
+  {
+    quote: 'We also want to thank you for the super smooth collaboration and the wonderful video.',
+    name: 'Yves Eberli',
+    role: '',
+    organisation: 'Lucerne Tourism',
+    context: '',
+    image: '/stills/novara-feedback/lucerne-film.webp',
+    alt: 'A church tower above Lake Lucerne, backed by the Alps.',
+    location: 'Lucerne, Switzerland',
+    position: '50% 50%', scale: 1,
+  },
+  {
+    quote: 'Not only did the internal team love it, but the Content team reviewed it as well and were really impressed. They see it as a very strong benchmark for future B2B content.',
+    name: 'Ana González del Amo',
+    role: 'Marketing Field Activation Manager, Spain & Portugal',
+    organisation: 'Radisson Hotel Group',
+    context: 'Sharing the teams’ feedback on the Madrid film',
+    image: '/stills/novara-feedback/madrid-red.jpg',
+    alt: 'The red entrance canopy at Radisson RED Madrid, from the supplied film still.',
+    location: 'Madrid, Spain',
+    position: '50% 50%', scale: 1.2,
+  },
+];

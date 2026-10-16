@@ -1,0 +1,154 @@
+/* Homepage colour study: the portfolio's light petrol–amber Shader R.
+   Keep Novara's layout, media and scroll choreography intact. */
+:root:has(body.novara-home-light) {
+  --bg: #e8e7dd;
+  --ink: #202b2b;
+  --ink-dim: #475452;
+  --ink-faint: #67736f;
+  --line: #203d3e30;
+  --paper-ink: #202b2b;
+  color-scheme: light;
+  background: var(--bg);
+}
+body.novara-home-light { background: var(--bg); color: var(--ink); }
+.novara-home-light .novara-shader-r {
+  background: linear-gradient(125deg, #e4b580, #e8e7dd 52%, #78a6b0);
+}
+.novara-home-light .novara-shader-r-canvas { opacity: 1; }
+
+/* Pale glass navigation stays readable over both film and the colour field. */
+.novara-home-light .nav-brand,
+.novara-home-light .nav-links,
+.novara-home-light .nav-grid {
+  background: #f6f3e9dd;
+  color: var(--ink);
+  border-color: #203d3e30;
+  backdrop-filter: blur(18px);
+}
+.novara-home-light .nav-links a { color: var(--ink-dim); }
+.novara-home-light .nav-links a:hover,
+.novara-home-light .nav-links a.active { color: var(--ink); background: #203d3e13; }
+
+/* Let the film occupy the opening, then dissolve it early enough for the
+   dark title to sit on the light colour field rather than on dark footage. */
+body.novara-home-light .hero { background: transparent; }
+body.novara-home-light .hero-media {
+  mask-image: linear-gradient(to bottom, #000 0%, #000 20%, #000d 34%, #0006 49%, #0001 66%, transparent 84%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 20%, #000d 34%, #0006 49%, #0001 66%, transparent 84%);
+}
+.novara-home-light .hero-media::after {
+  background: linear-gradient(to bottom, transparent 20%, #e8e7dd33 40%, #e8e7dd99 64%, #e8e7dd 100%);
+}
+.novara-home-light .hero-media video { translate: 0 clamp(-24px, -2.5vh, -12px); }
+.novara-home-light .hero-title,
+.novara-home-light .hero-sub,
+.novara-home-light .hero-reel { color: var(--ink); }
+.novara-home-light .hero-reel .dot { border-color: #203d3e66; }
+.novara-home-light .hero-reel svg { fill: var(--ink); }
+.novara-home-light .hero-inner { padding-bottom: max(100px, 12vh); }
+.novara-home-light .hero-reel { bottom: max(100px, 12vh); }
+.novara-home-light .works-h .bgword { -webkit-text-stroke-color: #203d3e2a; }
+.novara-home-light .works-all-button { background: #203d3e; border-color: #203d3e; }
+.novara-home-light .works-all-button:focus-visible { outline-color: var(--ink); }
+.novara-home-light .works-collection-link { background: #203d3ef0; border-color: #203d3e40; }
+.novara-home-light .novara-services button { border-color: var(--line); }
+.novara-home-light .novara-services button:hover,
+.novara-home-light .novara-services button[aria-expanded=true] { background: #f6f3e94d; }
+.novara-home-light .service-detail { border-color: var(--line); }
+.novara-home-light .service-detail p { color: var(--ink-dim); }
+.novara-home-light .service-detail a { border-color: var(--ink-dim); }
+
+/* Preserve the supplied photograph and its mirrored composition. */
+.novara-home-light .about-img::after {
+  background: linear-gradient(90deg, #203d3e40, #203d3e16 35%, transparent 76%);
+}
+
+/* Sound and phones share the page canvas; only the actual devices stay dark. */
+.novara-home-light .novara-craft {
+  --nc-muted: #475452;
+  --nc-line: #203d3e30;
+  color: var(--ink);
+  background: transparent;
+}
+.novara-home-light .novara-craft .nc-title,
+.novara-home-light .novara-craft .nc-session summary,
+.novara-home-light .novara-craft .nc-process h3,
+.novara-home-light .novara-craft .nc-social-title,
+.novara-home-light .novara-craft .nc-phone-caption,
+.novara-home-light .novara-craft .nc-motion,
+.novara-home-light .novara-craft .nc-arrow { color: var(--ink); }
+.novara-home-light .novara-craft .nc-social-title span,
+.novara-home-light .novara-craft .nc-phone-kind,
+.novara-home-light .novara-craft .nc-social-note { color: var(--ink-dim); }
+.novara-home-light .novara-craft .nc-social-label { color: #a83427; }
+.novara-home-light .novara-craft .nc-arrow { border-color: var(--line); }
+.novara-home-light .novara-craft .nc-arrow:hover:not(:disabled) {
+  background: #f6f3e94d; border-color: var(--ink); color: var(--ink);
+}
+.novara-home-light .novara-craft .nc-audio-proof audio { color-scheme: light; }
+.novara-home-light .novara-craft :focus-visible { outline-color: var(--ink); }
+body.novara-home-light .novara-craft .nc-social-stage,
+body.novara-home-light .novara-craft .nc-social-pearl,
+body.novara-home-light .novara-craft .nc-social-pearl::after { background: transparent; }
+body.novara-home-light .novara-craft .nc-controls::before {
+  background: #f6f3e9d9; border-color: var(--line); backdrop-filter: blur(12px);
+}
+
+/* Keep the original flicker animation, using ink on translucent light tiles. */
+body.novara-home-light .novara-board {
+  --nb-bg: transparent;
+  --nb-ink: #202b2b;
+  --nb-red: #a83427;
+  background: transparent;
+  border-color: transparent;
+}
+body.novara-home-light .novara-board .nb-stage { background: transparent; }
+.novara-home-light .novara-board .nb-tile { background: #f6f3e959; }
+.novara-home-light .novara-board .nb-status .nb-tile,
+.novara-home-light .novara-board .nb-label { color: var(--ink-dim); }
+.novara-home-light .novara-board .nb-row { border-color: var(--line); }
+.novara-home-light .novara-board .nb-dots circle { fill: #203d3e1a; }
+
+.novara-home-light .nf-panel blockquote,
+.novara-home-light .nf-person,
+.novara-home-light .nf-arrows button { color: var(--ink); }
+.novara-home-light .nf-hint,
+.novara-home-light .nf-count,
+.novara-home-light .nf-role,
+.novara-home-light .nf-brand,
+.novara-home-light .nf-context { color: var(--ink-dim); }
+.novara-home-light .nf-dots button::after { background: #203d3e50; }
+.novara-home-light .nf-dots button[aria-pressed=true]::after { background: #a83427; }
+.novara-home-light .nf-arrows button { border-color: var(--line); }
+.novara-home-light .nf-arrows button:hover { background: #f6f3e94d; border-color: var(--ink); }
+.novara-home-light .cta .btn { background: #203d3e; color: #fafaf6; }
+body.novara-home-light .footer { background: transparent; }
+body.novara-home-light .footer::before { background: none; }
+.novara-home-light .footer-cols h3 { color: var(--ink-dim); }
+.novara-home-light .footer-cols { border-color: var(--line); }
+
+/* Match the preview menu to the light site without changing its reveal. */
+.novara-home-light #site-menu.novara-menu,
+.novara-home-light #privacy {
+  --fmn-rule-color: #203d3e25;
+  color: var(--ink); background: #e8e7dd; border-color: #203d3e30;
+}
+.novara-home-light #site-menu .fmn-menu { background: #f6f3e94d; }
+.novara-home-light #site-menu .fmn-panel { background: #c6d5d0; }
+.novara-home-light #site-menu .fmn-link,
+.novara-home-light #site-menu .fmn-word,
+.novara-home-light #site-menu .menu-close { color: var(--ink); }
+.novara-home-light #site-menu .nm-head p,
+.novara-home-light #site-menu .nm-secondary a,
+.novara-home-light #site-menu .nm-arrow,
+.novara-home-light #site-menu .motion-setting { color: var(--ink-dim); }
+.novara-home-light #site-menu .menu-close:hover { background: #203d3e0f; }
+.novara-home-light #site-menu .fmn-row:has(.fmn-link:focus-visible) { outline-color: var(--ink); }
+.novara-home-light #site-menu::backdrop,
+.novara-home-light #privacy::backdrop { background: #203d3e66; }
+
+@media (max-width: 768px) {
+  .novara-home-light .hero-reel { position: relative; bottom: auto; margin-top: -110px; }
+  .novara-home-light .hero-inner { padding-bottom: 150px; }
+  .novara-home-light .novara-board .nb-tile { background: transparent; }
+}

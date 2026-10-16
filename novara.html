@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nusa &amp; North — Film Studio</title>
+<meta name="description" content="A husband-and-wife duo crafting films for hospitality, travel destinations and commercial brands — worldwide.">
+<link rel="icon" href="/brand/nusa-north-mark.svg" type="image/svg+xml">
+<link rel="preload" href="/brand/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/brand/fonts/mono.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+:root{
+  --bg:#0a0a0a;
+  --ink:#f4f4f2;
+  --ink-dim:#8a8a86;
+  --ink-faint:#4c4c4a;
+  --line:#232322;
+  --paper:#f4f4f2;
+  --paper-ink:#0d0d0c;
+  --radius:28px;
+  --gutter:clamp(20px,4vw,64px);
+  --display:"Archivo",sans-serif;
+  --mono:"Space Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--display);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--ink);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;line-height:1.75}
+.display{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.015em;line-height:.92}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  z-index:100;display:flex;align-items:center;gap:8px;
+}
+.nav a,.nav button{transition:background .3s,color .3s}
+.nav-brand{
+  background:#141414;color:var(--ink);
+  border:1px solid #262626;
+  padding:12px 22px;border-radius:999px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
+  white-space:nowrap;
+}
+.nav-links{
+  display:flex;align-items:center;gap:2px;
+  background:rgba(20,20,20,.82);backdrop-filter:blur(14px);
+  border:1px solid #262626;border-radius:999px;padding:5px;
+}
+.nav-links a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  padding:9px 16px;border-radius:999px;color:var(--ink-dim);
+}
+.nav-links a:hover,.nav-links a.active{background:#262624;color:var(--ink)}
+.nav-grid{
+  width:42px;height:42px;border-radius:50%;
+  background:#141414;border:1px solid #262626;
+  display:grid;place-items:center;gap:0;
+}
+.nav-grid span{display:grid;grid-template-columns:repeat(2,5px);gap:4px}
+.nav-grid i{width:5px;height:5px;background:var(--ink);border-radius:1px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
+.hero-media{position:absolute;inset:0;z-index:0}
+.hero-media video{width:100%;height:100%;object-fit:cover}
+.hero-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,.34) 0%,rgba(10,10,10,.12) 42%,rgba(10,10,10,.72) 100%);
+}
+.hero-inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 var(--gutter) clamp(28px,5vh,56px);
+}
+.hero-title{
+  font-size:clamp(56px,12.5vw,220px);
+  color:var(--ink);
+  margin-left:-.04em;
+}
+.hero-sub{
+  margin-top:22px;max-width:430px;color:var(--ink);
+}
+.hero-reel{
+  position:absolute;right:var(--gutter);bottom:clamp(28px,5vh,56px);z-index:2;
+  display:flex;align-items:center;gap:12px;color:var(--ink);
+}
+.hero-reel .dot{width:34px;height:34px;border:1px solid rgba(244,244,242,.5);border-radius:50%;display:grid;place-items:center}
+.hero-reel svg{width:10px;height:10px;fill:var(--ink)}
+
+/* ---------- WORKS INTRO ---------- */
+.works-intro{
+  padding:clamp(90px,14vh,170px) var(--gutter) clamp(48px,7vh,90px);
+  display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:40px;align-items:start;
+}
+.works-statement{max-width:300px;color:var(--ink)}
+.works-list{list-style:none}
+.works-list li{border-bottom:1px solid var(--line)}
+.works-list a{
+  display:flex;align-items:baseline;gap:18px;padding:16px 4px;
+  font-family:var(--display);font-stretch:125%;font-weight:700;text-transform:uppercase;
+  font-size:clamp(20px,2.1vw,30px);letter-spacing:-.01em;
+  color:var(--ink-faint);transition:color .35s,padding-left .35s;
+}
+.works-list a .idx{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--ink-faint);font-weight:400}
+.works-list a:hover,.works-list a.active{color:var(--ink);padding-left:14px}
+.works-list a:hover .idx,.works-list a.active .idx{color:var(--ink-dim)}
+.works-all{justify-self:end;color:var(--ink);position:relative;padding-bottom:6px}
+.works-all::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.works-all:hover::after{transform:scaleX(1)}
+
+/* ---------- WORKS HORIZONTAL ---------- */
+.works-h{position:relative;overflow:hidden;display:flex;align-items:center;min-height:100vh}
+.works-h .bgword{
+  position:absolute;top:6%;left:0;z-index:0;pointer-events:none;
+  font-size:clamp(120px,22vw,380px);
+  color:transparent;-webkit-text-stroke:1px #2b2b29;
+  white-space:nowrap;
+}
+.works-track{
+  position:relative;z-index:1;
+  display:flex;gap:clamp(18px,2.6vw,44px);
+  padding:0 var(--gutter) clamp(80px,10vh,130px);
+  width:max-content;align-items:flex-end;
+  will-change:transform;
+}
+.wcard{
+  position:relative;flex:0 0 auto;
+  width:clamp(260px,26vw,430px);
+  height:clamp(380px,62vh,620px);
+  border-radius:var(--radius);overflow:hidden;background:#141414;
+}
+.wcard.wide{width:clamp(320px,38vw,660px)}
+.wcard.tall{height:clamp(420px,70vh,700px)}
+.wcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.52) 100%);pointer-events:none}
+.wcard img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .8s cubic-bezier(.19,1,.22,1)}
+.wcard:hover img{transform:scale(1.1)}
+.wcard figcaption{
+  position:absolute;left:22px;bottom:20px;right:22px;color:#fff;z-index:2;
+  text-shadow:0 1px 14px rgba(0,0,0,.45);
+}
+.wcard figcaption .name{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(18px,1.6vw,26px);text-transform:uppercase;letter-spacing:-.01em}
+.wcard figcaption .meta{margin-top:6px;color:rgba(255,255,255,.85)}
+
+/* ---------- VALUES ---------- */
+.values{padding:clamp(110px,16vh,210px) var(--gutter)}
+.values p{
+  font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;
+  font-size:clamp(34px,5.6vw,96px);line-height:1.02;letter-spacing:-.015em;
+  max-width:19ch;
+}
+.values .w{color:var(--ink-faint);transition:color .2s linear}
+
+/* ---------- ABOUT ---------- */
+.about{
+  padding:clamp(70px,10vh,140px) var(--gutter);
+  display:grid;grid-template-columns:1fr 1.05fr 1fr;gap:clamp(28px,4vw,64px);align-items:center;
+}
+.tags{display:flex;flex-wrap:wrap;gap:10px;max-width:340px}
+.tags span{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid #2c2c2b;color:var(--ink-dim);border-radius:999px;padding:9px 16px;
+  transition:color .3s,border-color .3s;
+}
+.tags span:hover{color:var(--ink);border-color:var(--ink)}
+.about-img{border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-copy p{max-width:340px;color:var(--ink)}
+.about-copy .more{display:inline-block;margin-top:26px;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:5px}
+
+/* ---------- STATS ---------- */
+.stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.stat{padding:clamp(48px,7vh,90px) var(--gutter);border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat .k{color:var(--ink-dim)}
+.stat .k2{margin-top:6px;color:var(--ink-faint)}
+.stat .n{
+  margin-top:26px;
+  font-family:var(--display);font-stretch:125%;font-weight:300;
+  font-size:clamp(64px,8.5vw,150px);line-height:1;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- FEEDBACK ---------- */
+.feedback{padding:clamp(100px,14vh,180px) var(--gutter)}
+.feedback .label{color:var(--ink-dim);margin-bottom:clamp(36px,5vh,64px)}
+.feedback-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(32px,5vw,90px);align-items:center}
+.fb-img{border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5;max-height:72vh}
+.fb-img img{width:100%;height:100%;object-fit:cover}
+.fb-count{color:var(--ink-dim)}
+.fb-quote{margin-top:26px;max-width:560px;color:var(--ink);font-size:13px}
+.fb-who{margin-top:30px}
+.fb-who .n{font-family:var(--display);font-stretch:125%;font-weight:700;text-transform:uppercase;font-size:16px;letter-spacing:.02em}
+.fb-who .r{margin-top:4px;color:var(--ink-dim)}
+.fb-arrows{display:flex;gap:12px;margin-top:38px}
+.fb-arrows button{
+  width:52px;height:52px;border:1px solid #333332;border-radius:50%;
+  display:grid;place-items:center;transition:background .3s,border-color .3s;
+}
+.fb-arrows button:hover{background:var(--ink);border-color:var(--ink)}
+.fb-arrows svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:1.6;transition:stroke .3s}
+.fb-arrows button:hover svg{stroke:var(--bg)}
+
+/* ---------- CTA ---------- */
+.cta{padding:clamp(110px,16vh,200px) var(--gutter) 0;text-align:center;overflow:hidden}
+.cta h2{
+  font-size:clamp(38px,6.4vw,110px);
+  max-width:16ch;margin:0 auto;
+}
+.cta .mono-sub{margin-top:28px;color:var(--ink-dim)}
+.cta .btn{
+  display:inline-flex;align-items:center;gap:10px;margin-top:40px;
+  background:var(--ink);color:var(--bg);
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:18px 34px;border-radius:999px;transition:transform .3s,background .3s,color .3s;
+}
+.cta .btn:hover{transform:translateY(-3px)}
+.cta-peek{
+  display:flex;justify-content:center;gap:clamp(16px,2.4vw,36px);
+  margin-top:clamp(60px,9vh,110px);
+}
+.cta-peek figure{
+  width:clamp(200px,22vw,380px);aspect-ratio:4/5;
+  border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;
+  transform:translateY(18%);
+}
+.cta-peek img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- FOOTER ---------- */
+.footer{background:var(--paper);color:var(--paper-ink);padding:clamp(70px,10vh,120px) var(--gutter) 34px;margin-top:-1px}
+.footer .word{
+  font-size:clamp(52px,12.8vw,230px);
+  text-align:center;color:var(--paper-ink);
+  white-space:nowrap;
+}
+.footer-cols{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:32px;
+  margin-top:clamp(48px,7vh,84px);padding-top:clamp(28px,4vh,48px);
+  border-top:1px solid #d8d8d4;
+}
+.footer-cols h3{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a76;font-weight:400;margin-bottom:18px}
+.footer-cols ul{list-style:none}
+.footer-cols li{margin:7px 0}
+.footer-cols a,.footer-cols p{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-ink);line-height:1.8}
+.footer-cols a{border-bottom:1px solid transparent;transition:border-color .3s}
+.footer-cols a:hover{border-color:var(--paper-ink)}
+.footer-imgs{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,1.4vw,22px);margin-top:clamp(44px,6vh,70px)}
+.footer-imgs figure{border-radius:18px;overflow:hidden;aspect-ratio:3/4}
+.footer-imgs img{width:100%;height:100%;object-fit:cover}
+.footer-base{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  margin-top:clamp(36px,5vh,56px);padding-top:22px;border-top:1px solid #d8d8d4;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#5c5c58;
+}
+.footer-base a:hover{color:var(--paper-ink)}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .works-intro{grid-template-columns:1fr 1fr}
+  .works-all{grid-column:2;justify-self:end}
+  .about{grid-template-columns:1fr 1fr}
+  .about-copy{grid-column:1/-1;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}
+  .footer-cols{grid-template-columns:1fr 1fr}
+}
+@media (max-width:768px){
+  .nav-links{display:none}
+  .hero-title{font-size:clamp(40px,12vw,220px)}
+  .footer{overflow:hidden}
+  .footer .word{font-size:11.2vw}
+  .works-intro{grid-template-columns:1fr;gap:28px}
+  .works-all{grid-column:auto;justify-self:start}
+  .works-track{overflow-x:auto;width:auto;scroll-snap-type:x mandatory;padding-bottom:60px;-webkit-overflow-scrolling:touch}
+  .wcard{scroll-snap-align:center;width:78vw;height:64vw;min-height:340px}
+  .wcard.wide{width:86vw}
+  .works-h .bgword{display:none}
+  .about{grid-template-columns:1fr}
+  .about-img{max-width:440px}
+  .stats{grid-template-columns:1fr}
+  .stat{border-left:0;border-top:1px solid var(--line)}
+  .stat:first-child{border-top:0}
+  .feedback-grid{grid-template-columns:1fr}
+  .fb-img{max-width:440px}
+  .footer-imgs{grid-template-columns:repeat(2,1fr)}
+  .footer-imgs figure:nth-child(5){display:none}
+  .footer-base{flex-direction:column}
+  .hero-reel{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+<link rel="stylesheet" href="/src/styles/novara-content.css">
+</head>
+<body class="novara-home-light">
+
+<!-- NAV -->
+<nav class="nav" aria-label="Primary">
+  <a class="nav-brand" href="#top" aria-label="Nusa and North home"><img src="/brand/nusa-north-mark.svg" width="24" height="24" alt="">NUSA &amp; NORTH</a>
+  <div class="nav-links">
+    <a href="#top" class="active">INDEX</a>
+    <a href="/novara-films.html">PORTFOLIO</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+  <button class="nav-grid" aria-label="Open menu" aria-controls="site-menu" aria-expanded="false"><span><i></i><i></i><i></i><i></i></span></button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-media">
+    <video muted loop playsinline preload="metadata" poster="/stills/hero-poster.jpg" aria-hidden="true">
+      <source src="/video/hero-loop.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-inner">
+    <h1 class="display hero-title">NUSA &amp; NORTH</h1>
+    <p class="mono hero-sub">A husband-and-wife duo crafting films for hospitality, travel destinations and commercial brands — worldwide.</p>
+  </div>
+  <button class="hero-reel mono" data-film="radisson-berlin" aria-label="Watch The Taste of Heritage">
+    <span>Watch film</span>
+    <span class="dot" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></span>
+  </button>
+</header>
+
+<main>
+<!-- WORKS INTRO -->
+<section class="works-intro" id="works">
+  <p class="mono works-statement">We start by getting to know your goals, audience, and market.</p>
+  <ul class="works-list">
+    <li><a href="/novara-project.html?film=radisson-berlin" class="active"><span class="idx">01</span>Berlin</a></li>
+    <li><a href="/novara-project.html?film=radisson-red-innsbruck"><span class="idx">02</span>Innsbruck</a></li>
+    <li><a href="/novara-project.html?film=visit-tallinn"><span class="idx">03</span>Visit Tallinn</a></li>
+    <li><a href="/novara-project.html?film=insta360-luna-ultra"><span class="idx">04</span>Insta360</a></li>
+    <li><a href="/novara-project.html?film=harpers-bazaar-diane-kruger"><span class="idx">05</span>Harper’s Bazaar</a></li>
+    <li><a href="/novara-project.html?film=four-seasons-bangkok"><span class="idx">06</span>Four Seasons</a></li>
+  </ul>
+  <div class="works-all">
+    <a class="works-all-button ihb-button" href="/novara-films.html" data-state="auto" aria-label="View portfolio">
+      <span class="ihb-fill" aria-hidden="true"></span>
+      <span class="ihb-rest" aria-hidden="true">View portfolio</span>
+      <span class="ihb-swap" aria-hidden="true"><span>View portfolio</span><svg class="ihb-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<!-- WORKS HORIZONTAL -->
+<section class="works-h" aria-label="Selected works gallery">
+  <div class="display bgword" aria-hidden="true">WORKS&nbsp;WORKS&nbsp;WORKS</div>
+  <div class="works-track" tabindex="0" aria-label="Six selected film projects">
+    <figure class="wcard wide">
+      <img src="/films/radisson-berlin/frame-06.webp" alt="An evening around the table at San Éna, Berlin" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">The Taste of Heritage</div><div class="mono meta">Radisson Collection · Berlin<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=radisson-berlin" aria-label="View project: The Taste of Heritage"></a>
+    </figure>
+    <figure class="wcard">
+      <img src="/films/radisson-red-innsbruck/frame-05.webp" alt="Recording sound in the mountains above Innsbruck" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">Sounds of Innsbruck</div><div class="mono meta">Radisson RED · Innsbruck<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=radisson-red-innsbruck" aria-label="View project: Sounds of Innsbruck"></a>
+    </figure>
+    <figure class="wcard tall">
+      <img src="https://i.vimeocdn.com/video/2188963259-b957db082431010dcec9c0b4ce9a4d0bcc26242db6bcf811ac4604ac7d17e62d-d_1280x720" alt="Visit Tallinn" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">Visit Tallinn</div><div class="mono meta">Destination film<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=visit-tallinn" aria-label="View project: Visit Tallinn"></a>
+    </figure>
+    <figure class="wcard">
+      <img src="https://i.vimeocdn.com/video/2185869599-28fe1b81379c67ea91f0b05aa77d53aefbe779bfc8d7c1254b0c995b28a6e07f-d_1280x720" alt="Insta360 — Luna Ultra" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">Luna Ultra</div><div class="mono meta">Insta360<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=insta360-luna-ultra" aria-label="View project: Luna Ultra"></a>
+    </figure>
+    <figure class="wcard wide">
+      <img src="https://i.ytimg.com/vi/1v-I6En0xlY/maxresdefault.jpg" alt="Harper&#39;s Bazaar UK — Diane Kruger" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">Diane Kruger</div><div class="mono meta">Harper’s Bazaar UK<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=harpers-bazaar-diane-kruger" aria-label="View project: Diane Kruger"></a>
+    </figure>
+    <figure class="wcard">
+      <img src="https://i.vimeocdn.com/video/2078164274-4fbe4e1ef68baacba62c25d7406b8a4a98f1eb8ff13fb4b70f427d5bfcb15646-d_1280x720" alt="Four Seasons x Bangkok" width="1280" height="720" loading="lazy">
+      <figcaption><div class="name">Four Seasons Bangkok</div><div class="mono meta">Hospitality film<br>View project ↗</div></figcaption>
+      <a class="card-link" href="/novara-project.html?film=four-seasons-bangkok" aria-label="View project: Four Seasons Bangkok"></a>
+    </figure>
+  </div>
+  <div class="works-collection-footer">
+    <a class="mono works-collection-link" href="/novara-films.html">View portfolio <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+
+<!-- SOUND & SOCIAL -->
+<section id="craft" aria-label="Sound design and social films"></section>
+
+<!-- VALUES -->
+<section class="values" aria-label="Studio values statement">
+  <p id="values-text">These values guide how we work, who we work with, and what we create for every single brand.</p>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="tags" aria-label="Studio values">
+    <span>Film</span><span>Commercial</span><span>Social</span>
+    <span>Sound design</span><span>Travel</span><span>Hospitality</span>
+    <span>Storytelling</span><span>Worldwide</span>
+  </div>
+  <div class="about-img">
+    <img src="/stills/reuben-okta-pumpkins.webp" alt="Reuben and Okta sitting together among pumpkins" loading="lazy" width="2910" height="1936">
+  </div>
+  <div class="about-copy">
+    <p class="mono">Nusa &amp; North is Reuben and Okta Hester — a husband-and-wife duo who believe every business has a story worth telling well. Find the story first, then bring it to life so people don’t just watch — they connect.</p>
+    <a class="mono more" href="#contact">More about us&nbsp;↘</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="proof" class="novara-board" aria-label="The delivery report"></section>
+
+<!-- FEEDBACK -->
+<section class="feedback" id="feedback" aria-label="Client feedback"></section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <h2 class="display">Thinking about your next big move? We're ready when you are.</h2>
+  <p class="mono mono-sub">Tell us where you want to go — we'll build the way there.</p>
+  <a class="btn" href="https://calendly.com/nusaandnorth/30min" target="_blank" rel="noopener">Contact with us&nbsp;↘</a>
+  <div class="cta-peek" aria-hidden="true">
+    <figure><img src="/films/radisson-red-innsbruck/frame-05.webp" alt="" loading="lazy"></figure>
+    <figure><img src="/stills/novara-cta/berlin.webp" alt="" loading="lazy"></figure>
+    <figure><img src="/stills/novara-cta/vietnam.webp" alt="" loading="lazy" style="object-position:20% 50%"></figure>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="display word">NUSA &amp; NORTH</div>
+  <div class="footer-cols">
+    <div>
+      <h3>General Menu</h3>
+      <ul>
+        <li><a href="#top">Home Index</a></li>
+        <li><a href="/novara-films.html">Portfolio</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#social">Social &amp; web</a></li>
+        <li><a href="#sound">Sound design</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Based Worldwide</h3>
+      <p>Reuben &amp; Okta Hester<br>Core duo. Crew scales per production.<br>Wherever the adventure takes us.</p>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul>
+        <li><a href="mailto:nusaandnorth@gmail.com">nusaandnorth@gmail.com</a></li>
+        <li><a href="https://calendly.com/nusaandnorth/30min" target="_blank" rel="noopener">Book a call ↗</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Social</h3>
+      <ul>
+        <li><a href="https://www.instagram.com/reubenandokta" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="/novara-films.html">Portfolio</a></li>
+        <li><a href="#locations">On location</a></li>
+      </ul>
+    </div>
+  </div>
+  <section id="locations" class="novara-slideshow" aria-label="On location"></section>
+  <div class="footer-base">
+    <span>Nusa &amp; North 2026 — All rights reserved.</span>
+    <nav class="site-legal-links" aria-label="Legal"><a href="/novara-legal.html#privacy">Privacy</a><a href="/novara-legal.html#terms">Terms</a><a href="/novara-legal.html#business">Business details</a><button type="button" data-media-settings>Media settings</button></nav>
+    <span>Film&nbsp;&nbsp;Travel&nbsp;&nbsp;Sound</span>
+  </div>
+</footer>
+
+<script src="/novara/vendor/gsap.min.js"></script>
+<script src="/novara/vendor/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!window.gsap || reduce){
+    document.querySelectorAll('.stat .n').forEach(function(el){
+      el.textContent = el.dataset.n + (el.dataset.suffix || '');
+    });
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- Bidirectional scrub choreography ---------- */
+
+  // Hero: title + copy drift up and fade as you scroll down; reverse on scroll up
+  gsap.to('.hero-inner', {
+    yPercent:-18, opacity:0, ease:'none',
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom 35%', scrub:true}
+  });
+  gsap.to('.hero-media video', {
+    scale:1.12, ease:'none',
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}
+  });
+
+  // Works: pinned horizontal scroll (down = left, up = right)
+  var mm = gsap.matchMedia();
+  mm.add('(min-width: 769px)', function(){
+    var track = document.querySelector('.works-track');
+    var getDist = function(){ return Math.max(0, track.scrollWidth - window.innerWidth); };
+    gsap.to(track, {
+      x:function(){ return -getDist(); }, ease:'none',
+      scrollTrigger:{
+        trigger:'.works-h', start:'top top',
+        end:function(){ return '+=' + (getDist() + window.innerHeight*0.4); },
+        pin:true, scrub:1, invalidateOnRefresh:true, anticipatePin:1
+      }
+    });
+    // Background word moves the OPPOSITE direction (bidirectional counter-motion)
+    gsap.fromTo('.works-h .bgword', {x:'-20%'}, {
+      x:'12%', ease:'none',
+      scrollTrigger:{trigger:'.works-h', start:'top bottom', end:'bottom top', scrub:true}
+    });
+  });
+
+  // Works intro rows: stagger in, reverse on leave-back
+  gsap.from('.works-list li', {
+    y:34, opacity:0, stagger:.07, ease:'power3.out', duration:.7,
+    scrollTrigger:{trigger:'.works-intro', start:'top 78%', toggleActions:'play none none reverse'}
+  });
+
+  // Works intro: statement and CTA slide in from OPPOSITE sides (directional pair, reversible)
+  gsap.from('.works-statement', {x:-56, opacity:0, ease:'power3.out', duration:.8,
+    scrollTrigger:{trigger:'.works-intro', start:'top 78%', toggleActions:'play none none reverse'}});
+  gsap.from('.works-all', {x:56, opacity:0, ease:'power3.out', duration:.8,
+    scrollTrigger:{trigger:'.works-intro', start:'top 78%', toggleActions:'play none none reverse'}});
+
+  // Values: word-by-word fill, scrubbed both directions
+  var vp = document.getElementById('values-text');
+  vp.innerHTML = vp.textContent.trim().split(/\s+/).map(function(w){ return '<span class="w">' + w + '</span>'; }).join(' ');
+  gsap.to('#values-text .w', {
+    color:document.body.classList.contains('novara-home-light') ? '#202b2b' : '#f4f4f2', stagger:.06, ease:'none',
+    scrollTrigger:{trigger:'.values', start:'top 72%', end:'bottom 55%', scrub:true}
+  });
+
+  // About: columns parallax in opposite directions (bidirectional)
+  mm.add('(min-width: 769px)', function(){
+    gsap.fromTo('.about .tags', {y:70}, {y:-40, ease:'none',
+      scrollTrigger:{trigger:'.about', start:'top bottom', end:'bottom top', scrub:true}});
+    gsap.fromTo('.about-img', {y:-50}, {y:50, ease:'none',
+      scrollTrigger:{trigger:'.about', start:'top bottom', end:'bottom top', scrub:true}});
+    gsap.fromTo('.about-copy', {y:90}, {y:-30, ease:'none',
+      scrollTrigger:{trigger:'.about', start:'top bottom', end:'bottom top', scrub:true}});
+  });
+
+  // Stats: numbers count up with scroll progress and count back down in reverse
+  document.querySelectorAll('.stat .n').forEach(function(el){
+    var target = parseInt(el.dataset.n, 10);
+    var obj = {v:0};
+    gsap.to(obj, {
+      v:target, ease:'none',
+      scrollTrigger:{trigger:'.stats', start:'top 82%', end:'top 40%', scrub:true},
+      onUpdate:function(){ el.textContent = Math.round(obj.v) + (el.dataset.suffix || ''); }
+    });
+  });
+
+  // CTA: heading lines rise; peek cards lift into view (and back down on reverse)
+  gsap.from('.cta h2, .cta .mono-sub, .cta .btn', {
+    y:60, opacity:0, stagger:.1, ease:'power3.out', duration:.9,
+    scrollTrigger:{trigger:'.cta', start:'top 76%', toggleActions:'play none none reverse'}
+  });
+  gsap.to('.cta-peek figure', {
+    y:0, stagger:.08, ease:'power2.out',
+    scrollTrigger:{trigger:'.cta-peek', start:'top 96%', end:'top 55%', scrub:true}
+  });
+
+  // Footer: image row parallax + wordmark entrance, reversible
+  gsap.from('.footer .word', {yPercent:26, opacity:0, ease:'power3.out', duration:1,
+    scrollTrigger:{trigger:'.footer', start:'top 86%', toggleActions:'play none none reverse'}});
+
+  // Nav active state follows sections
+  var navLinks = document.querySelectorAll('.nav-links a');
+  ['top','works','about','contact'].forEach(function(id){
+    var sectionLink = document.querySelector('.nav-links a[href="#'+id+'"]');
+    ScrollTrigger.create({
+      trigger:'#'+id, start:'top 55%', end:'bottom 55%',
+      onToggle:function(self){
+        if (self.isActive){
+          navLinks.forEach(function(l){ l.classList.remove('active'); });
+          if (sectionLink) sectionLink.classList.add('active');
+        }
+      }
+    });
+  });
+
+  window.addEventListener('load', function(){ ScrollTrigger.refresh(); });
+})();
+</script>
+<dialog id="site-menu" class="novara-menu" aria-labelledby="site-menu-title">
+  <div class="nm-head"><p id="site-menu-title">Explore Nusa &amp; North</p><button class="menu-close" type="button" aria-label="Close menu" autofocus>×</button></div>
+  <nav class="fmn-menu" aria-label="Main menu">
+    <ul class="fmn-list">
+      <li class="fmn-row">
+        <a class="fmn-link" href="/novara-films.html"><span class="fmn-label">Portfolio</span><span class="nm-arrow" aria-hidden="true">↗</span></a>
+        <div class="fmn-panel" aria-hidden="true"><div class="fmn-panel-inner"><span class="fmn-word">Portfolio</span><img class="fmn-plate" src="/films/radisson-berlin/frame-06.webp" alt="" width="116" height="62" loading="lazy" decoding="async"><span class="nm-arrow">↗</span></div></div>
+      </li>
+      <li class="fmn-row">
+        <a class="fmn-link" href="#about"><span class="fmn-label">Studio</span><span class="nm-arrow" aria-hidden="true">↘</span></a>
+        <div class="fmn-panel" aria-hidden="true"><div class="fmn-panel-inner"><span class="fmn-word">Studio</span><img class="fmn-plate nm-studio-photo" src="/stills/reuben-okta-pumpkins.webp" alt="" width="116" height="62" loading="lazy" decoding="async"><span class="nm-arrow">↘</span></div></div>
+      </li>
+      <li class="fmn-row">
+        <a class="fmn-link" href="#sound"><span class="fmn-label">Sound</span><span class="nm-arrow" aria-hidden="true">↘</span></a>
+        <div class="fmn-panel" aria-hidden="true"><div class="fmn-panel-inner"><span class="fmn-word">Sound</span><img class="fmn-plate" src="/stills/vernel-session.jpg" alt="" width="116" height="62" loading="lazy" decoding="async"><span class="nm-arrow">↘</span></div></div>
+      </li>
+      <li class="fmn-row">
+        <a class="fmn-link" href="#contact"><span class="fmn-label">Contact</span><span class="nm-arrow" aria-hidden="true">↘</span></a>
+        <div class="fmn-panel" aria-hidden="true"><div class="fmn-panel-inner"><span class="fmn-word">Contact</span><img class="fmn-plate" src="/stills/novara-feedback/vietnam-film.webp" alt="" width="116" height="62" loading="lazy" decoding="async"><span class="nm-arrow">↘</span></div></div>
+      </li>
+    </ul>
+  </nav>
+  <nav class="nm-secondary" aria-label="More to explore"><a href="#top">Home</a><a href="#works">Selected films</a><a href="#social">Social &amp; web</a><a href="#locations">On location</a></nav>
+</dialog>
+<script type="module" src="/src/novara-content.js"></script>
+</body>
+</html>
