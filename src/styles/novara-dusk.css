@@ -13,8 +13,7 @@ body.novara-dusk .novara-dusk-field {
     #04080e80 50%, #04080ed1 70%, #04080ef9 100%);
 }
 
-/* Lower the film's dissolve slightly; the cloud forms a soft divider across
-   that boundary and clears with the existing scroll sequence. */
+/* Keep the film's dissolve slightly lower in the dusk preview. */
 body.novara-dusk.novara-home-light .hero-media {
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 28%, #000d 42%, #0006 57%, #0001 74%, transparent 94%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 28%, #000d 42%, #0006 57%, #0001 74%, transparent 94%);
@@ -22,22 +21,6 @@ body.novara-dusk.novara-home-light .hero-media {
 body.novara-dusk.novara-home-light .hero-media::after {
   background: linear-gradient(to bottom, transparent 28%, #e8e7dd33 49%, #e8e7dd99 73%, #e8e7dd 100%);
 }
-body:not(.novara-dusk) .novara-dusk-clouds { display: none; }
-.novara-dusk-clouds {
-  position: absolute;
-  top: 34%;
-  left: -10%;
-  display: block;
-  width: 120%;
-  height: 55%;
-  opacity: .62;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 65%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 65%, transparent 100%);
-}
-
 /* Stars occupy only the closing night sky. Their own SVG attributes retain
    each star's colour, stroke and brightness; no geometry is transformed. */
 .novara-dusk-stars {

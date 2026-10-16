@@ -25,33 +25,6 @@ export function mountNovaraDusk() {
       return `<path class="nd-star${bright ? ' nd-star-glow' : ''}${twinkle ? ' nd-star-twinkle' : ''}" d="M${x.toFixed(2)} ${y.toFixed(2)}h.01" fill="none" stroke="${i % 5 === 0 ? '#e9c5a2' : '#dcebf4'}" stroke-opacity="${opacity.toFixed(2)}" stroke-width="${size.toFixed(2)}" stroke-linecap="round" vector-effect="non-scaling-stroke" style="--twinkle-duration:${(4 + random() * 4).toFixed(2)}s;--twinkle-delay:-${(random() * 8).toFixed(2)}s"/>`;
     }).join('')}
   </svg>`;
-  // A feathered cloud divider between the opening film and the colour field.
-  field.insertAdjacentHTML('afterbegin', `<svg class="novara-dusk-clouds" viewBox="0 0 1440 1100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <defs>
-      <filter id="novara-cloud-wisps" x="-15%" y="-20%" width="130%" height="140%" color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="banks"/>
-        <feTurbulence type="fractalNoise" baseFrequency=".006 .014" numOctaves="2" seed="17" result="texture"/>
-        <feColorMatrix in="texture" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 3.4 0 -1.3" result="wisps"/>
-        <feComposite in="wisps" in2="banks" operator="in"/>
-        <feGaussianBlur stdDeviation="1.5"/>
-      </filter>
-    </defs>
-    <g fill="#fff" filter="url(#novara-cloud-wisps)">
-      <ellipse cx="90" cy="180" rx="400" ry="65"/>
-      <ellipse cx="360" cy="150" rx="220" ry="75"/>
-      <ellipse cx="630" cy="205" rx="300" ry="40"/>
-      <ellipse cx="1390" cy="380" rx="390" ry="95"/>
-      <ellipse cx="1120" cy="345" rx="240" ry="65"/>
-      <ellipse cx="850" cy="420" rx="330" ry="38"/>
-      <ellipse cx="140" cy="690" rx="420" ry="80"/>
-      <ellipse cx="480" cy="655" rx="265" ry="58"/>
-      <ellipse cx="780" cy="730" rx="310" ry="30"/>
-    </g>
-  </svg>`);
-  const clouds = field.querySelector('.novara-dusk-clouds');
-  const hero = document.querySelector('.novara-hero');
-  const headline = hero?.querySelector('.hero__headline-wrap');
-  headline?.before(clouds);
   const stars = field.querySelector('.novara-dusk-stars');
   let starsVisible = false;
   const syncStars = () => stars.classList.toggle('is-visible', starsVisible && !document.hidden);
@@ -91,14 +64,6 @@ export function mountNovaraDusk() {
   function update() {
     frame = 0;
     if (!enabled) return;
-    if (hero) {
-      const rect = hero.getBoundingClientRect();
-      const travel = Math.max(innerHeight * .75, rect.height - innerHeight);
-      const progress = Math.max(0, Math.min(1, (-rect.top / travel - .06) / .62));
-      const fade = progress * progress * (3 - 2 * progress);
-      clouds.style.opacity = String(.62 * (1 - fade));
-      clouds.style.transform = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'none' : `translateY(${-fade * 48}px)`;
-    }
     const fieldRect = field.getBoundingClientRect();
     for (const surface of surfaces) {
       const rect = surface.getBoundingClientRect();
@@ -154,6 +119,6 @@ export function mountNovaraDusk() {
     controller.abort(); cancelAnimationFrame(frame); resize.disconnect(); starObserver.disconnect(); valuesMotion?.revert();
     surfaces.forEach(element => { element.classList.remove('dusk-surface'); delete element.dataset.duskInk; });
     originalLinks.forEach((href, link) => link.setAttribute('href', href));
-    clouds.remove(); field.remove(); controls.remove(); body.classList.remove('novara-dusk');
+    field.remove(); controls.remove(); body.classList.remove('novara-dusk');
   };
 }
