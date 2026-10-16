@@ -1,4 +1,4 @@
-/* Opt-in theatre surroundings. The film renderer, media colours, geometry,
+/* Starry theatre surroundings. The film renderer, media colours, geometry,
    hit areas and player dialogs keep their existing implementation. */
 :root:has(body.novara-theatre) { background: #04080e; color-scheme: dark; }
 body.novara-theatre {

@@ -1,4 +1,4 @@
-/* Query-only atmosphere study. The shared shader, hero and media keep their
+/* Day-to-night atmosphere. The shared shader, hero and media keep their
    existing colours; this layer shades only the document's background. */
 body:not(.novara-dusk) .novara-dusk-field { display: none; }
 body.novara-dusk { position: relative; isolation: isolate; }

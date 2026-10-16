@@ -1,9 +1,8 @@
 import '../styles/novara-dusk.css';
 
-// An opt-in colour study. The public homepage keeps its approved light theme.
+// The homepage moves from the light colour field into a starry night sky.
 export function mountNovaraDusk() {
-  const request = new URLSearchParams(location.search).get('atmosphere');
-  if (!['dusk', 'light'].includes(request)) return () => {};
+  const request = new URLSearchParams(location.search).get('atmosphere') === 'light' ? 'light' : 'dusk';
   const body = document.body;
   const controller = new AbortController();
   const { signal } = controller;
@@ -36,12 +35,12 @@ export function mountNovaraDusk() {
   controls.setAttribute('role', 'group');
   controls.setAttribute('aria-label', 'Compare background previews');
   controls.innerHTML = '<button type="button" data-atmosphere="light">Original</button><button type="button" data-atmosphere="dusk">Light → dark</button>';
-  body.append(controls);
+  // Comparison controls stay out of the published site.
   surfaces.forEach(element => element.classList.add('dusk-surface'));
   let frame = 0, enabled = false, valuesMotion = null;
   const originalLinks = new Map();
   function previewLink(link) {
-    if (!link?.matches('a[href]')) return;
+    if (!new URLSearchParams(location.search).has('atmosphere') || !link?.matches('a[href]')) return;
     const url = new URL(link.getAttribute('href'), location.href);
     if (url.origin !== location.origin || !/^\/(?:portfolio(?:\/|$)|collection(?:\/|$)|film\/|(?:novara-films(?:-grid)?|novara-project|project)\.html$)/.test(url.pathname)) return;
     if (!originalLinks.has(link)) originalLinks.set(link, link.getAttribute('href'));

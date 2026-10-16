@@ -1,6 +1,6 @@
 import '../styles/novara-theatre.css';
 
-export const isNovaraTheatre = () => new URLSearchParams(location.search).get('atmosphere') === 'dusk';
+export const isNovaraTheatre = () => new URLSearchParams(location.search).get('atmosphere') !== 'light';
 
 const previewRoutes = new Set([
   '/', '/index.html', '/novara.html',
@@ -12,7 +12,7 @@ const previewRoutes = new Set([
 // Reel Flux also navigates directly from canvas hits, so its links use this
 // helper before reaching the renderer rather than relying on anchor rewriting.
 export function withNovaraAtmosphere(href) {
-  if (!isNovaraTheatre() || !href || href.startsWith('#')) return href;
+  if (!new URLSearchParams(location.search).has('atmosphere') || !isNovaraTheatre() || !href || href.startsWith('#')) return href;
   let url;
   try { url = new URL(href, location.href); } catch { return href; }
   if (url.origin !== location.origin || (!previewRoutes.has(url.pathname) && !/^\/film\/[^/]+\/?$/.test(url.pathname))) return href;
