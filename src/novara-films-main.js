@@ -7,9 +7,11 @@ import { projectStills } from './js/review-project-stills.js';
 import { shortFilms, locations } from './js/kiln-content.js';
 import { mountNovaraBackground } from './js/novara-background.js';
 import { mountNovaraMediaConsent, openNovaraLightbox as openLightbox } from './js/novara-media-consent.js';
+import { isNovaraTheatre, mountNovaraTheatre, withNovaraAtmosphere } from './js/novara-theatre.js';
 
 mountNovaraMediaConsent();
-const destroyBackground = mountNovaraBackground();
+const destroyBackground = isNovaraTheatre() ? () => {} : mountNovaraBackground();
+const destroyTheatre = mountNovaraTheatre();
 
 const grid = document.querySelector('#film-grid');
 const search = document.querySelector('#film-search');
@@ -35,7 +37,7 @@ const cards = films.map((film, index) => {
   item.id = `film-${film.slug}`;
   const article = make('article', 'archive-project');
   const headingId = `film-title-${film.slug}`;
-  const projectUrl = `/novara-project.html?film=${encodeURIComponent(film.slug)}`;
+  const projectUrl = withNovaraAtmosphere(`/novara-project.html?film=${encodeURIComponent(film.slug)}`);
   article.setAttribute('aria-labelledby', headingId);
 
   const imageLink = make('a', 'archive-image');
@@ -155,7 +157,7 @@ locations.forEach((location) => {
   const film = location.slug ? films.find(({ slug }) => slug === location.slug) : null;
   const imageFrame = make(film ? 'a' : 'div', 'archive-location-image');
   if (film) {
-    imageFrame.href = `/novara-project.html?film=${encodeURIComponent(film.slug)}`;
+    imageFrame.href = withNovaraAtmosphere(`/novara-project.html?film=${encodeURIComponent(film.slug)}`);
     imageFrame.setAttribute('aria-label', `View film: ${film.title}`);
   }
   const image = make('img');
@@ -206,5 +208,6 @@ if (selectedCard || sectionTarget) {
 if (import.meta.hot) import.meta.hot.dispose(() => {
   controller.abort();
   destroyBackground();
+  destroyTheatre();
   cancelAnimationFrame(returnFrame);
 });

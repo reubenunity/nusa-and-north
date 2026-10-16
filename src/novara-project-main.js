@@ -10,16 +10,18 @@ import { mountProjectScreen } from './js/review-project-screen.js';
 import { mountProjectGallery } from './js/review-project-gallery.js';
 import { openNovaraLightbox as openLightbox, mountNovaraMediaConsent } from './js/novara-media-consent.js';
 import { mountNovaraBackground } from './js/novara-background.js';
+import { isNovaraTheatre, mountNovaraTheatre, withNovaraAtmosphere } from './js/novara-theatre.js';
 
 mountNovaraMediaConsent();
-const destroyBackground = mountNovaraBackground();
+const destroyBackground = isNovaraTheatre() ? () => {} : mountNovaraBackground();
+const destroyTheatre = mountNovaraTheatre();
 
 const esc = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const requestedPortfolioView = new URLSearchParams(location.search).get('view');
 const portfolioView = requestedPortfolioView === 'gallery' ? 'reel' : requestedPortfolioView;
 const viewParam = ['reel', 'grid'].includes(portfolioView) ? `&view=${portfolioView}` : '';
-const projectHref = film => `/novara-project.html?film=${encodeURIComponent(film.slug)}${viewParam}`;
-const archiveHref = film => `/novara-films.html?selected=${encodeURIComponent(film.slug)}${viewParam}`;
+const projectHref = film => withNovaraAtmosphere(`/novara-project.html?film=${encodeURIComponent(film.slug)}${viewParam}`);
+const archiveHref = film => withNovaraAtmosphere(`/novara-films.html?selected=${encodeURIComponent(film.slug)}${viewParam}`);
 const localHeroes = {
   'radisson-berlin': '/films/radisson-berlin/frame-06.webp',
   'radisson-red-innsbruck': '/films/radisson-red-innsbruck/hero.webp',
@@ -143,6 +145,7 @@ if (index < 0 || !films[index]) {
 if (import.meta.hot) import.meta.hot.dispose(() => {
   controller.abort();
   destroyBackground();
+  destroyTheatre();
   destroyFrameRounding();
   destroyScreen();
   destroyGallery();

@@ -6,11 +6,12 @@ import { projectStills } from './js/review-project-stills.js';
 import { createReelFlux } from './js/vendor/reel-flux.js';
 import { mountNovaraBackground } from './js/novara-background.js';
 import { mountNovaraMediaConsent } from './js/novara-media-consent.js';
+import { isNovaraTheatre, mountNovaraTheatre, withNovaraAtmosphere } from './js/novara-theatre.js';
 
 mountNovaraMediaConsent();
 
 if (['#shorts', '#sound', '#locations'].includes(location.hash)) {
-  location.replace(`/novara-films-grid.html${location.hash}`);
+  location.replace(withNovaraAtmosphere(`/novara-films-grid.html${location.hash}`));
 }
 const host = document.getElementById('portfolio');
 const switches = [...document.querySelectorAll('[data-portfolio-view]')];
@@ -18,7 +19,8 @@ const hint = document.querySelector('.portfolio-hint');
 const status = document.querySelector('.portfolio-status');
 const controller = new AbortController();
 const { signal } = controller;
-const destroyBackground = mountNovaraBackground({ surface: 'light' });
+const destroyBackground = isNovaraTheatre() ? () => {} : mountNovaraBackground({ surface: 'light' });
+const destroyTheatre = mountNovaraTheatre();
 const preferenceKey = 'nn-portfolio-view';
 const primaryFrames = { 'radisson-berlin': 5, 'radisson-red-innsbruck': 4 };
 const params = new URLSearchParams(location.search);
@@ -36,7 +38,7 @@ const make = (tag, className, text) => {
   if (text !== undefined) node.textContent = text;
   return node;
 };
-const projectURL = film => `/novara-project.html?film=${encodeURIComponent(film.slug)}&view=${view}`;
+const projectURL = film => withNovaraAtmosphere(`/novara-project.html?film=${encodeURIComponent(film.slug)}&view=${view}`);
 const imageFor = film => projectStills[film.slug]?.[primaryFrames[film.slug] ?? 0]?.src || film.poster;
 function titleFor(film) {
   const [client, ...campaign] = film.title.split(' — ');
@@ -228,5 +230,6 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   renderController.abort();
   engine?.destroy();
   destroyBackground();
+  destroyTheatre();
   cancelAnimationFrame(returnFrame);
 });

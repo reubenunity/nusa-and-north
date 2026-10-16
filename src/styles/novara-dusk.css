@@ -13,17 +13,24 @@ body.novara-dusk .novara-dusk-field {
     #04080e80 50%, #04080ed1 70%, #04080ef9 100%);
 }
 
-/* Wisps stay in the bright opening and dissolve before the night sky. The
-   texture is static, avoiding another rendering loop or animated SVG filter. */
+/* Lower the film's dissolve slightly; the cloud forms a soft divider across
+   that boundary and clears with the existing scroll sequence. */
+body.novara-dusk.novara-home-light .hero-media {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 28%, #000d 42%, #0006 57%, #0001 74%, transparent 94%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 28%, #000d 42%, #0006 57%, #0001 74%, transparent 94%);
+}
+body.novara-dusk.novara-home-light .hero-media::after {
+  background: linear-gradient(to bottom, transparent 28%, #e8e7dd33 49%, #e8e7dd99 73%, #e8e7dd 100%);
+}
+body:not(.novara-dusk) .novara-dusk-clouds { display: none; }
 .novara-dusk-clouds {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 34%;
+  left: -10%;
   display: block;
-  width: 100%;
-  height: min(260svh, 2600px);
-  max-height: 32%;
-  opacity: .32;
+  width: 120%;
+  height: 55%;
+  opacity: .62;
   overflow: hidden;
   pointer-events: none;
   user-select: none;

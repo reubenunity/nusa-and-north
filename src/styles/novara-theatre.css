@@ -1,0 +1,118 @@
+/* Opt-in theatre surroundings. The film renderer, media colours, geometry,
+   hit areas and player dialogs keep their existing implementation. */
+:root:has(body.novara-theatre) { background: #04080e; color-scheme: dark; }
+body.novara-theatre {
+  --bg: #04080e;
+  --paper: #fafaf6;
+  --raw-paper: #fafaf6;
+  --ink: #101b20;
+  --dim: #b9c7cb;
+  --muted: #b9c7cb;
+  --line: #c0d6df33;
+  --panel: #112029;
+  --signal: #e4b580;
+  --red: #e4b580;
+  --portfolio-paper: #fafaf6;
+  --portfolio-ink: #fafaf6;
+  --portfolio-red: #e4b580;
+  position: relative;
+  isolation: isolate;
+  background: #04080e;
+  color: #fafaf6;
+}
+body.novara-theatre .novara-theatre-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 18% 16%, #31576838, transparent 58%),
+    radial-gradient(ellipse at 82% 72%, #2c505c24, transparent 55%),
+    linear-gradient(150deg, #0b1b24, #04080e 72%);
+}
+.novara-theatre-field .nt-stars { display: block; width: 100%; height: 100%; pointer-events: none; }
+.novara-theatre-field .nt-star { vector-effect: non-scaling-stroke; }
+.novara-theatre-field .nt-star-twinkle {
+  animation: novara-theatre-twinkle var(--nt-duration, 5s) ease-in-out var(--nt-delay, 0s) infinite alternate;
+  animation-play-state: paused;
+}
+body.novara-theatre .novara-theatre-field.is-visible .nt-star-twinkle { animation-play-state: running; }
+@keyframes novara-theatre-twinkle { from { opacity: .5; } to { opacity: 1; } }
+body.novara-theatre :focus-visible { outline-color: #e4b580; }
+
+/* Reel Flux and the compact grid share the same light typography. */
+body.novara-theatre .portfolio-intro > p,
+body.novara-theatre .portfolio-hint,
+body.novara-theatre .portfolio-client,
+body.novara-theatre .portfolio-reel-copy .portfolio-client,
+body.novara-theatre .portfolio-grid-copy .portfolio-client,
+body.novara-theatre .portfolio-footer { color: #b9c7cb; }
+body.novara-theatre .portfolio-footer a { color: #fafaf6; }
+body.novara-theatre .portfolio-switch { background: #112029e8; border-color: #c0d6df40; }
+body.novara-theatre .portfolio-switch button { color: #cbd5d8; }
+body.novara-theatre .portfolio-switch button:hover { color: #fafaf6; background: #c0d6df15; }
+body.novara-theatre .portfolio-switch button[aria-pressed="true"],
+body.novara-theatre .portfolio-switch button[aria-pressed="true"]:hover { color: #101b20; background: #fafaf6; }
+body.novara-theatre .rf-root { --rf-ink: #fafaf6; }
+body.novara-theatre .rf-corner { color: #b9c7cb; }
+body.novara-theatre .rf-step { color: #fafaf6; background: #112029ed; border-color: #c0d6df50; }
+body.novara-theatre .rf-step:hover { color: #101b20; background: #fafaf6; }
+body.novara-theatre .portfolio-reel-details { border-color: #c0d6df33; }
+body.novara-theatre .portfolio-project-action { color: #101b20; background: #fafaf6; }
+body.novara-theatre .portfolio-reel-action:hover { background: #e4b580; }
+body.novara-theatre .portfolio-grid-copy .portfolio-project-action { color: #d8c3a8; background: transparent; border-color: #d8c3a85c; }
+
+/* Outer shadows add a little projected light around each film. */
+body.novara-theatre .portfolio-grid-image,
+body.novara-theatre .archive-image {
+  box-shadow: 0 0 0 1px #b8d7e128, 0 0 28px #77b3c51c;
+}
+body.novara-theatre .portfolio-grid-card:hover .portfolio-grid-image,
+body.novara-theatre .portfolio-grid-card:focus-visible .portfolio-grid-image,
+body.novara-theatre .archive-image:hover,
+body.novara-theatre .archive-image:focus-visible {
+  box-shadow: 0 0 0 1px #b8d7e152, 0 0 34px #77b3c52c;
+}
+/* Reel Flux leaves its canvas transparent between warped frames. A shadow
+   follows that alpha silhouette while preserving the opaque film pixels. */
+body.novara-theatre .portfolio-reel-stage .rf-canvas {
+  filter: drop-shadow(0 0 3px #92c6d52e);
+}
+body.novara-theatre .portfolio-reel-stage .rf-fallback-project,
+body.novara-theatre .portfolio-reel-stage .rf-fallback > img {
+  box-shadow: 0 0 9px #92c6d52e;
+}
+
+/* The legacy collection retains its light control badges and media overlays. */
+body.novara-theatre .archive-nav-links a[aria-current],
+body.novara-theatre .archive-nav-links a:hover { background: #243740; }
+body.novara-theatre .archive-search-field,
+body.novara-theatre .archive-project-link,
+body.novara-theatre .archive-location-project { border-color: #c0d6df40; }
+body.novara-theatre .archive-footer {
+  color: #fafaf6;
+  background: #07131bb3;
+}
+body.novara-theatre .archive-footer-bottom { color: #b9c7cb; border-color: #c0d6df33; }
+body.novara-theatre .archive-footer-contact { color: #101b20; background: #fafaf6; }
+body.novara-theatre .archive-footer-contact:hover { color: #101b20; background: #e4b580; }
+
+/* Project typography stays light around the existing aperture and gallery. */
+body.novara-theatre .np-nav > .np-wordmark,
+body.novara-theatre .np-nav nav { background: #112029f2; border-color: #c0d6df33; }
+body.novara-theatre .np-archive-link:hover,
+body.novara-theatre .np-contact-link:hover { background: #243740; }
+body.novara-theatre .np-screen.project-screen-host,
+body.novara-theatre .np-frames .project-gallery,
+body.novara-theatre .np-footer { background: transparent; }
+body.novara-theatre .project-gallery-label,
+body.novara-theatre .project-gallery-foot,
+body.novara-theatre .project-gallery-unavailable,
+body.novara-theatre .project-gallery-frame figcaption { color: #b9c7cb; }
+body.novara-theatre .project-gallery-head h2 > span,
+body.novara-theatre .project-gallery-cue > span { color: #e4b580; }
+@media (prefers-reduced-motion: reduce) {
+  .novara-theatre-field .nt-star-twinkle { animation: none; }
+}

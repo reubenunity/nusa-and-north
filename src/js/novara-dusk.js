@@ -25,8 +25,7 @@ export function mountNovaraDusk() {
       return `<path class="nd-star${bright ? ' nd-star-glow' : ''}${twinkle ? ' nd-star-twinkle' : ''}" d="M${x.toFixed(2)} ${y.toFixed(2)}h.01" fill="none" stroke="${i % 5 === 0 ? '#e9c5a2' : '#dcebf4'}" stroke-opacity="${opacity.toFixed(2)}" stroke-width="${size.toFixed(2)}" stroke-linecap="round" vector-effect="non-scaling-stroke" style="--twinkle-duration:${(4 + random() * 4).toFixed(2)}s;--twinkle-delay:-${(random() * 8).toFixed(2)}s"/>`;
     }).join('')}
   </svg>`;
-  // A static, feathered cloud texture above the night sky. It belongs only to
-  // the decorative field, so photographs, film and readable text stay clear.
+  // A feathered cloud divider between the opening film and the colour field.
   field.insertAdjacentHTML('afterbegin', `<svg class="novara-dusk-clouds" viewBox="0 0 1440 1100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
     <defs>
       <filter id="novara-cloud-wisps" x="-15%" y="-20%" width="130%" height="140%" color-interpolation-filters="sRGB">
@@ -49,6 +48,10 @@ export function mountNovaraDusk() {
       <ellipse cx="780" cy="730" rx="310" ry="30"/>
     </g>
   </svg>`);
+  const clouds = field.querySelector('.novara-dusk-clouds');
+  const hero = document.querySelector('.novara-hero');
+  const headline = hero?.querySelector('.hero__headline-wrap');
+  headline?.before(clouds);
   const stars = field.querySelector('.novara-dusk-stars');
   let starsVisible = false;
   const syncStars = () => stars.classList.toggle('is-visible', starsVisible && !document.hidden);
@@ -63,6 +66,17 @@ export function mountNovaraDusk() {
   body.append(controls);
   surfaces.forEach(element => element.classList.add('dusk-surface'));
   let frame = 0, enabled = false, valuesMotion = null;
+  const originalLinks = new Map();
+  function previewLink(link) {
+    if (!link?.matches('a[href]')) return;
+    const url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin !== location.origin || !/^\/(?:portfolio(?:\/|$)|collection(?:\/|$)|film\/|(?:novara-films(?:-grid)?|novara-project|project)\.html$)/.test(url.pathname)) return;
+    if (!originalLinks.has(link)) originalLinks.set(link, link.getAttribute('href'));
+    if (enabled) {
+      url.searchParams.set('atmosphere', 'dusk');
+      link.setAttribute('href', url.pathname + url.search + url.hash);
+    } else link.setAttribute('href', originalLinks.get(link));
+  }
   // Match the alpha stops on the single full-document CSS gradient.
   const stops = [[0, 0], [.08, 0], [.3, .2], [.5, .502], [.7, .82], [1, .976]];
   const opacityAt = progress => {
@@ -77,6 +91,14 @@ export function mountNovaraDusk() {
   function update() {
     frame = 0;
     if (!enabled) return;
+    if (hero) {
+      const rect = hero.getBoundingClientRect();
+      const travel = Math.max(innerHeight * .75, rect.height - innerHeight);
+      const progress = Math.max(0, Math.min(1, (-rect.top / travel - .06) / .62));
+      const fade = progress * progress * (3 - 2 * progress);
+      clouds.style.opacity = String(.62 * (1 - fade));
+      clouds.style.transform = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'none' : `translateY(${-fade * 48}px)`;
+    }
     const fieldRect = field.getBoundingClientRect();
     for (const surface of surfaces) {
       const rect = surface.getBoundingClientRect();
@@ -93,6 +115,7 @@ export function mountNovaraDusk() {
     cancelAnimationFrame(frame); frame = 0;
     enabled = mode === 'dusk';
     body.classList.toggle('novara-dusk', enabled);
+    document.querySelectorAll('a[href]').forEach(previewLink);
     controls.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.atmosphere === mode)));
     valuesMotion?.revert();
     valuesMotion = null;
@@ -117,14 +140,20 @@ export function mountNovaraDusk() {
     if (button) setMode(button.dataset.atmosphere, true);
   }, { signal });
   window.addEventListener('scroll', queue, { signal, passive: true });
+  // Include late-mounted menu links and preserve modified-click navigation.
+  document.addEventListener('pointerdown', event => previewLink(event.target.closest('a[href]')), { signal, capture: true });
+  document.addEventListener('focusin', event => previewLink(event.target.closest('a[href]')), { signal });
+  document.addEventListener('click', event => previewLink(event.target.closest('a[href]')), { signal, capture: true });
   window.addEventListener('resize', queue, { signal, passive: true });
   document.addEventListener('novara:layout', queue, { signal });
   const resize = new ResizeObserver(queue);
   resize.observe(body);
   setMode(request);
+  queueMicrotask(() => { if (!signal.aborted) document.querySelectorAll('a[href]').forEach(previewLink); });
   return () => {
     controller.abort(); cancelAnimationFrame(frame); resize.disconnect(); starObserver.disconnect(); valuesMotion?.revert();
     surfaces.forEach(element => { element.classList.remove('dusk-surface'); delete element.dataset.duskInk; });
-    field.remove(); controls.remove(); body.classList.remove('novara-dusk');
+    originalLinks.forEach((href, link) => link.setAttribute('href', href));
+    clouds.remove(); field.remove(); controls.remove(); body.classList.remove('novara-dusk');
   };
 }
