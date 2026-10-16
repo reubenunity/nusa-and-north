@@ -13,17 +13,8 @@ body.novara-home-light .hero.novara-hero {
   color: var(--c-fg);
 }
 .novara-hero .hero__stage { isolation: isolate; }
-body.novara-home-light .novara-hero .hero__media {
-  mask-image: none;
-  -webkit-mask-image: none;
-}
-body.novara-home-light .novara-hero .hero__media::after { background: none; }
-body.novara-home-light .novara-hero .hero__media video {
-  translate: none;
-  filter: grayscale(1) contrast(1.08) brightness(.58);
-}
-.novara-hero .hero__headline { font-family: var(--display); color: #fafaf6; }
-.novara-hero .hero__sub { line-height: 1.5; }
+.novara-hero .hero__headline { font-family: var(--display); color: var(--ink); }
+.novara-hero .hero__sub { line-height: 1.5; color: var(--ink-dim); }
 .novara-hero .hero__headline-wrap { pointer-events: none; }
 .novara-hero .viewfinder-play {
   position: absolute;
@@ -33,16 +24,16 @@ body.novara-home-light .novara-hero .hero__media video {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #fafaf6;
-  border: 1px solid #fafaf660;
-  background: #14141430;
+  color: var(--ink);
+  border: 1px solid #203d3e55;
+  background: #f6f3e94d;
   backdrop-filter: blur(10px);
   border-radius: 999px;
   font-size: 10px;
   transition: background .2s;
 }
-.novara-hero .viewfinder-play:hover { background: #fafaf62b; }
-.novara-hero .viewfinder-play:focus-visible { outline-color: #fafaf6; }
+.novara-hero .viewfinder-play:hover { background: #f6f3e9a0; }
+.novara-hero .viewfinder-play:focus-visible { outline-color: var(--ink); }
 /* The full navigation returns after the opening. The menu stays available. */
 body.hero-viewfinder .nav {
   top: calc(clamp(22px, 2.4vw, 48px) + 48px);
@@ -56,11 +47,7 @@ body.hero-viewfinder .nav-grid { background: #16161640; border-color: #fafaf650;
 body.hero-viewfinder .nav-grid i { background: #fafaf6; }
 /* Touch devices retain the original lighter, unpinned hero treatment. */
 @media (max-width: 1024px), (pointer: coarse) {
-  body.novara-home-light .novara-hero .hero__media {
-    mask-image: linear-gradient(to bottom, #000 0%, #000 64%, #000e 73%, #0008 84%, #0002 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 64%, #000e 73%, #0008 84%, #0002 95%, transparent 100%);
-  }
-  .novara-hero .hud__corner--bl,
+    .novara-hero .hud__corner--bl,
   .novara-hero .hud__corner--br,
   .novara-hero .hud__readouts,
   .novara-hero .hud__scroll-hint { display: none; }
@@ -76,12 +63,7 @@ body.hero-viewfinder .nav-grid i { background: #fafaf6; }
 }
 @media (prefers-reduced-motion: reduce) {
   .novara-hero *, .novara-hero *::before, .novara-hero *::after { animation: none !important; }
-  body.novara-home-light .novara-hero .hero__media {
-    background: url('/stills/hero-poster.jpg') center / cover;
-    mask-image: linear-gradient(#000 65%, transparent 100%);
-    -webkit-mask-image: linear-gradient(#000 65%, transparent 100%);
-  }
-  .novara-hero .hero__media::before { content: ''; position: absolute; inset: 0; background: #0006; }
+
 }
 /* Use one transform system so GSAP rebuilds do not double CSS translates. */
 .novara-hero .hud__brand,
@@ -89,3 +71,9 @@ body.hero-viewfinder .nav-grid i { background: #fafaf6; }
 .novara-hero .hud__readouts { translate: none; transform: translateX(-50%); }
 .novara-hero .hud__focus-box { translate: none; transform: translate(-50%, -50%); }
 .novara-hero .hud__audio { translate: none; transform: translateY(-50%); }
+
+/* The video mask, pale dissolve and upward framing come unchanged from
+   novara-home-light.css. Only the overlay adapts to that approved light field. */
+.novara-hero .hud__readouts { color: var(--ink-dim); }
+.novara-hero .hud__corner--bl,
+.novara-hero .hud__corner--br { border-color: var(--ink); }

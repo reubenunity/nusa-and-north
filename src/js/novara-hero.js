@@ -53,24 +53,12 @@ function splitHeadline(headline) {
 // Lightweight mobile hero: the cinematic auto focus pull and a live
 // HUD, no pin and no char explosion — nothing a phone can scramble.
 function buildHeroLite() {
-  const media = document.querySelector('.hero__media');
-  const mediaActive = media && document.documentElement.dataset.hero !== 'flood';
   const headline = document.querySelector('.hero__headline-wrap');
   const focusLabel = document.querySelector('.js-focus-label');
   const tcEl = document.querySelector('.js-hero-timecode');
 
-  // blur-animating a wrapper around playing video stalls iPad GPUs
-  // (stuck mid-zoom) — so the video fades/scales in cheaply and only
-  // the headline text gets the blur rack
+  // Keep the approved film/gradient untouched; focus only the text.
   const intro = gsap.timeline({ delay: 0.35 });
-  if (mediaActive) {
-    intro.fromTo(
-      media,
-      { opacity: 0.85, scale: 1.06 },
-      { opacity: 1, scale: 1, duration: 2.2, ease: 'power3.out' },
-      0
-    );
-  }
   intro.fromTo(
     headline,
     { filter: 'blur(18px)', scale: 1.045 },
@@ -96,7 +84,7 @@ function buildHeroLite() {
   return () => {
     intro.kill();
     cancelAnimationFrame(raf);
-    gsap.set([media, headline].filter(Boolean), { clearProps: 'all' });
+    gsap.set(headline, { clearProps: 'all' });
   };
 }
 
@@ -109,8 +97,6 @@ function buildHero(animateIntro = true) {
   const hudEls = gsap.utils.toArray('[data-hud]');
   const tcEl = document.querySelector('.js-hero-timecode');
   const focusLabel = document.querySelector('.js-focus-label');
-  const media = document.querySelector('.hero__media');
-  const mediaActive = media && document.documentElement.dataset.hero !== 'flood';
 
   const headlineEl = document.querySelector('.hero__headline');
   const sub = document.querySelector('.hero__sub');
@@ -119,10 +105,9 @@ function buildHero(animateIntro = true) {
 
   // ---- the focus pull plays by itself on load, so nobody mistakes
   // the defocused frame for a loading state ----
-  const focusTargets = mediaActive ? [media, headline] : [headline];
   const intro = gsap.timeline({ delay: 0.35 });
   intro.fromTo(
-    focusTargets,
+    headline,
     { filter: `blur(${hero.startBlur}px)`, scale: 1.045 },
     {
       filter: 'blur(0px)',
@@ -236,20 +221,11 @@ function buildHero(animateIntro = true) {
 
   tl.to(sub, { opacity: 0, duration: span * 0.2, ease: 'power1.in' }, explodeStart);
 
-  // The original film fade now reveals the shared petrol–amber shader.
-  if (mediaActive) {
-    tl.to(
-      media,
-      { opacity: 0, duration: span * 0.7, ease: 'power1.in' },
-      hero.dismantleStart + span * 0.3
-    );
-  }
-
   return () => {
     intro.kill();
     tl.scrollTrigger?.kill();
     tl.kill();
-    gsap.set([headline, media, sub, ...chars, ...hudEls].filter(Boolean), { clearProps: 'all' });
+    gsap.set([headline, sub, ...chars, ...hudEls].filter(Boolean), { clearProps: 'all' });
   };
 }
 
