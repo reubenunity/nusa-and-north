@@ -13,6 +13,24 @@ body.novara-dusk .novara-dusk-field {
     #04080e80 50%, #04080ed1 70%, #04080ef9 100%);
 }
 
+/* Wisps stay in the bright opening and dissolve before the night sky. The
+   texture is static, avoiding another rendering loop or animated SVG filter. */
+.novara-dusk-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: min(260svh, 2600px);
+  max-height: 32%;
+  opacity: .32;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 65%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 65%, transparent 100%);
+}
+
 /* Stars occupy only the closing night sky. Their own SVG attributes retain
    each star's colour, stroke and brightness; no geometry is transformed. */
 .novara-dusk-stars {
