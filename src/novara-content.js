@@ -15,6 +15,7 @@ import './styles/novara-home-light.css';
 import './styles/hero.css';
 import './styles/novara-hero.css';
 import { mountNovaraHero } from './js/novara-hero.js';
+import { mountNovaraDusk } from './js/novara-dusk.js';
 
 // Preserve film links shared by the previous public site.
 const linkedFilm = new URLSearchParams(location.search).get('film');
@@ -40,6 +41,7 @@ const destroyHero=mountNovaraHero();
 
 const destroyBoard=mountNovaraBoard(document.querySelector('#proof'));
 const destroySlideshow=mountNovaraSlideshow(document.querySelector('#locations'));
+const destroyDusk=mountNovaraDusk();
 
 // Wire real content to Novara's existing controls. Its layout and scroll
 // choreography stay in the original inline script in novara.html.
@@ -89,4 +91,4 @@ document.fonts.ready.then(refreshLayout);
 if(import.meta.hot)import.meta.hot.on('vite:beforeUpdate',({updates})=>{
   if(updates.some(update=>update.type==='js-update'&&/novara/.test(update.path)))location.reload();
 });
-if(import.meta.hot)import.meta.hot.dispose(()=>{observer.disconnect();destroyHero();destroyBoard();destroySlideshow();destroyCraft();destroyFeedback();destroyBackground();destroyServices();destroyMenu();document.removeEventListener('novara:layout',refreshLayout);});
+if(import.meta.hot)import.meta.hot.dispose(()=>{observer.disconnect();destroyDusk();destroyHero();destroyBoard();destroySlideshow();destroyCraft();destroyFeedback();destroyBackground();destroyServices();destroyMenu();document.removeEventListener('novara:layout',refreshLayout);});

@@ -1,6 +1,7 @@
 import '../styles/novara-craft.css';
 import { hasNovaraMediaConsent, isNovaraMediaDialogOpen, mountNovaraMediaConsent, openNovaraLightbox, requestNovaraMediaConsent } from './novara-media-consent.js';
 import { shortFilms } from './kiln-content.js';
+import { mountNovaraSoundMotion } from './novara-sound-motion.js';
 
 const soundFilm = {
   src: 'https://vimeo.com/1211692475/e42d607099',
@@ -154,6 +155,7 @@ export function mountNovaraCraft(host) {
   stage.append(pearl, content, controls);
   social.append(stage);
   host.replaceChildren(sound, social);
+  const destroySoundMotion = mountNovaraSoundMotion(sound);
 
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
@@ -454,6 +456,7 @@ export function mountNovaraCraft(host) {
     powerTimers.forEach(clearTimeout);
     clearPreviews(); audio.pause(); endDrag();
     arcContext?.revert();
+    destroySoundMotion();
     host.replaceChildren(...previousChildren);
     if (!hadClass) host.classList.remove('novara-craft');
     instances.delete(host);

@@ -1,0 +1,23 @@
+/* Sound-specific movement on the existing, unchanged gradient canvas. */
+.novara-craft .nc-sound-line { display: block; overflow: clip; padding-block: .04em; margin-block: -.04em; }
+.novara-craft .nc-sound-line-text { display: block; }
+.novara-craft .nc-sound-wave { margin: -5px 0 26px; width: min(100%, 470px); }
+.novara-craft .nc-wave-scope { position: relative; height: 58px; overflow: hidden; }
+.novara-craft .nc-wave-scope svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.novara-craft .nc-wave-baseline { stroke: var(--nc-muted); stroke-width: .5; opacity: .24; fill: none; }
+.novara-craft .nc-wave-bar { transform-box: view-box; }
+.novara-craft .nc-wave-head { position: absolute; top: 5px; bottom: 5px; left: 0; width: 1px; background: #b17b43; box-shadow: 0 0 10px #b17b4340; opacity: 0; pointer-events: none; }
+.novara-craft .nc-wave-layers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 18px); margin-top: 11px; }
+.novara-craft .nc-wave-layer { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 3px; padding-top: 9px; color: var(--nc-muted); font: 500 9px/1.4 var(--nc-mono); text-transform: uppercase; letter-spacing: .06em; }
+.novara-craft .nc-wave-layer > i { position: absolute; inset: 0 0 auto; height: 1px; background: #426b7180; }
+.novara-craft .nc-wave-layer:nth-child(n+3) > i { background: #b17b4380; }
+.novara-craft .nc-wave-layer em { font: inherit; opacity: .6; }
+@media (max-width: 700px) {
+  .novara-craft .nc-sound-wave { margin-bottom: 22px; }
+  .novara-craft .nc-wave-scope { height: 48px; }
+  .novara-craft .nc-wave-layer { font-size: 8px; letter-spacing: 0; }
+  .novara-craft .nc-wave-layer em { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .novara-craft .nc-wave-head { display: none; }
+}

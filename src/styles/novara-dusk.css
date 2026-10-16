@@ -1,0 +1,217 @@
+/* Query-only atmosphere study. The shared shader, hero and media keep their
+   existing colours; this layer shades only the document's background. */
+body:not(.novara-dusk) .novara-dusk-field { display: none; }
+body.novara-dusk { position: relative; isolation: isolate; }
+body.novara-dusk .novara-dusk-field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  user-select: none;
+  background: linear-gradient(to bottom,
+    transparent 0%, transparent 8%, #04080e33 30%,
+    #04080e80 50%, #04080ed1 70%, #04080ef9 100%);
+}
+
+/* Stars occupy only the closing night sky. Their own SVG attributes retain
+   each star's colour, stroke and brightness; no geometry is transformed. */
+.novara-dusk-stars {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: 38%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 40%, #000 100%);
+}
+.novara-dusk-stars .nd-star { vector-effect: non-scaling-stroke; }
+.novara-dusk-stars .nd-star-glow { filter: drop-shadow(0 0 1.8px #d3e8ff55); }
+.novara-dusk-stars .nd-star-twinkle {
+  animation-name: novara-dusk-twinkle;
+  animation-duration: var(--twinkle-duration, 5s);
+  animation-delay: var(--twinkle-delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-play-state: paused;
+}
+body.novara-dusk .novara-dusk-stars.is-visible .nd-star-twinkle { animation-play-state: running; }
+@keyframes novara-dusk-twinkle {
+  from { opacity: .55; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .novara-dusk-stars .nd-star-twinkle { animation: none; }
+}
+
+/* Foregrounds switch locally at the measured background depth. No root,
+   navigation, dialog or hero tokens are changed by this preview. */
+body.novara-dusk .dusk-surface[data-dusk-ink="dark"] {
+  --ink: #101818;
+  --ink-dim: #253432;
+  --ink-faint: #35423f;
+  --line: #10232247;
+  --dusk-accent: #842d1e;
+  --dusk-tile: #f6f3e94d;
+  --dusk-dot: #10232266;
+  --dusk-control-surface: #f6f3e9f2;
+  --dusk-button-bg: #142322;
+  --dusk-button-ink: #fafaf6;
+}
+body.novara-dusk .dusk-surface[data-dusk-ink="light"] {
+  --ink: #fafaf6;
+  --ink-dim: #d0d8d3;
+  --ink-faint: #b5c0bb;
+  --line: #eef3e745;
+  --dusk-accent: #f1b88b;
+  --dusk-tile: #fafaf60e;
+  --dusk-dot: #eef3e77a;
+  --dusk-control-surface: #172324f2;
+  --dusk-button-bg: #f4f2e7;
+  --dusk-button-ink: #142322;
+}
+body.novara-dusk .dusk-surface[data-dusk-ink] {
+  --paper-ink: var(--ink);
+  --nc-muted: var(--ink-dim);
+  --nc-line: var(--line);
+  color: var(--ink);
+}
+body.novara-dusk .dusk-surface[data-dusk-ink] :focus-visible {
+  outline-color: var(--ink);
+}
+body.novara-dusk .works-h.dusk-surface .bgword { -webkit-text-stroke-color: var(--line); }
+body.novara-dusk .works-h.dusk-surface .works-collection-link { border-color: var(--line); }
+
+/* The values reveal owns opacity in this study; its original inline GSAP
+   colour must not override the section's readable foreground. */
+body.novara-dusk .values.dusk-surface .w { color: var(--ink) !important; }
+body.novara-dusk .about.dusk-surface .novara-services button { border-color: var(--line); }
+body.novara-dusk .about.dusk-surface .service-detail { border-color: var(--line); }
+body.novara-dusk .about.dusk-surface .service-detail p { color: var(--ink-dim); }
+body.novara-dusk .about.dusk-surface .service-detail a { color: var(--ink); border-color: var(--ink-dim); }
+
+/* Sound and phone controls adapt independently of the footage and devices. */
+body.novara-dusk .nc-social.dusk-surface .nc-social-label,
+body.novara-dusk .nc-social.dusk-surface .is-featured .nc-phone-kind { color: var(--dusk-accent); }
+body.novara-dusk .nc-social.dusk-surface .nc-controls::before {
+  background: var(--dusk-control-surface);
+  border-color: var(--line);
+}
+body.novara-dusk .nc-social.dusk-surface .nc-arrow { border-color: var(--line); }
+body.novara-dusk .nc-social.dusk-surface .nc-arrow:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--dusk-tile);
+  border-color: var(--ink);
+}
+body.novara-dusk .nc-sound.dusk-surface[data-dusk-ink="light"] .nc-audio-proof audio { color-scheme: dark; }
+body.novara-dusk .nc-sound.dusk-surface[data-dusk-ink="light"] .nc-wave-scope stop { stop-color: #a8c6cc; }
+body.novara-dusk .nc-sound.dusk-surface[data-dusk-ink="light"] .nc-wave-scope stop:last-child { stop-color: #e4b580; }
+body.novara-dusk .nc-sound.dusk-surface[data-dusk-ink="light"] .nc-wave-layer > i { background: #a8c6cc80; }
+body.novara-dusk .nc-sound.dusk-surface[data-dusk-ink="light"] .nc-wave-layer:nth-child(n+3) > i { background: #e4b58080; }
+
+/* The board keeps its transparent stage and the original letter animation. */
+body.novara-dusk .novara-board.dusk-surface {
+  --nb-bg: transparent;
+  --nb-ink: var(--ink);
+  --nb-red: var(--dusk-accent);
+  background: transparent;
+  border-color: transparent;
+}
+body.novara-dusk .novara-board.dusk-surface .nb-stage { background: transparent; }
+body.novara-dusk .novara-board.dusk-surface .nb-tile { background: var(--dusk-tile); }
+body.novara-dusk .novara-board.dusk-surface .nb-status .nb-tile,
+body.novara-dusk .novara-board.dusk-surface .nb-label { color: var(--ink-dim); }
+body.novara-dusk .novara-board.dusk-surface .nb-row { border-color: var(--line); }
+body.novara-dusk .novara-board.dusk-surface .nb-dots circle { fill: var(--dusk-dot); opacity: .3; }
+body.novara-dusk .novara-board.dusk-surface .nb-route-trail { stroke: var(--dusk-accent); stroke-opacity: .35; }
+body.novara-dusk .novara-board.dusk-surface .nb-bg-stop { fill: var(--dusk-accent); fill-opacity: .5; }
+
+/* Testimonial photographs and their on-image captions retain their styling. */
+body.novara-dusk .novara-feedback.dusk-surface .nf-dots button::after { background: var(--dusk-dot); }
+body.novara-dusk .novara-feedback.dusk-surface .nf-dots button[aria-pressed="true"]::after { background: var(--dusk-accent); }
+body.novara-dusk .novara-feedback.dusk-surface .nf-arrows button { border-color: var(--line); }
+body.novara-dusk .novara-feedback.dusk-surface .nf-arrows button:hover {
+  color: var(--ink);
+  background: var(--dusk-tile);
+  border-color: var(--ink);
+}
+body.novara-dusk .cta.dusk-surface .btn {
+  color: var(--dusk-button-ink);
+  background: var(--dusk-button-bg);
+}
+
+/* Keep the continuous field visible behind the footer, including its recce. */
+body.novara-dusk .footer.dusk-surface { background: transparent; color: var(--paper-ink); }
+body.novara-dusk .footer.dusk-surface::before { background: none; }
+body.novara-dusk .footer.dusk-surface .footer-cols,
+body.novara-dusk .footer.dusk-surface .footer-base { border-color: var(--line); }
+body.novara-dusk .footer.dusk-surface .footer-base { color: var(--ink-dim); }
+body.novara-dusk .footer.dusk-surface .novara-slideshow {
+  --ns-ink: var(--ink);
+  --ns-red: var(--dusk-accent);
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--line);
+}
+body.novara-dusk .footer.dusk-surface .ns-coordinates,
+body.novara-dusk .footer.dusk-surface .ns-social,
+body.novara-dusk .footer.dusk-surface .ns-hint,
+body.novara-dusk .footer.dusk-surface .ns-count { color: var(--ink-dim); }
+body.novara-dusk .footer.dusk-surface .ns-track::before { border-color: var(--line); }
+body.novara-dusk .footer.dusk-surface .ns-viewport { scrollbar-color: var(--ink-faint) transparent; }
+body.novara-dusk .footer.dusk-surface .ns-navigation button { border-color: var(--line); }
+body.novara-dusk .footer.dusk-surface .ns-call,
+body.novara-dusk .footer.dusk-surface .ns-call:hover,
+body.novara-dusk .footer.dusk-surface .ns-navigation button:hover:not(:disabled) {
+  color: var(--dusk-button-ink);
+  background: var(--dusk-button-bg);
+}
+/* Pale photo cards keep their original dark captions and red empty-frame label. */
+body.novara-dusk .footer.dusk-surface .ns-photo {
+  --ns-ink: #131110;
+  --ns-red: #e8362b;
+  --ns-paper: #fafaf6;
+}
+
+/* The query preview's comparison controls keep the same opaque treatment in
+   both modes. They do not inherit any section's changing foreground tokens. */
+.novara-dusk-preview {
+  position: fixed;
+  z-index: 90;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: calc(100vw - 32px);
+  padding: 5px;
+  border: 1px solid #66716d;
+  border-radius: 999px;
+  background: #15201f;
+  color: #fafaf6;
+  box-shadow: 0 4px 20px #0003;
+  font: 500 10px/1.4 var(--mono, monospace);
+}
+.novara-dusk-preview button {
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #15201f;
+  color: #fafaf6;
+  font: inherit;
+  cursor: pointer;
+}
+.novara-dusk-preview button:hover { background: #2c3e3a; }
+.novara-dusk-preview button[aria-pressed="true"],
+.novara-dusk-preview button[aria-selected="true"],
+.novara-dusk-preview button.is-active { background: #f4f2e7; color: #15201f; }
+.novara-dusk-preview button:focus-visible { outline: 2px solid #e4b580; outline-offset: 1px; }
+@media (max-width: 767px) {
+  body.novara-dusk .novara-board.dusk-surface .nb-tile { background: transparent; }
+  .novara-dusk-preview { left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); }
+}
