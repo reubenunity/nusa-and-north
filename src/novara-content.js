@@ -12,6 +12,9 @@ import { mountNovaraBackground } from './js/novara-background.js';
 import { mountNovaraServices } from './js/novara-services.js';
 import { mountNovaraMenu } from './js/novara-menu.js';
 import './styles/novara-home-light.css';
+import './styles/hero.css';
+import './styles/novara-hero.css';
+import { mountNovaraHero } from './js/novara-hero.js';
 
 // Preserve film links shared by the previous public site.
 const linkedFilm = new URLSearchParams(location.search).get('film');
@@ -33,6 +36,7 @@ const refreshLayout=()=>{
   st.refresh();
 };
 document.addEventListener('novara:layout',refreshLayout);
+const destroyHero=mountNovaraHero();
 
 const destroyBoard=mountNovaraBoard(document.querySelector('#proof'));
 const destroySlideshow=mountNovaraSlideshow(document.querySelector('#locations'));
@@ -85,4 +89,4 @@ document.fonts.ready.then(refreshLayout);
 if(import.meta.hot)import.meta.hot.on('vite:beforeUpdate',({updates})=>{
   if(updates.some(update=>update.type==='js-update'&&/novara/.test(update.path)))location.reload();
 });
-if(import.meta.hot)import.meta.hot.dispose(()=>{observer.disconnect();destroyBoard();destroySlideshow();destroyCraft();destroyFeedback();destroyBackground();destroyServices();destroyMenu();document.removeEventListener('novara:layout',refreshLayout);});
+if(import.meta.hot)import.meta.hot.dispose(()=>{observer.disconnect();destroyHero();destroyBoard();destroySlideshow();destroyCraft();destroyFeedback();destroyBackground();destroyServices();destroyMenu();document.removeEventListener('novara:layout',refreshLayout);});

@@ -321,21 +321,85 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 </nav>
 
 <!-- HERO -->
-<header class="hero" id="top">
-  <div class="hero-media">
-    <video muted loop playsinline preload="metadata" poster="/stills/hero-poster.jpg" aria-hidden="true">
-      <source src="/video/hero-loop.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="hero-inner">
-    <h1 class="display hero-title">NUSA &amp; NORTH</h1>
-    <p class="mono hero-sub">A husband-and-wife duo crafting films for hospitality, travel destinations and commercial brands — worldwide.</p>
-  </div>
-  <button class="hero-reel mono" data-film="radisson-berlin" aria-label="Watch The Taste of Heritage">
-    <span>Watch film</span>
-    <span class="dot" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg></span>
-  </button>
-</header>
+<header class="hero novara-hero" id="top">
+      <div class="hero__stage">
+
+        <div class="hero__media hero-media" aria-hidden="true">
+          <video
+            class="js-hero-media"
+            src="/video/hero-loop.mp4"
+            poster="/stills/hero-poster.jpg"
+            preload="metadata"
+            muted
+            loop
+            playsinline
+          ></video>
+        </div>
+
+
+        <div class="hero__headline-wrap">
+          <h1 class="hero__headline" aria-label="Every frame earns its place">
+
+            <span class="hero__headline-line" aria-hidden="true">EVERY FRAME</span>
+            <span class="hero__headline-line" aria-hidden="true">EARNS ITS PLACE</span>
+          </h1>
+          <p class="hero__sub">A husband-and-wife duo crafting films for hospitality, travel destinations and commercial brands — worldwide.</p>
+        </div>
+
+
+        <div class="hud" aria-hidden="true">
+
+          <div class="hud__corner hud__corner--tl" data-hud data-vx="-1" data-vy="-1"></div>
+          <div class="hud__corner hud__corner--tr" data-hud data-vx="1" data-vy="-1"></div>
+          <div class="hud__corner hud__corner--bl" data-hud data-vx="-1" data-vy="1"></div>
+          <div class="hud__corner hud__corner--br" data-hud data-vx="1" data-vy="1"></div>
+
+
+          <div class="hud__grid" data-hud data-vx="0" data-vy="0" data-mode="fade">
+            <div class="hud__grid-line hud__grid-line--v" style="left: 33.333%"></div>
+            <div class="hud__grid-line hud__grid-line--v" style="left: 66.666%"></div>
+            <div class="hud__grid-line hud__grid-line--h" style="top: 33.333%"></div>
+            <div class="hud__grid-line hud__grid-line--h" style="top: 66.666%"></div>
+          </div>
+
+
+          <div class="hud__rec" data-hud data-vx="-0.7" data-vy="-1">
+            <span class="hud__rec-dot"></span><span class="hud__rec-label">REC</span>
+          </div>
+          <div class="hud__brand" data-hud data-vx="0" data-vy="-1">NUSA &amp; NORTH</div>
+          <div class="hud__timecode" data-hud data-vx="-0.3" data-vy="-1">
+            <span class="js-hero-timecode">00:00:00:00</span>
+          </div>
+          <div class="hud__battery" data-hud data-vx="1" data-vy="-0.6">
+            <span class="hud__battery-body"><span class="hud__battery-fill"></span></span>
+            <span>87%</span>
+          </div>
+
+
+          <div class="hud__focus-box" data-hud data-vx="0.4" data-vy="-0.3" data-mode="scale">
+            <span class="hud__focus-label js-focus-label">AF · SEARCHING</span>
+          </div>
+
+
+          <div class="hud__audio" data-hud data-vx="-1" data-vy="0.3">
+            <div class="hud__audio-ch"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="hud__audio-ch"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+
+
+          <div class="hud__readouts" data-hud data-vx="0" data-vy="1">
+            <span>ISO 800</span><span>ƒ/2.8</span><span>1/50</span><span>5600K</span><span>4K · 25P</span>
+          </div>
+          <div class="hud__scroll-hint" data-hud data-vx="0.8" data-vy="1">
+            <span>SCROLL TO CUT</span>
+          </div>
+        </div>
+
+        <button class="viewfinder-play mono" data-film="radisson-berlin" aria-label="Watch The Taste of Heritage">
+          <span aria-hidden="true">▶</span> Watch film
+        </button>
+      </div>
+    </header>
 
 <main>
 <!-- WORKS INTRO -->
@@ -501,15 +565,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   /* ---------- Bidirectional scrub choreography ---------- */
 
-  // Hero: title + copy drift up and fade as you scroll down; reverse on scroll up
-  gsap.to('.hero-inner', {
-    yPercent:-18, opacity:0, ease:'none',
-    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom 35%', scrub:true}
-  });
-  gsap.to('.hero-media video', {
-    scale:1.12, ease:'none',
-    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}
-  });
+  // The original viewfinder hero is mounted by novara-content.js.
 
   // Works: pinned horizontal scroll (down = left, up = right)
   var mm = gsap.matchMedia();

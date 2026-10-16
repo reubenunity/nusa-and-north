@@ -1,0 +1,91 @@
+/* The original camera viewfinder, over the new site's shared colour field. */
+body.novara-home-light .hero.novara-hero {
+  --pad: clamp(22px, 2.4vw, 48px);
+  --font-display: var(--display);
+  --font-mono: var(--mono);
+  --c-fg: #fafaf6;
+  --c-fg-dim: #fafaf6b8;
+  --c-line: #fafaf647;
+  --c-accent: #ed352a;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  color: var(--c-fg);
+}
+.novara-hero .hero__stage { isolation: isolate; }
+body.novara-home-light .novara-hero .hero__media {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+body.novara-home-light .novara-hero .hero__media::after { background: none; }
+body.novara-home-light .novara-hero .hero__media video {
+  translate: none;
+  filter: grayscale(1) contrast(1.08) brightness(.58);
+}
+.novara-hero .hero__headline { font-family: var(--display); color: #fafaf6; }
+.novara-hero .hero__sub { line-height: 1.5; }
+.novara-hero .hero__headline-wrap { pointer-events: none; }
+.novara-hero .viewfinder-play {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) + 62px);
+  padding: 10px 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fafaf6;
+  border: 1px solid #fafaf660;
+  background: #14141430;
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  font-size: 10px;
+  transition: background .2s;
+}
+.novara-hero .viewfinder-play:hover { background: #fafaf62b; }
+.novara-hero .viewfinder-play:focus-visible { outline-color: #fafaf6; }
+/* The full navigation returns after the opening. The menu stays available. */
+body.hero-viewfinder .nav {
+  top: calc(clamp(22px, 2.4vw, 48px) + 48px);
+  right: clamp(22px, 2.4vw, 48px);
+  left: auto;
+  transform: none;
+}
+body.hero-viewfinder .nav-brand,
+body.hero-viewfinder .nav-links { display: none; }
+body.hero-viewfinder .nav-grid { background: #16161640; border-color: #fafaf650; }
+body.hero-viewfinder .nav-grid i { background: #fafaf6; }
+/* Touch devices retain the original lighter, unpinned hero treatment. */
+@media (max-width: 1024px), (pointer: coarse) {
+  body.novara-home-light .novara-hero .hero__media {
+    mask-image: linear-gradient(to bottom, #000 0%, #000 64%, #000e 73%, #0008 84%, #0002 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 64%, #000e 73%, #0008 84%, #0002 95%, transparent 100%);
+  }
+  .novara-hero .hud__corner--bl,
+  .novara-hero .hud__corner--br,
+  .novara-hero .hud__readouts,
+  .novara-hero .hud__scroll-hint { display: none; }
+  .novara-hero .viewfinder-play { bottom: 25%; }
+}
+@media (max-width: 640px) {
+  .novara-hero .hero__headline { font-size: clamp(26px, 7.6vw, 48px); }
+  .novara-hero .hero__sub { font-size: 10px; max-width: 30em; margin-top: 24px; }
+  .novara-hero .hud__rec { left: var(--pad); top: calc(var(--pad) + 56px); }
+  .novara-hero .hud__focus-box { width: 72vw; height: 28svh; }
+  .novara-hero .hud__brand { font-size: 13px; }
+  .novara-hero .viewfinder-play { left: 50%; translate: -50% 0; bottom: 24%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .novara-hero *, .novara-hero *::before, .novara-hero *::after { animation: none !important; }
+  body.novara-home-light .novara-hero .hero__media {
+    background: url('/stills/hero-poster.jpg') center / cover;
+    mask-image: linear-gradient(#000 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(#000 65%, transparent 100%);
+  }
+  .novara-hero .hero__media::before { content: ''; position: absolute; inset: 0; background: #0006; }
+}
+/* Use one transform system so GSAP rebuilds do not double CSS translates. */
+.novara-hero .hud__brand,
+.novara-hero .hud__timecode,
+.novara-hero .hud__readouts { translate: none; transform: translateX(-50%); }
+.novara-hero .hud__focus-box { translate: none; transform: translate(-50%, -50%); }
+.novara-hero .hud__audio { translate: none; transform: translateY(-50%); }
